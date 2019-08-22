@@ -42,7 +42,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-CAN_HandleTypeDef hcan;
+CAN_HandleTypeDef hcan = {0};
 
 UART_HandleTypeDef huart2;
 
