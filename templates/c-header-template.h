@@ -5,9 +5,17 @@
 //Include Files
 
 //C Public Constants
+/**
+ * @brief This is a brief description
+ */
 
 //C Public Variables
 
-//C Public Functions
+//C Public Function Prototypes
+/**
+ * @brief This is a brief description
+ * @param Input_Param_Name - Description of input parameter
+ * @ret Description of return value
+ */
 
 #endif //End Header Guard

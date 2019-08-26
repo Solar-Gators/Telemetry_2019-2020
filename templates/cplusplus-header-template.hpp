@@ -9,10 +9,19 @@
 extern "C" {
 #endif
 //C Public Constants
+/**
+ * @brief This is a brief description
+ */
 
 //C Public Variables
 
-//C Public Functions
+//C Public Function Prototypes
+/**
+ * @brief This is a brief description
+ * @param Input_Param_Name - Description of input parameter
+ * @ret Description of return value
+ */
+
 
 #ifdef __cplusplus
 }
@@ -24,7 +33,7 @@ class MY_CLASS
 {
 //Constructors
 
-//Public Functions
+//Public Function Prototypes
 
 //Public Constants
 
@@ -32,7 +41,7 @@ class MY_CLASS
 
 //Private Variables
 
-//Private Functions
+//Private Function Prototypes
 };
 
 #endif //End Header Guard
