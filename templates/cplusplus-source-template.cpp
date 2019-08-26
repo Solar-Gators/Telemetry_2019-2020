@@ -2,7 +2,10 @@
 #include "cplusplus-header-template.hpp"
 
 //Private Constants
-
+/*This is an example description for constants and variables. Delete this if it is unused here and copy and paste it to where it is needed. */
+/**
+ * @brief This is a brief description
+ */
 //Private Variables
 
 //Public Constants
@@ -10,8 +13,8 @@
 //Public Variables
 
 //Private Function Prototypes
-/**
- * @brief This is a brief description
+/*This is an example description for function prototypes. Delete this if it is unused here and copy and paste it to where it is needed. */
+/* @brief This is a brief description
  * @param Input_Param_Name - Description of input parameter
  * @ret Description of return value
  */
