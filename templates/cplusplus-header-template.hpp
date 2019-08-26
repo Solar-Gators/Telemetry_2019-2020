@@ -1,6 +1,6 @@
 //Header Guards
-#ifndef SUBSYSTEM_DATA_STORAGE_H
-#define SUBSYSTEM_DATA_STORAGE_H
+#ifndef MY_HEADER_GUARD_H_
+#define MY_HEADER_GUARD_H_
 
 //Include Files
 
