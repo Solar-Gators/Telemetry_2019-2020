@@ -1,49 +1,26 @@
-//Header Guards
-#ifndef MY_HEADER_GUARD_H_
-#define MY_HEADER_GUARD_H_
-
 //Include Files
+#include "cplusplus-header-template.hpp"
 
-//C Interface
-#ifdef __cplusplus
-extern "C" {
-#endif
-//C Public Constants
+//Private Constants
 /*This is an example description for constants and variables. Delete this if it is unused here and copy and paste it to where it is needed. */
 /**
  * @brief This is a brief description
  */
+//Private Variables
 
-//C Public Variables
+//Public Constants
 
-//C Public Function Prototypes
+//Public Variables
+
+//Private Function Prototypes
 /*This is an example description for function prototypes. Delete this if it is unused here and copy and paste it to where it is needed. */
-/**
- * @brief This is a brief description
+/* @brief This is a brief description
  * @param Input_Param_Name - Description of input parameter
  * @ret Description of return value
  */
 
-
-#ifdef __cplusplus
-}
-#endif //End C Interface
-
-//C++ Interface
-//Class Definitions
-class MY_CLASS
-{
-//Constructors
-
 //Public Function Prototypes
 
-//Public Constants
+//Private Function Definitions
 
-//Public Variable
-
-//Private Variables
-
-//Private Function Prototypes
-};
-
-#endif //End Header Guard
+//Public Function Definitions
