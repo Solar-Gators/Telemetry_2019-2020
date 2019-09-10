@@ -40,13 +40,16 @@ public:
 //Constructors
 //This class is only for inheritance so delete all public constructors
 SUBSYSTEM_DATA_MODULE() = delete;
-SUBSYSTEM_DATA_MODULE(SUBSYSTEM_DATA_MODULE&) = delete;
-
+SUBSYSTEM_DATA_MODULE(const SUBSYSTEM_DATA_MODULE&) = delete;
+SUBSYSTEM_DATA_MODULE(SUBSYSTEM_DATA_MODULE&&) = delete;
+SUBSYSTEM_DATA_MODULE& operator=(const SUBSYSTEM_DATA_MODULE&) = delete;
 //Public Function Prototypes
 
 //Public Constants
 
 //Public Variable
+protected:
+
 private:
 //Private Variables
 
