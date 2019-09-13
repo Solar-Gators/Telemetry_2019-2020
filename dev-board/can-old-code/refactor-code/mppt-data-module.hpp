@@ -44,16 +44,15 @@ MPPT_MESSAGE_0();
  * @brief This should be called in order to initializing reception from the calling subsystem
  */
 void InitReceive(subsystemReceiveCallback rx_func_ptr);
-/**
- * @brief This is called to send data on the CAN lines using the data initializes in the subsystem specific transmit packet initializer
- */
-void SendData(void);
 //Public Constants
 
 //Public Variable
 
 private:
+//Private Constants
+static constexpr uint8_t MPPT_DATA_SIZE = 8;
 //Private Variables
+uint8_t dataArray[];
 //Private Function Prototypes
 };
 

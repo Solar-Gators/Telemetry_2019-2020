@@ -42,24 +42,37 @@ public:
 //Public Function Prototypes
 /**
  * @brief This should be called in order to initializing reception from the calling subsystem
+ * @param rx_func_ptr: This is the function pointer that will be called (if not nullptr) on reception of data packet from
+ * this specific subsystem.
  */
-virtual void InitReceive(subsystemReceiveCallback rx_func_ptr) = 0;
+void InitReceive(subsystemReceiveCallback rx_func_ptr);
 /**
- * @brief This is called to send data on the CAN lines using the data initializes in the subsystem specific transmit packet initializer
+ * @brief This is called to send data on the CAN lines using the txDataPacket
  */
-virtual void SendData(void) = 0;
+void SendData(void);
 //Public Constants
 
 //Public Variable
 protected:
 //Protected Constructor
 SUBSYSTEM_DATA_MODULE();
+//Protected Structs
+struct TRANSMIT_PACKET
+{
+    uint16_t identifier;
+    uint8_t length;
+    uint8_t* const data;
+}; 
 //Protected Variables
 /**
  * @brief This is the callback which will be called when the corresponding subsystem receives a message
  * @param SUBSYSTEM_DATA_MODULE*: This is a pointer to this object aka the subsystem specific data module
  */
 subsystemReceiveCallback rxFuncPtr;
+/**
+ * @brief This holds the generic transmit packet which will be sent using the SendData() command
+ */
+TRANSMIT_PACKET txDataPacket;
 private:
 //Private Variables
 /**
