@@ -47,7 +47,11 @@ public:
  * @param rx_func_ptr: This is the function pointer that will be called (if not nullptr) on reception of data packet from
  * this specific subsystem.
  */
-void InitReceive(subsystemReceiveCallback rx_func_ptr);
+void SetupReceive(subsystemReceiveCallback rx_func_ptr);
+/**
+ * @brief T his function starts reception from all submodules that called SetupReceive().
+ */
+static void StartReception(void);
 /**
  * @brief This is called to send data on the CAN lines using the txDataPacket
  */
@@ -74,13 +78,20 @@ HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
  * @param SUBSYSTEM_DATA_MODULE*: This is a pointer to this object aka the subsystem specific data module
  */
 subsystemReceiveCallback rxFuncPtr;
+protected:
+//Protected Constructor
+SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length);
+//Protected Function Prototypes
+/**
+ * @brief This function fills the transmit data buffer by encoding the data to the correct locations.
+ * This function is called by SendData().
+ */
+virtual void fillTransmitDataBuffer(void) = 0;
+//Protected Variables
 /**
  * @brief This holds the data to be transmitted directly over CAN
  */
 uint8_t transmitData[ARRAY_SIZE];
-protected:
-//Protected Constructor
-SUBSYSTEM_DATA_MODULE();
 private:
 //Private Variables
 /**

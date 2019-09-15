@@ -40,19 +40,14 @@ public:
 //Constructors
 MPPT_MESSAGE_0();
 //Public Function Prototypes
-/**
- * @brief This should be called in order to initializing reception from the calling subsystem
- */
-void InitReceive(subsystemReceiveCallback rx_func_ptr);
+void fillTransmitDataBuffer(void) override;
 //Public Constants
 
 //Public Variable
 
 private:
 //Private Constants
-static constexpr uint8_t MPPT_DATA_SIZE = 8;
 //Private Variables
-uint8_t dataArray[];
 //Private Function Prototypes
 };
 

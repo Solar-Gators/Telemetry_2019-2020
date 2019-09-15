@@ -41,9 +41,12 @@ namespace subsystem_info
      * @important Must be up to date
      */
     static constexpr uint8_t NUM_MESSAGES = 2;
-    //Message IDs
+    //Message info
     static constexpr uint16_t MPPT0_MSG_ID = 1024;
+    static constexpr uint8_t MPPT0_MSG_LENGTH = 8;
+
     static constexpr uint16_t BMS0_MSG_ID = 1025;
+    static constexpr uint8_t BMS0_MSG_LENGTH = 8;
 };
 
 #endif //End Header Guard
