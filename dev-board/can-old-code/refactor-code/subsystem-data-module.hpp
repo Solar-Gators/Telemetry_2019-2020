@@ -6,6 +6,9 @@
 #define SUBSYSTEM_DATA_MODULE_H_
 
 //Include Files
+#include "subsystem-info.hpp"
+#include "helper-fifo.hpp"
+#include "stdint.h" //REMOVE THIS
 //C Interface
 #ifdef __cplusplus
 extern "C" {
@@ -38,7 +41,6 @@ typedef void (*subsystemReceiveCallback)(SUBSYSTEM_DATA_MODULE*);
 class SUBSYSTEM_DATA_MODULE 
 {
 public:
-//Constructors
 //Public Function Prototypes
 /**
  * @brief This should be called in order to initializing reception from the calling subsystem
@@ -51,38 +53,45 @@ void InitReceive(subsystemReceiveCallback rx_func_ptr);
  */
 void SendData(void);
 //Public Constants
-
-//Public Variable
-protected:
-//Protected Constructor
-SUBSYSTEM_DATA_MODULE();
-//Protected Structs
-struct TRANSMIT_PACKET
-{
-    uint16_t identifier;
-    uint8_t length;
-    uint8_t* const data;
-}; 
-//Protected Variables
+static constexpr uint8_t FIFO_DEPTH = 3;
+static constexpr uint8_t ARRAY_SIZE = 8;
+//Public Variables
+/**
+ * @brief This is the message identifier for the subsystem-specific CAN message
+ * @note This is public for easy access
+ */
+const uint32_t messageIdentifier;
+/**
+ * @brief This is the length of data which is specific to each subsystem
+ */
+const uint8_t dataLength;
+/**
+ * @brief This is the storage fifo which can be used to store and retrieve data
+ */
+HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
 /**
  * @brief This is the callback which will be called when the corresponding subsystem receives a message
  * @param SUBSYSTEM_DATA_MODULE*: This is a pointer to this object aka the subsystem specific data module
  */
 subsystemReceiveCallback rxFuncPtr;
 /**
- * @brief This holds the generic transmit packet which will be sent using the SendData() command
+ * @brief This holds the data to be transmitted directly over CAN
  */
-TRANSMIT_PACKET txDataPacket;
+uint8_t transmitData[ARRAY_SIZE];
+protected:
+//Protected Constructor
+SUBSYSTEM_DATA_MODULE();
 private:
 //Private Variables
 /**
- * @brief This holds the count of the amount of messages routed to mailbox 0
+ * @brief This holds the value of the last mailbox selected.
+ * @note Possible values are 0 to 1
  */
-static uint8_t mailbox0Count;
+static uint8_t lastMailboxSelected;
 /**
- * @brief This holds the count of the amount of messages routed to mailbox 1
+ * @brief This is the table of pointers to all the objects initialized for receiving
  */
-static uint8_t mailbox1Count;
+static SUBSYSTEM_DATA_MODULE* receiveModulesTable[subsystem_info::NUM_MESSAGES];
 //Private Function Prototypes
 };
 
