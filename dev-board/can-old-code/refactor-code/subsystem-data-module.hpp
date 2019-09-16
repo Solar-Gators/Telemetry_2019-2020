@@ -8,6 +8,7 @@
 //Include Files
 #include "subsystem-info.hpp"
 #include "helper-fifo.hpp"
+#include "rx-module-binary-tree.hpp"
 #include "stdint.h" //REMOVE THIS
 //C Interface
 #ifdef __cplusplus
@@ -78,6 +79,10 @@ HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
  * @param SUBSYSTEM_DATA_MODULE*: This is a pointer to this object aka the subsystem specific data module
  */
 subsystemReceiveCallback rxFuncPtr;
+/**
+ * @brief This is a binary tree of pointers to all the objects initialized for receiving
+ */
+static RX_BINARY_TREE rxModulesTree;
 protected:
 //Protected Constructor
 SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length);
@@ -99,10 +104,7 @@ private:
  * @note Possible values are 0 to 1
  */
 static uint8_t lastMailboxSelected;
-/**
- * @brief This is the table of pointers to all the objects initialized for receiving
- */
-static SUBSYSTEM_DATA_MODULE* receiveModulesBinaryTree[subsystem_info::NUM_MESSAGES];
+
 //Private Function Prototypes
 };
 
