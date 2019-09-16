@@ -102,7 +102,7 @@ static uint8_t lastMailboxSelected;
 /**
  * @brief This is the table of pointers to all the objects initialized for receiving
  */
-static SUBSYSTEM_DATA_MODULE* receiveModulesTable[subsystem_info::NUM_MESSAGES];
+static SUBSYSTEM_DATA_MODULE* receiveModulesBinaryTree[subsystem_info::NUM_MESSAGES];
 //Private Function Prototypes
 };
 
