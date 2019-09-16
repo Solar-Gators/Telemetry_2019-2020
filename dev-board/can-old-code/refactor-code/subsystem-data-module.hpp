@@ -56,7 +56,7 @@ static void StartReception(void);
 /**
  * @brief This is called to send data on the CAN lines using the txDataPacket
  */
-void SendData(void);
+void SendData(void* subsystem_specific_data_packet);
 //Public Constants
 static constexpr uint8_t FIFO_DEPTH = 3;
 static constexpr uint8_t ARRAY_SIZE = 8;
@@ -85,9 +85,9 @@ SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length);
 //Protected Function Prototypes
 /**
  * @brief This function fills the transmit data buffer by encoding the data to the correct locations.
- * This function is called before SendData
+ * This function is called before CAN transmitting the data
  */
-virtual void fillTransmitDataBuffer(void) = 0;
+virtual bool fillTransmitDataBuffer(void* subsystem_specific_data_packet) = 0;
 //Protected Variables
 /**
  * @brief This holds the data to be transmitted directly over CAN

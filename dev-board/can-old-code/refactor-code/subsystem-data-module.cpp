@@ -32,11 +32,16 @@ void SUBSYSTEM_DATA_MODULE::SetupReceive(subsystemReceiveCallback rx_func_ptr)
         isReceiving = true;
     } 
 }
+
 void SUBSYSTEM_DATA_MODULE::StartReception(void)
 {
     //Start CAN receiving
 }
-void SUBSYSTEM_DATA_MODULE::SendData(void)
+
+void SUBSYSTEM_DATA_MODULE::SendData(void* subsystem_specific_data_packet)
 {
-    //Send transmitData over CAN
+    if(this->fillTransmitDataBuffer(subsystem_specific_data_packet))
+    {
+        //Send transmitData over CAN if we succeed in filling the transmit buffer
+    }
 }

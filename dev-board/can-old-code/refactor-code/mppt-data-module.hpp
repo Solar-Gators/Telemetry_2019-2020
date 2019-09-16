@@ -1,5 +1,5 @@
 //File Name: subsystem-data-module.hpp
-//Description: This is what each subsystem will inherit from for storage
+//Description: This holds mppt-specific data storage implementation
 
 //Header Guards
 #ifndef MPPT_DATA_MODULE_H_
@@ -34,7 +34,7 @@ extern "C" {
 
 //C++ Interface
 //Class Definitions
-struct MPPT_MESSAGE_0_DATA
+struct MPPT_MESSAGE_0_DATA_PACKET
 {
     float arrayVoltage;
     float arrayCurrent;
@@ -52,7 +52,7 @@ MPPT_MESSAGE_0() = default;
 
 //Public Variable
 protected:
-void fillTransmitDataBuffer(void) override;
+bool fillTransmitDataBuffer(void* subsystem_specific_data_packet) override;
 private:
 //Private Constants
 //Private Variables
