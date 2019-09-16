@@ -34,17 +34,25 @@ extern "C" {
 
 //C++ Interface
 //Class Definitions
+struct MPPT_MESSAGE_0_DATA
+{
+    float arrayVoltage;
+    float arrayCurrent;
+    float batteryVoltage;
+    float mpptTemperature;
+};
+
 class MPPT_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE
 {
 public:
 //Constructors
-MPPT_MESSAGE_0();
+MPPT_MESSAGE_0() = default;
 //Public Function Prototypes
-void fillTransmitDataBuffer(void) override;
 //Public Constants
 
 //Public Variable
-
+protected:
+void fillTransmitDataBuffer(void) override;
 private:
 //Private Constants
 //Private Variables

@@ -79,17 +79,13 @@ HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
  * @param SUBSYSTEM_DATA_MODULE*: This is a pointer to this object aka the subsystem specific data module
  */
 subsystemReceiveCallback rxFuncPtr;
-/**
- * @brief This is a binary tree of pointers to all the objects initialized for receiving
- */
-static RX_BINARY_TREE rxModulesTree;
 protected:
 //Protected Constructor
 SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length);
 //Protected Function Prototypes
 /**
  * @brief This function fills the transmit data buffer by encoding the data to the correct locations.
- * This function is called by SendData().
+ * This function is called before SendData
  */
 virtual void fillTransmitDataBuffer(void) = 0;
 //Protected Variables
@@ -100,11 +96,18 @@ uint8_t transmitData[ARRAY_SIZE];
 private:
 //Private Variables
 /**
+ * @brief This holds if this particular module is initialized for receiving or not
+ */
+bool isReceiving;
+/**
  * @brief This holds the value of the last mailbox selected.
  * @note Possible values are 0 to 1
  */
 static uint8_t lastMailboxSelected;
-
+/**
+ * @brief This is a binary tree of pointers to all the objects initialized for receiving
+ */
+static RX_BINARY_TREE rxModulesTree;
 //Private Function Prototypes
 };
 
