@@ -38,10 +38,7 @@ void SUBSYSTEM_DATA_MODULE::StartReception(void)
     //Start CAN receiving
 }
 
-void SUBSYSTEM_DATA_MODULE::SendData(void* subsystem_specific_data_packet)
+void SUBSYSTEM_DATA_MODULE::sendTransmitBufferData(void)
 {
-    if(this->fillTransmitDataBuffer(subsystem_specific_data_packet))
-    {
-        //Send transmitData over CAN if we succeed in filling the transmit buffer
-    }
+    //Send data out on CAN
 }

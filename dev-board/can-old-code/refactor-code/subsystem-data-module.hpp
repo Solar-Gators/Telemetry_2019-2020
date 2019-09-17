@@ -53,10 +53,6 @@ void SetupReceive(subsystemReceiveCallback rx_func_ptr);
  * @brief T his function starts reception from all submodules that called SetupReceive().
  */
 static void StartReception(void);
-/**
- * @brief This is called to send data on the CAN lines using the txDataPacket
- */
-void SendData(void* subsystem_specific_data_packet);
 //Public Constants
 static constexpr uint8_t FIFO_DEPTH = 3;
 static constexpr uint8_t ARRAY_SIZE = 8;
@@ -83,16 +79,16 @@ protected:
 //Protected Constructor
 SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length);
 //Protected Function Prototypes
+virtual void fillTransmitBuffer(const void* data_packet) = 0;
 /**
- * @brief This function fills the transmit data buffer by encoding the data to the correct locations.
- * This function is called before CAN transmitting the data
+ * @brief This is called to send data on the CAN lines using the txDataPacket
  */
-virtual bool fillTransmitDataBuffer(void* subsystem_specific_data_packet) = 0;
+void sendTransmitBufferData(void);
 //Protected Variables
 /**
  * @brief This holds the data to be transmitted directly over CAN
  */
-uint8_t transmitData[ARRAY_SIZE];
+uint8_t transmitBuffer[ARRAY_SIZE];
 private:
 //Private Variables
 /**

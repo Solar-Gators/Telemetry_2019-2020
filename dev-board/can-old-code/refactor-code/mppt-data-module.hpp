@@ -46,17 +46,25 @@ class MPPT_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE
 {
 public:
 //Constructors
-MPPT_MESSAGE_0() = default;
+MPPT_MESSAGE_0();
 //Public Function Prototypes
+/**
+ * @brief This function is used to take in a mppt data packet and send it over CAN.
+ * @param tx_packet: Packet to be sent out.
+ */
+void SendData(const MPPT_MESSAGE_0_DATA_PACKET& tx_packet);
+/**
+ * @brief This is used to convert the CAN data into the mppt data packet
+ */
+MPPT_MESSAGE_0_DATA_PACKET GetDataPacket(uint8_t* raw_data);
 //Public Constants
 
 //Public Variable
-protected:
-bool fillTransmitDataBuffer(void* subsystem_specific_data_packet) override;
 private:
 //Private Constants
 //Private Variables
 //Private Function Prototypes
+void fillTransmitBuffer(const void* data_packet) override;
 };
 
 #endif //End Header Guard
