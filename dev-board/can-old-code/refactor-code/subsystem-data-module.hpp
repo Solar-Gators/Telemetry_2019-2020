@@ -54,9 +54,23 @@ void SetupReceive(subsystemReceiveCallback rx_func_ptr);
  */
 void SendData(void);
 /**
- * @breif This calls the callback set up for receiving if there was one otherwise it does nothing.
+ * @brief This calls the callback set up for receiving if there was one otherwise it does nothing.
  */
 void CallReceiveCallback(void);
+/**
+ * @brief This returns if the fifo is empty
+ */
+bool isFifoEmpty(void);
+/**
+ * @brief This returns if the fifo is full
+ */
+bool isFifoFull(void);
+/**
+ * @brief This adds incoming data to the rx fifo
+ * @param incoming_data: A pointer to data of length ARRAY_SIZE
+ * @return false if the fifo was full when attempting this and true if was successfully added
+ */
+bool addToFifo(uint8_t* incoming_data);
 /**
  * @brief This function starts reception from all submodules that called SetupReceive().
  */
@@ -74,10 +88,6 @@ const uint32_t messageIdentifier;
  * @brief This is the length of data which is specific to each subsystem
  */
 const uint8_t dataLength;
-/**
- * @brief This is the storage fifo which can be used to store and retrieve data
- */
-HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
 protected:
 //Protected Constructor
 SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length);
@@ -95,6 +105,10 @@ void sendTransmitBufferData(void);
  * @brief This holds the data to be transmitted directly over CAN
  */
 uint8_t transmitBuffer[ARRAY_SIZE];
+/**
+ * @brief This is the storage fifo which can be used to store and retrieve data
+ */
+HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
 private:
 //Private Variables
 /**

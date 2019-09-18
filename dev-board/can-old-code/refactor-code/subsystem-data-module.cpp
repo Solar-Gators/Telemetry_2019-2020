@@ -56,3 +56,20 @@ void SUBSYSTEM_DATA_MODULE::sendTransmitBufferData(void)
 {
     //TODO: Send data out on CAN
 }
+
+bool SUBSYSTEM_DATA_MODULE::isFifoEmpty(void)
+{
+    return this->storageFifo.IsEmpty();
+}
+
+bool SUBSYSTEM_DATA_MODULE::isFifoFull(void)
+{
+    return this->storageFifo.IsFull();
+}
+
+bool SUBSYSTEM_DATA_MODULE::addToFifo(uint8_t* incoming_data)
+{
+    bool operationSucceeded;
+    this->storageFifo.PushBack(incoming_data, &operationSucceeded);
+    return operationSucceeded;
+}

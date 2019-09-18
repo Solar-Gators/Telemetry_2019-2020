@@ -49,10 +49,11 @@ public:
 MPPT_MESSAGE_0();
 //Public Function Prototypes
 /**
- * @brief This is used to convert the CAN data into the mppt data packet
- * @note Extract the raw data from the receive fifo
+ * @brief This is used to get the first in data packet.
+ * @param success: returns true if there was data to get, false if the fifo was empty
+ * @return Corresponding mppt data packet
  */
-MPPT_MESSAGE_0_DATA_PACKET ConvertDataPacket(uint8_t* raw_data);
+MPPT_MESSAGE_0_DATA_PACKET GetOldestDataPacket(bool* success);
 //Public Constants
 
 //Public Variables

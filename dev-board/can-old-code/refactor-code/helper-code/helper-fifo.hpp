@@ -60,10 +60,16 @@ public:
         if(tailIndex == headIndex && !emptyNotFull)
         {
             //Fail to write since we are full
-            *success = false;
+            if(success)
+            {
+                *success = false;
+            }
         }else
         {
-            *success = true;
+            if(success)
+            {
+                *success = true;
+            }
             copyArrayData(headIndex,next_element);
             headIndex = (headIndex + 1)%DEPTH;
             //If head caught up to tail then we are full
@@ -78,10 +84,16 @@ public:
         if(tailIndex == headIndex && emptyNotFull)
         {
             //Fail to read since we are empty
-            *success = false;
+            if(success)
+            {
+                *success = false;
+            }
         }else
         {
-            *success = true;
+            if(success)
+            {
+                *success = true;
+            }
             uint16_t prevTailIndex = tailIndex;
             tailIndex = (tailIndex + 1)%DEPTH;
             //If tail caught up to head then we are empty
