@@ -45,14 +45,14 @@ void MPPT_MESSAGE_0::fillTransmitBuffer(void)
 }
 //Public Function Definitions
 MPPT_MESSAGE_0::MPPT_MESSAGE_0():
-SUBSYSTEM_DATA_MODULE{subsystem_info::MPPT0_MSG_ID,subsystem_info::MPPT0_MSG_LENGTH}
+SUBSYSTEM_DATA_MODULE{subsystem_info::MPPT0_MSG_ID,subsystem_info::MPPT0_MSG_LENGTH, false}
 {}
 
 MPPT_MESSAGE_0_DATA_PACKET MPPT_MESSAGE_0::GetOldestDataPacket(bool* success)
 {
     uint8_t* raw_data = this->storageFifo.PopFront(success);
     MPPT_MESSAGE_0_DATA_PACKET returnData;
-    
+
     //Only do the conversions if we successfully extracted from the fifo
     if(*success)
     {

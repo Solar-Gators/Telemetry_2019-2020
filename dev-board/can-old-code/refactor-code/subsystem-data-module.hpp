@@ -88,9 +88,13 @@ const uint32_t messageIdentifier;
  * @brief This is the length of data which is specific to each subsystem
  */
 const uint8_t dataLength;
+/**
+ * @brief This is true if the id is an extended id false otherwise
+ */
+const bool isExtID;
 protected:
 //Protected Constructor
-SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length);
+SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length, bool is_ext_id);
 //Protected Function Prototypes
 /**
  * @brief This fills the transmit buffer using the subsystem specific txData

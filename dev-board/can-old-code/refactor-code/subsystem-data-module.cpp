@@ -18,8 +18,8 @@
 //Private Function Definitions
 
 //Protected Function Definitions
-SUBSYSTEM_DATA_MODULE::SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length):
-messageIdentifier{message_id}, dataLength{data_length}, storageFifo{}, rxFuncPtr{nullptr}, isReceiving{false}
+SUBSYSTEM_DATA_MODULE::SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length, bool is_ext_id):
+messageIdentifier{message_id}, dataLength{data_length}, storageFifo{}, rxFuncPtr{nullptr}, isReceiving{false}, isExtID{is_ext_id}
 {}
 //Public Function Definitions
 void SUBSYSTEM_DATA_MODULE::SetupReceive(subsystemReceiveCallback rx_func_ptr)
