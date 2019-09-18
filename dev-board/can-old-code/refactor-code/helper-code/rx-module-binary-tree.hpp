@@ -6,7 +6,7 @@
 #define RX_MODULE_BINARY_TREE_H_
 
 //Include Files
-#include "subsystem-info.hpp"
+#include "../subsystem-info.hpp"
 #include "stdint.h" //REMOVE THIS
 //C Interface
 #ifdef __cplusplus

@@ -33,12 +33,26 @@ void SUBSYSTEM_DATA_MODULE::SetupReceive(subsystemReceiveCallback rx_func_ptr)
     } 
 }
 
+void SUBSYSTEM_DATA_MODULE::SendData(void)
+{
+    fillTransmitBuffer();
+    sendTransmitBufferData();
+}
+
+void SUBSYSTEM_DATA_MODULE::CallReceiveCallback(void)
+{
+    if(this->rxFuncPtr != nullptr)
+    {
+        this->rxFuncPtr(this);
+    }
+}
+
 void SUBSYSTEM_DATA_MODULE::StartReception(void)
 {
-    //Start CAN receiving
+    //TODO: Start CAN receiving
 }
 
 void SUBSYSTEM_DATA_MODULE::sendTransmitBufferData(void)
 {
-    //Send data out on CAN
+    //TODO: Send data out on CAN
 }

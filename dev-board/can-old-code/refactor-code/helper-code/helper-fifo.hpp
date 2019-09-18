@@ -87,7 +87,7 @@ public:
             //If tail caught up to head then we are empty
             if(tailIndex == headIndex)
             {
-                emptyNotFull = false;
+                emptyNotFull = true;
             }
         }
         return fifoData[tailIndex];

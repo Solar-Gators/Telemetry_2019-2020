@@ -7,8 +7,8 @@
 
 //Include Files
 #include "subsystem-info.hpp"
-#include "helper-fifo.hpp"
-#include "rx-module-binary-tree.hpp"
+#include "helper-code/helper-fifo.hpp"
+#include "helper-code/rx-module-binary-tree.hpp"
 #include "stdint.h" //REMOVE THIS
 //C Interface
 #ifdef __cplusplus
@@ -50,7 +50,15 @@ public:
  */
 void SetupReceive(subsystemReceiveCallback rx_func_ptr);
 /**
- * @brief T his function starts reception from all submodules that called SetupReceive().
+ * @brief This function is used to take in a mppt data packet and send it over CAN.
+ */
+void SendData(void);
+/**
+ * @breif This calls the callback set up for receiving if there was one otherwise it does nothing.
+ */
+void CallReceiveCallback(void);
+/**
+ * @brief This function starts reception from all submodules that called SetupReceive().
  */
 static void StartReception(void);
 //Public Constants
@@ -70,16 +78,14 @@ const uint8_t dataLength;
  * @brief This is the storage fifo which can be used to store and retrieve data
  */
 HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
-/**
- * @brief This is the callback which will be called when the corresponding subsystem receives a message
- * @param SUBSYSTEM_DATA_MODULE*: This is a pointer to this object aka the subsystem specific data module
- */
-subsystemReceiveCallback rxFuncPtr;
 protected:
 //Protected Constructor
 SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length);
 //Protected Function Prototypes
-virtual void fillTransmitBuffer(const void* data_packet) = 0;
+/**
+ * @brief This fills the transmit buffer using the subsystem specific txData
+ */
+virtual void fillTransmitBuffer(void) = 0;
 /**
  * @brief This is called to send data on the CAN lines using the txDataPacket
  */
@@ -91,6 +97,11 @@ void sendTransmitBufferData(void);
 uint8_t transmitBuffer[ARRAY_SIZE];
 private:
 //Private Variables
+/**
+ * @brief This is the callback which will be called when the corresponding subsystem receives a message
+ * @param SUBSYSTEM_DATA_MODULE*: This is a pointer to this object aka the subsystem specific data module
+ */
+subsystemReceiveCallback rxFuncPtr;
 /**
  * @brief This holds if this particular module is initialized for receiving or not
  */

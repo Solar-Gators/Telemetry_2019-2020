@@ -49,22 +49,22 @@ public:
 MPPT_MESSAGE_0();
 //Public Function Prototypes
 /**
- * @brief This function is used to take in a mppt data packet and send it over CAN.
- * @param tx_packet: Packet to be sent out.
- */
-void SendData(const MPPT_MESSAGE_0_DATA_PACKET& tx_packet);
-/**
  * @brief This is used to convert the CAN data into the mppt data packet
+ * @note Extract the raw data from the receive fifo
  */
-MPPT_MESSAGE_0_DATA_PACKET GetDataPacket(uint8_t* raw_data);
+MPPT_MESSAGE_0_DATA_PACKET ConvertDataPacket(uint8_t* raw_data);
 //Public Constants
 
-//Public Variable
+//Public Variables
+/**
+ * @brief Fill this out prior to calling SendData()
+ */
+MPPT_MESSAGE_0_DATA_PACKET txData;
 private:
 //Private Constants
 //Private Variables
 //Private Function Prototypes
-void fillTransmitBuffer(const void* data_packet) override;
+void fillTransmitBuffer(void) override;
 };
 
 #endif //End Header Guard
