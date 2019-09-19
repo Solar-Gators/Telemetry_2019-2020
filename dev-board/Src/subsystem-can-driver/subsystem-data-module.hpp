@@ -9,7 +9,7 @@
 #include "subsystem-info.hpp"
 #include "helper-code/helper-fifo.hpp"
 #include "helper-code/rx-module-binary-tree.hpp"
-#include "stdint.h" //REMOVE THIS
+#include "main.h" //TODO MAKE MORE SPECIFIC
 //C Interface
 #ifdef __cplusplus
 extern "C" {
@@ -72,12 +72,25 @@ bool isFifoFull(void);
  */
 bool addToFifo(uint8_t* incoming_data);
 /**
- * @brief This function starts reception from all submodules that called SetupReceive().
+ * @brief This function starts CAN and must be called prior to any messages being sent or received.
+ * @note This function should be called after all the SetupReceive()'s have been called
+ * @IMPORTANT You must implement HAL_CAN_MspInit yourself. You must also implement
+ * CEC_CAN_IRQHandler yourself and have it call HAL_CAN_IRQHandler.
  */
-static void StartReception(void);
+static void StartCAN(CAN_HandleTypeDef* in_hcan);
+/**
+ * @brief This searches for modules that have been initialized for receiving
+ * @param message_id: The CAN message id corresponding to the message
+ * @return A pointer to the module's base class
+ */
+static SUBSYSTEM_DATA_MODULE* FindReceivingModule(uint32_t message_id);
 //Public Constants
 static constexpr uint8_t FIFO_DEPTH = 3;
 static constexpr uint8_t ARRAY_SIZE = 8;
+/**
+ * @brief This is the fifo number all receive messages will be mapped to
+ */
+static constexpr uint32_t CAN_RX_FIFO_NUMBER = 0;
 //Public Variables
 /**
  * @brief This is the message identifier for the subsystem-specific CAN message
@@ -116,6 +129,10 @@ HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
 private:
 //Private Variables
 /**
+ * @brief This is the instance of the CAN handle needed to use the HAL CAN operations
+ */
+static CAN_HandleTypeDef* hcan;
+/**
  * @brief This is the callback which will be called when the corresponding subsystem receives a message
  * @param SUBSYSTEM_DATA_MODULE*: This is a pointer to this object aka the subsystem specific data module
  */
@@ -124,11 +141,6 @@ subsystemReceiveCallback rxFuncPtr;
  * @brief This holds if this particular module is initialized for receiving or not
  */
 bool isReceiving;
-/**
- * @brief This holds the value of the last mailbox selected.
- * @note Possible values are 0 to 1
- */
-static uint8_t lastMailboxSelected;
 /**
  * @brief This is a binary tree of pointers to all the objects initialized for receiving
  */
