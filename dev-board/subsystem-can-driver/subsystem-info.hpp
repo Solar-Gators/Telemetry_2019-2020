@@ -6,7 +6,7 @@
 #define SUBSYSTEM_INFO_HPP
 
 //Include Files
-
+#include "main.h"
 //C Interface
 #ifdef __cplusplus
 extern "C" {

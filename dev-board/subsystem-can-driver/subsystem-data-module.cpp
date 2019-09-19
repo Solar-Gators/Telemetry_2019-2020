@@ -101,7 +101,7 @@ void SUBSYSTEM_DATA_MODULE::StartCAN(CAN_HandleTypeDef* in_hcan)
 	hcan->Init.AutoRetransmission = DISABLE;
 	hcan->Init.ReceiveFifoLocked = DISABLE;
 	hcan->Init.TransmitFifoPriority = DISABLE;
-	if (HAL_CAN_Init(&hcan) != HAL_OK)
+	if (HAL_CAN_Init(hcan) != HAL_OK)
 	{
 	Error_Handler();
 	}

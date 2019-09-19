@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "subsystem-can-driver/mppt-data-module.hpp"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -94,7 +95,9 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  MPPT_MESSAGE_0 mppt0, mppt1;
+  mppt0.SetupReceive(nullptr);
+  mppt1.SetupReceive(nullptr);
   /* USER CODE END 2 */
 
   /* Infinite loop */
