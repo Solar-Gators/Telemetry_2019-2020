@@ -18,6 +18,8 @@
 //Special Functions
 /**
  * @brief This function is called when a rx msg is pending in can rx fifo 0
+ * @param hcan: pointer to can handle
+ * @important HAL_CAN_IRQHandler must be called in the CAN isr for this to be called
  */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
