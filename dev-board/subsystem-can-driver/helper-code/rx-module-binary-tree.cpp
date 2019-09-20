@@ -16,13 +16,13 @@
 
 //Public Function Prototypes
 RX_BINARY_TREE::RX_BINARY_TREE():
-currentTreeSize{0}, root{nullptr}
+root{nullptr}, currentTreeSize{0}
 {}
 
 void RX_BINARY_TREE::AddNode(SUBSYSTEM_DATA_MODULE* new_element)
 {
-    //Only insert a node if there is room
-    if(currentTreeSize < subsystem_info::NUM_MESSAGES)
+    //Only insert a node if there is room and we have a valid message id
+    if(currentTreeSize < subsystem_info::NUM_MESSAGES && new_element != nullptr)
     {
         root = insert(root,new_element);
     }
@@ -41,7 +41,7 @@ SUBSYSTEM_DATA_MODULE* RX_BINARY_TREE::FindElement(uint32_t message_id_key)
     
 }
 //Private Function Definitions
-Node* RX_BINARY_TREE::find(Node* node, uint32_t key)
+Node* RX_BINARY_TREE::find(Node* node, int32_t key)
 {
     //Can't find node return nullptr
     if(node == nullptr)
@@ -69,14 +69,18 @@ Node* RX_BINARY_TREE::newNode(SUBSYSTEM_DATA_MODULE* new_element)
     treeArray[currentTreeSize].left = nullptr;
     treeArray[currentTreeSize].right = nullptr;
     treeArray[currentTreeSize].height = 1;
-    currentTreeSize++;
-    return &treeArray[currentTreeSize];
+    return &treeArray[currentTreeSize++];
 }
 
 uint32_t RX_BINARY_TREE::max(uint32_t a, uint32_t b)  
 {  
     return (a > b)? a : b;  
 }  
+
+bool RX_BINARY_TREE::isValid(int32_t message_id)
+{
+    return (message_id == RX_BINARY_TREE::INVALID_MESSAGE_ID ? false : true);
+}
 
 uint8_t RX_BINARY_TREE::height(Node *N)  
 {  
@@ -85,19 +89,19 @@ uint8_t RX_BINARY_TREE::height(Node *N)
     return N->height;  
 }
 
-uint32_t RX_BINARY_TREE::node_key(Node* N)
+int32_t RX_BINARY_TREE::node_key(Node* N)
 {
     if(N == nullptr)
-        return 0;
+        return RX_BINARY_TREE::INVALID_MESSAGE_ID;
     if(N->datum == nullptr)
-        return 0;
+        return RX_BINARY_TREE::INVALID_MESSAGE_ID;
     return N->datum->messageIdentifier;
 }
 
-uint32_t RX_BINARY_TREE::element_key(SUBSYSTEM_DATA_MODULE* E)
+int32_t RX_BINARY_TREE::element_key(SUBSYSTEM_DATA_MODULE* E)
 {
     if(E == nullptr)
-        return 0;
+        return RX_BINARY_TREE::INVALID_MESSAGE_ID;
     return E->messageIdentifier;  
 }
   
@@ -152,6 +156,7 @@ Node* RX_BINARY_TREE::insert(Node* node, SUBSYSTEM_DATA_MODULE* new_element)
     if (node == nullptr)  
         return(newNode(new_element));  
 
+    
     if (element_key(new_element) < node_key(node))  
         node->left = insert(node->left, new_element);  
     else if (element_key(new_element) > node_key(node))  

@@ -81,6 +81,7 @@ public:
     }
     T* PopFront(bool* success)
     {
+    	 uint16_t prevTailIndex = 0;
         if(tailIndex == headIndex && emptyNotFull)
         {
             //Fail to read since we are empty
@@ -94,7 +95,7 @@ public:
             {
                 *success = true;
             }
-            uint16_t prevTailIndex = tailIndex;
+            prevTailIndex = tailIndex;
             tailIndex = (tailIndex + 1)%DEPTH;
             //If tail caught up to head then we are empty
             if(tailIndex == headIndex)
@@ -102,7 +103,7 @@ public:
                 emptyNotFull = true;
             }
         }
-        return fifoData[tailIndex];
+        return fifoData[prevTailIndex];
     }
     //Public Constants
 

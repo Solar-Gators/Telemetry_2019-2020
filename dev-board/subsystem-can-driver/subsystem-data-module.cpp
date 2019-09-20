@@ -52,7 +52,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 
 //Protected Function Definitions
 SUBSYSTEM_DATA_MODULE::SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length, bool is_ext_id):
-messageIdentifier{message_id}, dataLength{data_length}, storageFifo{}, rxFuncPtr{nullptr}, isReceiving{false}, isExtID{is_ext_id}
+messageIdentifier{message_id}, dataLength{data_length}, isExtID{is_ext_id}, storageFifo{}, rxFuncPtr{nullptr}, isReceiving{false}
 {}
 //Public Function Definitions
 SUBSYSTEM_DATA_MODULE* SUBSYSTEM_DATA_MODULE::FindReceivingModule(uint32_t message_id)

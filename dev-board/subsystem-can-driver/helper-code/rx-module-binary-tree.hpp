@@ -67,15 +67,18 @@ public:
 
     //Public Variable
 private:
+    //Private Constants
+    static constexpr int32_t INVALID_MESSAGE_ID = -1;
     //Private Variables
     Node treeArray[subsystem_info::NUM_MESSAGES];
     Node* root;
     uint16_t currentTreeSize;
 
     //Private Function Prototypes
-
+    //This tests if a message ID is a valid value
+    bool isValid(int32_t message_id);
     // This is a recursive method to find the node corresponding to @key
-    Node* find(Node* node, uint32_t key);
+    Node* find(Node* node, int32_t key);
     // This creates a new node using one of the elements in treeArray
     Node* newNode(SUBSYSTEM_DATA_MODULE* new_element);
     // A utility function to get maximum 
@@ -86,10 +89,10 @@ private:
     uint8_t height(Node *N);
     // A utility function to get the  
     // key of a node on the tree  
-    uint32_t node_key(Node* N);
+    int32_t node_key(Node* N);
     // A utility function to get the  
     // key of a element of the tree 
-    uint32_t element_key(SUBSYSTEM_DATA_MODULE* E);
+    int32_t element_key(SUBSYSTEM_DATA_MODULE* E);
     // A utility function to right 
     // rotate subtree rooted with y  
     // See the diagram given above.  
