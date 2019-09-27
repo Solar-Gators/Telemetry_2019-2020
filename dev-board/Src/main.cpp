@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "subsystem-can-driver/mppt-data-module.hpp"
+#include "subsystem-can-driver/bms-data-module.hpp"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -95,9 +96,13 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  MPPT_MESSAGE_0 mppt0, mppt1;
-  mppt0.SetupReceive(nullptr);
-  mppt1.SetupReceive(nullptr);
+  SUBSYSTEM_DATA_MODULE::StartCAN(&hcan);
+  MPPT_MESSAGE_0 mppt0;
+  BMS_MESSAGE_0 bms0;
+  mppt0.SetupReceive(nullptr); //ID of 1024
+  bms0.SetupReceive(nullptr); //ID of 1025
+
+  mppt0.txData = {12.2, 50, 33.1, 76};
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -107,6 +112,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  mppt0.SendData();
   }
   /* USER CODE END 3 */
 }

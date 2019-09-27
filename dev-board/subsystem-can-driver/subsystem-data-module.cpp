@@ -67,6 +67,7 @@ void SUBSYSTEM_DATA_MODULE::SetupReceive(subsystemReceiveCallback rx_func_ptr)
     if(!isReceiving)
     {
         SUBSYSTEM_DATA_MODULE::rxModulesTree.AddNode(this);
+        //TODO: Fix We are currently receiving even if add Node fails.
         isReceiving = true;
     } 
 }
@@ -91,9 +92,10 @@ void SUBSYSTEM_DATA_MODULE::StartCAN(CAN_HandleTypeDef* in_hcan)
 	//Initialize CAN itself
 	hcan->Instance = CAN;
 	hcan->Init.Prescaler = 16;
-	hcan->Init.Mode = CAN_MODE_NORMAL;
+	//hcan->Init.Mode = CAN_MODE_NORMAL;
+	hcan->Init.Mode = CAN_MODE_LOOPBACK;
 	hcan->Init.SyncJumpWidth = CAN_SJW_1TQ;
-	hcan->Init.TimeSeg1 = CAN_BS1_1TQ;
+	hcan->Init.TimeSeg1 = CAN_BS1_10TQ;
 	hcan->Init.TimeSeg2 = CAN_BS2_1TQ;
 	hcan->Init.TimeTriggeredMode = DISABLE;
 	hcan->Init.AutoBusOff = DISABLE;
