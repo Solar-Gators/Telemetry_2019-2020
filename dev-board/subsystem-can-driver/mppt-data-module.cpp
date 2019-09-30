@@ -50,22 +50,25 @@ SUBSYSTEM_DATA_MODULE{subsystem_info::MPPT0_MSG_ID,subsystem_info::MPPT0_MSG_LEN
 
 MPPT_MESSAGE_0_DATA_PACKET MPPT_MESSAGE_0::GetOldestDataPacket(bool* success)
 {
-    uint8_t* raw_data = this->storageFifo.PopFront(success);
-    MPPT_MESSAGE_0_DATA_PACKET returnData;
-
-    //Only do the conversions if we successfully extracted from the fifo
-    if(*success)
+    if(success)
     {
-        uint32_t preArrayVoltage = (static_cast<uint32_t>(raw_data[1]) << 8) | raw_data[0];
-        uint32_t preArrayCurrent = (static_cast<uint32_t>(raw_data[3]) << 8) | raw_data[2];
-        uint32_t preBatteryVoltage = (static_cast<uint32_t>(raw_data[5]) << 8) | raw_data[4];
-        uint32_t preMpptTemperature = (static_cast<uint32_t>(raw_data[7]) << 8) | raw_data[6];
+        uint8_t* raw_data = this->storageFifo.PopFront(success);
+        MPPT_MESSAGE_0_DATA_PACKET returnData;
 
-        returnData.arrayVoltage = static_cast<float>(preArrayVoltage)/100;
-        returnData.arrayCurrent = static_cast<float>(preArrayCurrent)/100;
-        returnData.batteryVoltage = static_cast<float>(preBatteryVoltage)/100;
-        returnData.mpptTemperature = static_cast<float>(preMpptTemperature)/100;
+        //Only do the conversions if we successfully extracted from the fifo
+        if(*success)
+        {
+            uint32_t preArrayVoltage = (static_cast<uint32_t>(raw_data[1]) << 8) | raw_data[0];
+            uint32_t preArrayCurrent = (static_cast<uint32_t>(raw_data[3]) << 8) | raw_data[2];
+            uint32_t preBatteryVoltage = (static_cast<uint32_t>(raw_data[5]) << 8) | raw_data[4];
+            uint32_t preMpptTemperature = (static_cast<uint32_t>(raw_data[7]) << 8) | raw_data[6];
+
+            returnData.arrayVoltage = static_cast<float>(preArrayVoltage)/100;
+            returnData.arrayCurrent = static_cast<float>(preArrayCurrent)/100;
+            returnData.batteryVoltage = static_cast<float>(preBatteryVoltage)/100;
+            returnData.mpptTemperature = static_cast<float>(preMpptTemperature)/100;
+        }
+
+        return returnData;
     }
-
-    return returnData;
 }
