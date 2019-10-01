@@ -50,10 +50,10 @@ SUBSYSTEM_DATA_MODULE{subsystem_info::BMS0_MSG_ID,subsystem_info::BMS0_MSG_LENGT
 
 BMS_MESSAGE_0_DATA_PACKET BMS_MESSAGE_0::GetOldestDataPacket(bool* success)
 {
+	BMS_MESSAGE_0_DATA_PACKET returnData;
     if(success)
     {
         uint8_t* raw_data = this->storageFifo.PopFront(success);
-        BMS_MESSAGE_0_DATA_PACKET returnData;
 
         //Only do the conversions if we successfully extracted from the fifo
         if(*success)
@@ -68,7 +68,6 @@ BMS_MESSAGE_0_DATA_PACKET BMS_MESSAGE_0::GetOldestDataPacket(bool* success)
         returnData.batteryVoltage = static_cast<float>(preBatteryVoltage)/100;
         returnData.mpptTemperature = static_cast<float>(preMpptTemperature)/100;
         }
-
-        return returnData;
     }
+    return returnData;
 }

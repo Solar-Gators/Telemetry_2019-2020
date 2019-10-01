@@ -96,13 +96,21 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  SUBSYSTEM_DATA_MODULE::StartCAN(&hcan);
   MPPT_MESSAGE_0 mppt0;
   BMS_MESSAGE_0 bms0;
   mppt0.SetupReceive(nullptr); //ID of 1024
   bms0.SetupReceive(nullptr); //ID of 1025
-
+  SUBSYSTEM_DATA_MODULE::StartCAN(&hcan);
   mppt0.txData = {12.2, 50, 33.1, 76};
+  mppt0.SendData();
+  mppt0.txData = {4, 23, 44, 87};
+  mppt0.SendData();
+  mppt0.txData = {33, 22, 44, 55};
+  mppt0.SendData();
+  mppt0.txData = {1, 2.34, 3.45, 8.53};
+  mppt0.SendData();
+  bms0.txData = {23, 55, 32, 1};
+  bms0.SendData();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -110,12 +118,21 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  if(!mppt0.isFifoEmpty())
+	  {
+		  bool receivedSomething;
+		  MPPT_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
+		  if(receivedSomething)
+		  {
+			  //Nice
+			  float l = mpptPacket.arrayCurrent;
+		  }
+	  }
     /* USER CODE BEGIN 3 */
-	  mppt0.SendData();
   }
   /* USER CODE END 3 */
 }
+
 
 /**
   * @brief System Clock Configuration

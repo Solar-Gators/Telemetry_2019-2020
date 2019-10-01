@@ -50,10 +50,10 @@ SUBSYSTEM_DATA_MODULE{subsystem_info::MPPT0_MSG_ID,subsystem_info::MPPT0_MSG_LEN
 
 MPPT_MESSAGE_0_DATA_PACKET MPPT_MESSAGE_0::GetOldestDataPacket(bool* success)
 {
+    MPPT_MESSAGE_0_DATA_PACKET returnData;
     if(success)
     {
         uint8_t* raw_data = this->storageFifo.PopFront(success);
-        MPPT_MESSAGE_0_DATA_PACKET returnData;
 
         //Only do the conversions if we successfully extracted from the fifo
         if(*success)
@@ -68,7 +68,6 @@ MPPT_MESSAGE_0_DATA_PACKET MPPT_MESSAGE_0::GetOldestDataPacket(bool* success)
             returnData.batteryVoltage = static_cast<float>(preBatteryVoltage)/100;
             returnData.mpptTemperature = static_cast<float>(preMpptTemperature)/100;
         }
-
-        return returnData;
     }
+    return returnData;
 }
