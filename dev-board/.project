@@ -30,9 +30,24 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>Src/rf-encoding</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>Src/subsystem-can-driver</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>Src/rf-encoding/rf-encoder.cpp</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/rf-encoding/rf-encoder.cpp</locationURI>
+		</link>
+		<link>
+			<name>Src/rf-encoding/rf-encoder.h</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/rf-encoding/rf-encoder.h</locationURI>
 		</link>
 		<link>
 			<name>Src/subsystem-can-driver/bms-data-module.cpp</name>
