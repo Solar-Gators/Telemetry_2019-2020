@@ -29,7 +29,11 @@ class RF_PACKET: private RF_TRANSPORT_LAYER
 {
 public:
 //Constructors
-RF_PACKET();
+/**
+ * @brief Simple constructor that takes in an initialized uart_instance
+ * @param uart_instance: Initialized uart_instance that will be used for communication
+ */
+RF_PACKET(USART_TypeDef* uart_instance);
 //Public Function Prototypes
 /**
  * @brief This sends the message that has been constructed by AddToMessage. It starts with @START_CHAR and ends

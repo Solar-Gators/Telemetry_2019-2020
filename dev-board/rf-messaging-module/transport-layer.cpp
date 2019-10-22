@@ -27,3 +27,11 @@
 //Private Function Definitions
 
 //Public Function Definitions
+RF_TRANSPORT_LAYER::RF_TRANSPORT_LAYER(USART_TypeDef* uart_instance):
+uartInstance{uart_instance}
+{}
+
+void sendMessage(uint8_t* data, uint16_t data_length)
+{
+
+}

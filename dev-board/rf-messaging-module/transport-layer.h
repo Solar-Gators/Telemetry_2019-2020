@@ -40,12 +40,21 @@ RF_TRANSPORT_LAYER& operator=(const RF_TRANSPORT_LAYER&&) = delete;
 //Public Variable
 protected:
 //Protected Constructor
-RF_TRANSPORT_LAYER(UART_THING);
+/**
+ * @brief This takes in the initialized uart instance to use for communicating information
+ * @param @uart_instance: initialized uart instance
+ */
+RF_TRANSPORT_LAYER(USART_TypeDef* uart_instance);
 //Protected Function Prototypes
+/**
+ * @brief This sends a message pointed to be @data of @data_length length
+ * @param data: Pointer to data to send
+ * @param data_length: Amount of bytes to send
+ */
 void sendMessage(uint8_t* data, uint16_t data_length);
 private:
 //Private Variables
-UART_THING;
+USART_TypeDef* uartInstance;
 //Private Function Prototypes
 };
 

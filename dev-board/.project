@@ -30,9 +30,34 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>Src/rf-messaging-module</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>Src/subsystem-can-driver</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>Src/rf-messaging-module/message-layer.cpp</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/rf-messaging-module/message-layer.cpp</locationURI>
+		</link>
+		<link>
+			<name>Src/rf-messaging-module/message-layer.h</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/rf-messaging-module/message-layer.h</locationURI>
+		</link>
+		<link>
+			<name>Src/rf-messaging-module/transport-layer.cpp</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/rf-messaging-module/transport-layer.cpp</locationURI>
+		</link>
+		<link>
+			<name>Src/rf-messaging-module/transport-layer.h</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/rf-messaging-module/transport-layer.h</locationURI>
 		</link>
 		<link>
 			<name>Src/subsystem-can-driver/bms-data-module.cpp</name>
