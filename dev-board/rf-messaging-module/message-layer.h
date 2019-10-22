@@ -2,11 +2,12 @@
 //Description: This contains the class implementation for creating rf packets and transmitting them
 
 //Header Guards
-#ifndef MESSAGE_LAYER_H_
-#define MESSAGE_LAYER_H_
+#ifndef RF_MESSAGE_LAYER_H_
+#define RF_MESSAGE_LAYER_H_
 
 //Include Files
 #include "main.h"
+#include "transport-layer.h"
 
 //C Interface
 #ifdef __cplusplus
@@ -24,7 +25,7 @@ extern "C" {
 
 //C++ Interface
 //Class Definitions
-class RF_PACKET
+class RF_PACKET: private RF_TRANSPORT_LAYER
 {
 public:
 //Constructors

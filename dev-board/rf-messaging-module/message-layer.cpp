@@ -1,5 +1,5 @@
-//File Name:
-//Description:
+//File Name: message-layer.cpp
+//Description: This implements the overall transmission and construction of an RF packet.
 
 //Include Files
 #include "message-layer.h"
