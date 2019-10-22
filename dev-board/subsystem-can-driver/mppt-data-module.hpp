@@ -42,6 +42,23 @@ struct MPPT_MESSAGE_0_DATA_PACKET
     float mpptTemperature;
 };
 
+namespace MPPT0_HELPER
+{
+	static constexpr uint8_t ARRAY_SIZE = 8;
+	/**
+	 * @brief This function converts @input to fill the encoded @output array
+	 * @param input: Data to be converted
+	 * @param output: Array that should be allocated at least @ARRAY_SIZE bytes
+	 */
+	void dataPacketToArray(MPPT_MESSAGE_0_DATA_PACKET input, uint8_t output[ARRAY_SIZE]);
+	/**
+	 * @brief This converts the encoded @input array to a data packet
+	 * @param input: Encoded array of @ARRAY_SIZE bytes
+	 * @retval A data packet
+	 */
+	MPPT_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[ARRAY_SIZE]);
+}
+
 class MPPT_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE
 {
 public:
