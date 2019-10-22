@@ -40,19 +40,19 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>Src/rf-messaging-module/message-layer.cpp</name>
+			<name>Src/rf-messaging-module/data-link-layer.cpp</name>
 			<type>1</type>
-			<locationURI>PROJECT_LOC/rf-messaging-module/message-layer.cpp</locationURI>
+			<locationURI>PROJECT_LOC/rf-messaging-module/data-link-layer.cpp</locationURI>
 		</link>
 		<link>
-			<name>Src/rf-messaging-module/message-layer.h</name>
+			<name>Src/rf-messaging-module/data-link-layer.h</name>
 			<type>1</type>
-			<locationURI>PROJECT_LOC/rf-messaging-module/message-layer.h</locationURI>
+			<locationURI>PROJECT_LOC/rf-messaging-module/data-link-layer.h</locationURI>
 		</link>
 		<link>
-			<name>Src/rf-messaging-module/transport-layer.cpp</name>
+			<name>Src/rf-messaging-module/tranport-layer.cpp</name>
 			<type>1</type>
-			<locationURI>PROJECT_LOC/rf-messaging-module/transport-layer.cpp</locationURI>
+			<locationURI>PROJECT_LOC/rf-messaging-module/tranport-layer.cpp</locationURI>
 		</link>
 		<link>
 			<name>Src/rf-messaging-module/transport-layer.h</name>
