@@ -40,6 +40,16 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>Src/rf-messaging-module/can-message-helper.cpp</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/rf-messaging-module/can-message-helper.cpp</locationURI>
+		</link>
+		<link>
+			<name>Src/rf-messaging-module/can-message-helper.h</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/rf-messaging-module/can-message-helper.h</locationURI>
+		</link>
+		<link>
 			<name>Src/rf-messaging-module/data-link-layer.cpp</name>
 			<type>1</type>
 			<locationURI>PROJECT_LOC/rf-messaging-module/data-link-layer.cpp</locationURI>

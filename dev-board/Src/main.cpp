@@ -20,8 +20,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "subsystem-can-driver/mppt-data-module.hpp"
-#include "subsystem-can-driver/bms-data-module.hpp"
+#include "mppt-data-module.hpp"
+#include "bms-data-module.hpp"
+#include "transport-layer.h"
+#include "can-message-helper.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -96,6 +98,15 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  RF_PACKET msg0{huart2.Instance};
+  BMS_MESSAGE_0_DATA_PACKET test{1.2 , 22.1, 33.55, 4.87};
+  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  test.arrayVoltage = 33;
+  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  msg0.Send();
+  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  msg0.Send();
+
   MPPT_MESSAGE_0 mppt0;
   BMS_MESSAGE_0 bms0;
   mppt0.SetupReceive(nullptr); //ID of 1024
@@ -189,7 +200,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 38400;
+  huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;

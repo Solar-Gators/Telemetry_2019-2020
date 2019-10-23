@@ -48,6 +48,10 @@ void Send();
  * @retval True if there was sufficient space and the message was succesfully added, false otherwise
  */
 bool AddToPacket(uint8_t address, uint8_t data_size, uint8_t* data);
+/**
+ * @brief This clears the current packet and resets the data
+ */
+void ClearPacket(void);
 //Public Constants
 
 //Public Variable
