@@ -20,6 +20,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "mppt-data-module.hpp"
+#include "bms-data-module.hpp"
+#include "transport-layer.h"
+#include "can-message-helper.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -42,7 +46,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-CAN_HandleTypeDef hcan;
+CAN_HandleTypeDef hcan = {0};
 
 UART_HandleTypeDef huart2;
 
@@ -53,7 +57,6 @@ UART_HandleTypeDef huart2;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_CAN_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -93,10 +96,32 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_CAN_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  RF_PACKET msg0{huart2.Instance};
+  BMS_MESSAGE_0_DATA_PACKET test{1.2 , 22.1, 33.55, 4.87};
+  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  test.arrayVoltage = 33;
+  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  msg0.Send();
+  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  msg0.Send();
 
+  MPPT_MESSAGE_0 mppt0;
+  BMS_MESSAGE_0 bms0;
+  mppt0.SetupReceive(nullptr); //ID of 1024
+  bms0.SetupReceive(nullptr); //ID of 1025
+  SUBSYSTEM_DATA_MODULE::StartCAN(&hcan);
+  mppt0.txData = {12.2, 50, 33.1, 76};
+  mppt0.SendData();
+  mppt0.txData = {4, 23, 44, 87};
+  mppt0.SendData();
+  mppt0.txData = {33, 22, 44, 55};
+  mppt0.SendData();
+  mppt0.txData = {1, 2.34, 3.45, 8.53};
+  mppt0.SendData();
+  bms0.txData = {23, 55, 32, 1};
+  bms0.SendData();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -104,11 +129,21 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  if(!mppt0.isFifoEmpty())
+	  {
+		  bool receivedSomething;
+		  MPPT_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
+		  if(receivedSomething)
+		  {
+			  //Nice
+			  float l = mpptPacket.arrayCurrent;
+		  }
+	  }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
+
 
 /**
   * @brief System Clock Configuration
@@ -150,43 +185,6 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief CAN Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_CAN_Init(void)
-{
-
-  /* USER CODE BEGIN CAN_Init 0 */
-
-  /* USER CODE END CAN_Init 0 */
-
-  /* USER CODE BEGIN CAN_Init 1 */
-
-  /* USER CODE END CAN_Init 1 */
-  hcan.Instance = CAN;
-  hcan.Init.Prescaler = 16;
-  hcan.Init.Mode = CAN_MODE_NORMAL;
-  hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
-  hcan.Init.TimeSeg1 = CAN_BS1_1TQ;
-  hcan.Init.TimeSeg2 = CAN_BS2_1TQ;
-  hcan.Init.TimeTriggeredMode = DISABLE;
-  hcan.Init.AutoBusOff = DISABLE;
-  hcan.Init.AutoWakeUp = DISABLE;
-  hcan.Init.AutoRetransmission = DISABLE;
-  hcan.Init.ReceiveFifoLocked = DISABLE;
-  hcan.Init.TransmitFifoPriority = DISABLE;
-  if (HAL_CAN_Init(&hcan) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN CAN_Init 2 */
-
-  /* USER CODE END CAN_Init 2 */
-
-}
-
-/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -202,7 +200,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 38400;
+  huart2.Init.BaudRate = 115200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
