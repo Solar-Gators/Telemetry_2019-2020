@@ -70,6 +70,16 @@
 			<locationURI>PROJECT_LOC/rf-messaging-module/transport-layer.h</locationURI>
 		</link>
 		<link>
+			<name>Src/subsystem-can-driver/aux-data-module.cpp</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/subsystem-can-driver/aux-data-module.cpp</locationURI>
+		</link>
+		<link>
+			<name>Src/subsystem-can-driver/aux-data-module.hpp</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/subsystem-can-driver/aux-data-module.hpp</locationURI>
+		</link>
+		<link>
 			<name>Src/subsystem-can-driver/bms-data-module.cpp</name>
 			<type>1</type>
 			<locationURI>PROJECT_LOC/subsystem-can-driver/bms-data-module.cpp</locationURI>
