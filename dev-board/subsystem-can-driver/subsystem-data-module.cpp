@@ -91,12 +91,12 @@ void SUBSYSTEM_DATA_MODULE::StartCAN(CAN_HandleTypeDef* in_hcan)
 	hcan = in_hcan;
 	//Initialize CAN itself
 	hcan->Instance = CAN;
-	hcan->Init.Prescaler = 16;
+	hcan->Init.Prescaler = 6;
 	//hcan->Init.Mode = CAN_MODE_NORMAL;
 	hcan->Init.Mode = CAN_MODE_LOOPBACK;
 	hcan->Init.SyncJumpWidth = CAN_SJW_1TQ;
-	hcan->Init.TimeSeg1 = CAN_BS1_10TQ;
-	hcan->Init.TimeSeg2 = CAN_BS2_1TQ;
+	hcan->Init.TimeSeg1 = CAN_BS1_13TQ;
+	hcan->Init.TimeSeg2 = CAN_BS2_2TQ;
 	hcan->Init.TimeTriggeredMode = DISABLE;
 	hcan->Init.AutoBusOff = DISABLE;
 	hcan->Init.AutoWakeUp = DISABLE;
