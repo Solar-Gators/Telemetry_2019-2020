@@ -40,8 +40,11 @@ namespace subsystem_info
      * @brief This is a count of the number of messages as listed below
      * @important Must be up to date
      */
-    static constexpr uint8_t NUM_MESSAGES = 6;
+    static constexpr uint8_t NUM_MESSAGES = 3;
     //Message info
+    static constexpr uint16_t AUX0_MSG_ID = 1023;
+    static constexpr uint8_t AUX0_MSG_LENGTH = 1;
+
     static constexpr uint16_t MPPT0_MSG_ID = 1024;
     static constexpr uint8_t MPPT0_MSG_LENGTH = 8;
 

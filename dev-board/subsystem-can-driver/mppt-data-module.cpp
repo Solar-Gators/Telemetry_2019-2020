@@ -68,7 +68,7 @@ namespace MPPT0_HELPER
 
 void MPPT_MESSAGE_0::fillTransmitBuffer(void)
 {
-	MPPT0_HELPER::dataPacketToArray(this->txData, nullptr);
+	MPPT0_HELPER::dataPacketToArray(this->txData, this->transmitBuffer);
 }
 //Public Function Definitions
 MPPT_MESSAGE_0::MPPT_MESSAGE_0():

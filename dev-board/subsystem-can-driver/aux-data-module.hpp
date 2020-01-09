@@ -42,7 +42,7 @@ struct AUX_MESSAGE_0_DATA_PACKET
 	bool headlightsOn;
 };
 
-namespace AUX_HELPER
+namespace AUX0_HELPER
 {
 	static constexpr uint8_t ARRAY_SIZE = 1;
 	/**
