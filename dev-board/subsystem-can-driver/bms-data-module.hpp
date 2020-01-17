@@ -36,10 +36,10 @@ extern "C" {
 //Class Definitions
 struct BMS_MESSAGE_0_DATA_PACKET
 {
-    float arrayVoltage;
-    float arrayCurrent;
-    float batteryVoltage;
-    float mpptTemperature;
+    float lowCellVoltage;
+    float highCellVoltage;
+    float avgCellVoltage;
+    float packSummedVoltage;
 };
 
 namespace BMS0_HELPER

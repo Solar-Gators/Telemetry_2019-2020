@@ -31,32 +31,32 @@ namespace BMS0_HELPER
 {
 	void dataPacketToArray(BMS_MESSAGE_0_DATA_PACKET input, uint8_t output[ARRAY_SIZE])
 	{
-		float convArrayVoltage = input.arrayVoltage * 100;
-		float convArrayCurrent = input.arrayCurrent * 100;
-		float convBatteryVoltage = input.batteryVoltage * 100;
-		float convMpptTemperature = input.mpptTemperature * 100;
+		float convLowCellVoltage = input.lowCellVoltage * 1;
+		float convHighCellVoltage = input.highCellVoltage * 1;
+		float convAvgCellVoltage = input.avgCellVoltage * 1;
+		float convPackSummedVoltage = input.packSummedVoltage * 1;
 
-		output[0] = static_cast<uint32_t>(convArrayVoltage) & 0xFF;
-		output[1] = (static_cast<uint32_t>(convArrayVoltage) >> 8) & 0xFF;
-		output[2] = static_cast<uint32_t>(convArrayCurrent) & 0xFF;
-		output[3] = (static_cast<uint32_t>(convArrayCurrent) >> 8) & 0xFF;
-		output[4] = static_cast<uint32_t>(convBatteryVoltage) & 0xFF;
-		output[5] = (static_cast<uint32_t>(convBatteryVoltage) >> 8) & 0xFF;
-		output[6] = static_cast<uint32_t>(convMpptTemperature) & 0xFF;
-		output[7] = (static_cast<uint32_t>(convMpptTemperature) >> 8) & 0xFF;
+		output[0] = static_cast<uint32_t>(convLowCellVoltage) & 0xFF;
+		output[1] = (static_cast<uint32_t>(convLowCellVoltage) >> 8) & 0xFF;
+		output[2] = static_cast<uint32_t>(convHighCellVoltage) & 0xFF;
+		output[3] = (static_cast<uint32_t>(convHighCellVoltage) >> 8) & 0xFF;
+		output[4] = static_cast<uint32_t>(convAvgCellVoltage) & 0xFF;
+		output[5] = (static_cast<uint32_t>(convAvgCellVoltage) >> 8) & 0xFF;
+		output[6] = static_cast<uint32_t>(convPackSummedVoltage) & 0xFF;
+		output[7] = (static_cast<uint32_t>(convPackSummedVoltage) >> 8) & 0xFF;
 	}
 
 	BMS_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[ARRAY_SIZE])
 	{
 		BMS_MESSAGE_0_DATA_PACKET output;
-		uint32_t preArrayVoltage = (static_cast<uint32_t>(input[1]) << 8) | input[0];
-		uint32_t preArrayCurrent = (static_cast<uint32_t>(input[3]) << 8) | input[2];
-		uint32_t preBatteryVoltage = (static_cast<uint32_t>(input[5]) << 8) | input[4];
-		uint32_t preMpptTemperature = (static_cast<uint32_t>(input[7]) << 8) | input[6];
-		output.arrayVoltage = static_cast<float>(preArrayVoltage)/100;
-		output.arrayCurrent = static_cast<float>(preArrayCurrent)/100;
-		output.batteryVoltage = static_cast<float>(preBatteryVoltage)/100;
-		output.mpptTemperature = static_cast<float>(preMpptTemperature)/100;
+		uint32_t preLCV = (static_cast<uint32_t>(input[1]) << 8) | input[0];
+		uint32_t preHCV = (static_cast<uint32_t>(input[3]) << 8) | input[2];
+		uint32_t preACV = (static_cast<uint32_t>(input[5]) << 8) | input[4];
+		uint32_t prePCV = (static_cast<uint32_t>(input[7]) << 8) | input[6];
+		output.lowCellVoltage = static_cast<float>(preLCV)/1;
+		output.highCellVoltage = static_cast<float>(preHCV)/1;
+		output.avgCellVoltage = static_cast<float>(preACV)/1;
+		output.packSummedVoltage = static_cast<float>(prePCV)/1;
 
 		return output;
 	}
