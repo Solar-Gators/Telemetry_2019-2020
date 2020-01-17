@@ -53,10 +53,10 @@ namespace BMS0_HELPER
 		uint32_t preHCV = (static_cast<uint32_t>(input[3]) << 8) | input[2];
 		uint32_t preACV = (static_cast<uint32_t>(input[5]) << 8) | input[4];
 		uint32_t prePCV = (static_cast<uint32_t>(input[7]) << 8) | input[6];
-		output.lowCellVoltage = static_cast<float>(preLCV)/1;
-		output.highCellVoltage = static_cast<float>(preHCV)/1;
-		output.avgCellVoltage = static_cast<float>(preACV)/1;
-		output.packSummedVoltage = static_cast<float>(prePCV)/1;
+		output.lowCellVoltage = static_cast<float>(preLCV)/10000;
+		output.highCellVoltage = static_cast<float>(preHCV)/10000;
+		output.avgCellVoltage = static_cast<float>(preACV)/10000;
+		output.packSummedVoltage = static_cast<float>(prePCV)/1000;
 
 		return output;
 	}
