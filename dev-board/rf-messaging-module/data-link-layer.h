@@ -39,6 +39,13 @@ RF_TRANSPORT_LAYER& operator=(const RF_TRANSPORT_LAYER&&) = delete;
 
 //Public Variable
 protected:
+//Protected Constants
+/**
+ * @brief These are the special characters in the packet
+ */
+static constexpr uint8_t START_CHAR = 0xFF;
+static constexpr uint8_t ESC_CHAR = 0x2F;
+static constexpr uint8_t END_CHAR = 0x3F;
 //Protected Constructor
 /**
  * @brief This takes in the initialized uart instance to use for communicating information
@@ -56,6 +63,17 @@ private:
 //Private Variables
 USART_TypeDef* uartInstance;
 //Private Function Prototypes
+/**
+ * @brief This function checks if data is one of the special characters and if so, it escapes it. Should be called before sending the data.
+ * @param data - This is the data to be send
+ * @param index - The current index of the data to be sent
+ * @param message_length - the total size in bytes of the message to be sent
+ */
+inline void handleByteStuff(uint8_t data, uint16_t index, uint16_t message_length);
+/**
+ * @brief This sends data through UART
+ */
+inline void sendData(uint8_t data);
 };
 
 #endif //End Header Guard

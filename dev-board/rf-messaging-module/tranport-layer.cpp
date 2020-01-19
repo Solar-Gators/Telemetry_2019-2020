@@ -30,7 +30,7 @@
 RF_PACKET::RF_PACKET(USART_TypeDef* uart_instance):
 RF_TRANSPORT_LAYER{uart_instance} ,dataPacket{0}, numMessagesInPacket{0}, packetLength{RF_PACKET::MIN_PACKET_LENGTH}
 {
-	dataPacket[0] = RF_PACKET::START_CHAR;
+	dataPacket[0] = RF_TRANSPORT_LAYER::START_CHAR;
 	dataPacket[1] = this->numMessagesInPacket;
 }
 
@@ -39,7 +39,7 @@ void RF_PACKET::Send()
 	//Set the num messages in packet
 	this->dataPacket[1] = this->numMessagesInPacket;
 	//Add the end character
-	this->dataPacket[this->packetLength - 1] = RF_PACKET::END_CHAR;
+	this->dataPacket[this->packetLength - 1] = RF_TRANSPORT_LAYER::END_CHAR;
 	//Send out Message
 	this->sendMessage(this->dataPacket, this->packetLength);
 	//Reset data packet

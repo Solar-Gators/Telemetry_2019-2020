@@ -99,29 +99,29 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   RF_PACKET msg0{huart2.Instance};
-  BMS_MESSAGE_0_DATA_PACKET test{1.2 , 22.1, 33.55, 4.87};
+  BMS_MESSAGE_0_DATA_PACKET test{1.2 , 2.23, 1.324, 43.29};
   CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
-  test.arrayVoltage = 33;
-  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
-  msg0.Send();
+  test.packSummedVoltage = 52.32;
   CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
   msg0.Send();
-
-  MPPT_MESSAGE_0 mppt0;
+  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  msg0.Send();
+//
+//  MPPT_MESSAGE_0 mppt0;
+//  mppt0.SetupReceive(nullptr); //ID of 1024
+//  mppt0.txData = {12.2, 50, 33.1, 76};
+//  mppt0.SendData();
+//  mppt0.txData = {4, 23, 44, 87};
+//  mppt0.SendData();
+//  mppt0.txData = {33, 22, 44, 55};
+//  mppt0.SendData();
+//  mppt0.txData = {1, 2.34, 3.45, 8.53};
+//  mppt0.SendData();
   BMS_MESSAGE_0 bms0;
-  mppt0.SetupReceive(nullptr); //ID of 1024
   bms0.SetupReceive(nullptr); //ID of 1025
   SUBSYSTEM_DATA_MODULE::StartCAN(&hcan);
-  mppt0.txData = {12.2, 50, 33.1, 76};
-  mppt0.SendData();
-  mppt0.txData = {4, 23, 44, 87};
-  mppt0.SendData();
-  mppt0.txData = {33, 22, 44, 55};
-  mppt0.SendData();
-  mppt0.txData = {1, 2.34, 3.45, 8.53};
-  mppt0.SendData();
-  bms0.txData = {23, 55, 32, 1};
-  bms0.SendData();
+//  bms0.txData = {23, 55, 32, 1};
+//  bms0.SendData();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -129,14 +129,14 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  if(!mppt0.isFifoEmpty())
+	  if(!bms0.isFifoEmpty())
 	  {
 		  bool receivedSomething;
-		  MPPT_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
+		  BMS_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
 		  if(receivedSomething)
 		  {
 			  //Nice
-			  float l = mpptPacket.arrayCurrent;
+			  float l = bmsPacket.avgCellVoltage;
 		  }
 	  }
     /* USER CODE BEGIN 3 */
@@ -200,7 +200,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 57600;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;

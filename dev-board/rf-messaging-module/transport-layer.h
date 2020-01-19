@@ -58,11 +58,6 @@ void ClearPacket(void);
 private:
 //Private Constants
 /**
- * @brief These are the special characters in the packet
- */
-static constexpr uint8_t START_CHAR = 0xFF;
-static constexpr uint8_t END_CHAR = 0x3F;
-/**
  * @brief This is the max bytes in a packet
  */
 static constexpr uint16_t MAX_PACKET_LENGTH = 200;
