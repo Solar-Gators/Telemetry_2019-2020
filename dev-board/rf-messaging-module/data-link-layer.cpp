@@ -21,7 +21,7 @@ inline void RF_TRANSPORT_LAYER::handleByteStuff(uint8_t data, uint16_t index, ui
 {
 	if(index != 0 && index != (message_length - 1))
 	{
-		if(data == RF_TRANSPORT_LAYER::START_CHAR || data == RF_TRANSPORT_LAYER::END_CHAR)
+		if(data == RF_TRANSPORT_LAYER::START_CHAR || data == RF_TRANSPORT_LAYER::END_CHAR || data == RF_TRANSPORT_LAYER::ESC_CHAR)
 		{
 			sendData(RF_TRANSPORT_LAYER::ESC_CHAR);
 		}

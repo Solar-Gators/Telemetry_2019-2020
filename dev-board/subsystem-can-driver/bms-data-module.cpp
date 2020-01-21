@@ -34,7 +34,7 @@ namespace BMS0_HELPER
 		float convLowCellVoltage = input.lowCellVoltage * 10000;
 		float convHighCellVoltage = input.highCellVoltage * 10000;
 		float convAvgCellVoltage = input.avgCellVoltage * 10000;
-		float convPackSummedVoltage = input.packSummedVoltage * 1000;
+		float convPackSummedVoltage = input.packSummedVoltage * 100;
 
 		output[0] = static_cast<uint32_t>(convLowCellVoltage) & 0xFF;
 		output[1] = (static_cast<uint32_t>(convLowCellVoltage) >> 8) & 0xFF;
@@ -56,7 +56,7 @@ namespace BMS0_HELPER
 		output.lowCellVoltage = static_cast<float>(preLCV)/10000;
 		output.highCellVoltage = static_cast<float>(preHCV)/10000;
 		output.avgCellVoltage = static_cast<float>(preACV)/10000;
-		output.packSummedVoltage = static_cast<float>(prePCV)/1000;
+		output.packSummedVoltage = static_cast<float>(prePCV)/100;
 
 		return output;
 	}

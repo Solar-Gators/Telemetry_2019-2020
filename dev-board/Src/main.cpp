@@ -99,7 +99,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   RF_PACKET msg0{huart2.Instance};
-  BMS_MESSAGE_0_DATA_PACKET test{1.2 , 2.23, 1.324, 43.29};
+  BMS_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
   CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
   test.packSummedVoltage = 52.32;
   CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
@@ -137,6 +137,8 @@ int main(void)
 		  {
 			  //Nice
 			  float l = bmsPacket.avgCellVoltage;
+			  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &bmsPacket);
+			  msg0.Send();
 		  }
 	  }
     /* USER CODE BEGIN 3 */
