@@ -35,14 +35,14 @@ namespace CAN_TO_RF
                 {
                     case CAN_MSG_RF_ADDR::MPPT:
                     {
-                        actualMessageSize = MPPT0_HELPER::ARRAY_SIZE;
-                        MPPT0_HELPER::dataPacketToArray(*static_cast<MPPT_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
+                        actualMessageSize = MPPT_MESSAGE_0::NUM_BYTES;
+                        MPPT_MESSAGE_0::dataPacketToArray(*static_cast<MPPT_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
                         break;
                     }
                     case CAN_MSG_RF_ADDR::BMS:
                     {
-                        actualMessageSize = BMS0_HELPER::ARRAY_SIZE;
-                        BMS0_HELPER::dataPacketToArray(*static_cast<BMS_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
+                        actualMessageSize = BMS_MESSAGE_0::NUM_BYTES;
+                        BMS_MESSAGE_0::dataPacketToArray(*static_cast<BMS_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
                         break;
                     }
                 }

@@ -42,47 +42,32 @@ struct AUX_MESSAGE_0_DATA_PACKET
 	bool headlightsOn;
 };
 
-namespace AUX0_HELPER
-{
-	static constexpr uint8_t ARRAY_SIZE = 1;
-	/**
-	 * @brief This function converts @input to fill the encoded @output array
-	 * @param input: Data to be converted
-	 * @param output: Array that should be allocated at least @ARRAY_SIZE bytes
-	 */
-	void dataPacketToArray(AUX_MESSAGE_0_DATA_PACKET input, uint8_t output[ARRAY_SIZE]);
-	/**
-	 * @brief This converts the encoded @input array to a data packet
-	 * @param input: Encoded array of @ARRAY_SIZE bytes
-	 * @retval A data packet
-	 */
-	AUX_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[ARRAY_SIZE]);
-}
 
-class AUX_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE
+class AUX_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<AUX_MESSAGE_0, AUX_MESSAGE_0_DATA_PACKET>
 {
 public:
 //Constructors
 AUX_MESSAGE_0();
+//Public Constants
+static constexpr uint8_t NUM_BYTES = 1;
 //Public Function Prototypes
 /**
- * @brief This is used to get the first in data packet.
- * @param success: returns true if there was data to get, false if the fifo was empty
- * @return Corresponding mppt data packet
+ * @brief This function converts @input to fill the encoded @output array
+ * @param input: Data to be converted
+ * @param output: Array that should be allocated at least @ARRAY_SIZE bytes
  */
-AUX_MESSAGE_0_DATA_PACKET GetOldestDataPacket(bool* success);
-//Public Constants
-
+static void dataPacketToArray(AUX_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES]);
+/**
+ * @brief This converts the encoded @input array to a data packet
+ * @param input: Encoded array of @ARRAY_SIZE bytes
+ * @retval A data packet
+ */
+static AUX_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_BYTES]);
 //Public Variables
 /**
  * @brief Fill this out prior to calling SendData()
  */
 AUX_MESSAGE_0_DATA_PACKET txData;
-private:
-//Private Constants
-//Private Variables
-//Private Function Prototypes
-void fillTransmitBuffer(void) override;
 };
 
 #endif //End Header Guard
