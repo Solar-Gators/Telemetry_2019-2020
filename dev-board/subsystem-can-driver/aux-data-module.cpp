@@ -27,54 +27,31 @@
 //Private Function Definitions
 
 //Protected Function Definitions
-namespace AUX0_HELPER
+void AUX_MESSAGE_0::dataPacketToArray(AUX_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES])
 {
-	void dataPacketToArray(AUX_MESSAGE_0_DATA_PACKET input, uint8_t output[ARRAY_SIZE])
-	{
-		assert_param(output != nullptr);
-		output[0] = 0;
+	assert_param(output != nullptr);
+	output[0] = 0;
 
-		output[0] |= static_cast<uint32_t>(input.hazardsOn) << 0;
-		output[0] |= static_cast<uint32_t>(input.headlightsOn) << 1;
-		output[0] |= static_cast<uint32_t>(input.leftOn) << 2;
-		output[0] |= static_cast<uint32_t>(input.rightOn) << 3;
-	}
-
-	AUX_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[ARRAY_SIZE])
-	{
-		assert_param(input != nullptr);
-
-		AUX_MESSAGE_0_DATA_PACKET output;
-		output.hazardsOn = input[0] & (1 << 0);
-		output.headlightsOn = input[0] & (1 << 1);
-		output.leftOn = input[0] & (1 << 2);
-		output.rightOn = input[0] & (1 << 3);
-
-		return output;
-	}
+	output[0] |= static_cast<uint32_t>(input.hazardsOn) << 0;
+	output[0] |= static_cast<uint32_t>(input.headlightsOn) << 1;
+	output[0] |= static_cast<uint32_t>(input.leftOn) << 2;
+	output[0] |= static_cast<uint32_t>(input.rightOn) << 3;
 }
 
-void AUX_MESSAGE_0::fillTransmitBuffer(void)
+AUX_MESSAGE_0_DATA_PACKET AUX_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_BYTES])
 {
-	AUX0_HELPER::dataPacketToArray(this->txData, this->transmitBuffer);
+	assert_param(input != nullptr);
+
+	AUX_MESSAGE_0_DATA_PACKET output;
+	output.hazardsOn = input[0] & (1 << 0);
+	output.headlightsOn = input[0] & (1 << 1);
+	output.leftOn = input[0] & (1 << 2);
+	output.rightOn = input[0] & (1 << 3);
+
+	return output;
 }
+
 //Public Function Definitions
 AUX_MESSAGE_0::AUX_MESSAGE_0():
-SUBSYSTEM_DATA_MODULE{subsystem_info::AUX0_MSG_ID,subsystem_info::AUX0_MSG_LENGTH, false}
+SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<AUX_MESSAGE_0, AUX_MESSAGE_0_DATA_PACKET>{subsystem_info::AUX0_MSG_ID,subsystem_info::AUX0_MSG_LENGTH, false}
 {}
-
-AUX_MESSAGE_0_DATA_PACKET AUX_MESSAGE_0::GetOldestDataPacket(bool* success)
-{
-	AUX_MESSAGE_0_DATA_PACKET returnData;
-    if(success)
-    {
-        uint8_t* raw_data = this->storageFifo.PopFront(success);
-
-        //Only do the conversions if we successfully extracted from the fifo
-        if(*success)
-        {
-        	returnData = AUX0_HELPER::arrayToDataPacket(raw_data);
-        }
-    }
-    return returnData;
-}

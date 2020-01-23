@@ -101,7 +101,7 @@ int main(void)
   RF_PACKET msg0{huart2.Instance};
   BMS_MESSAGE_0_DATA_PACKET test{1.2 , 22.1, 33.55, 4.87};
   CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
-  test.arrayVoltage = 33;
+  test.avgCellVoltage = 33;
   CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
   msg0.Send();
   CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
