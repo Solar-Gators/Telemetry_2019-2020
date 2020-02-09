@@ -101,6 +101,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  RF_PACKET msg0{huart2.Instance};
   GPS_init(&huart1);
   GPS_startReception();
   while(1)
@@ -108,15 +109,16 @@ int main(void)
 	  if(GPS_isDataAvailable())
 	  {
 		  GPS_Data_t data = GPS_getLatestData();
+		  GPS_TO_RF::AddMessage(&msg0, &data);
+		  msg0.Send();
 	  }
   }
-  RF_PACKET msg0{huart2.Instance};
   BMS_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
-  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
   test.packSummedVoltage = 52.32;
-  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
   msg0.Send();
-  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
   msg0.Send();
 //
 //  MPPT_MESSAGE_0 mppt0;
@@ -149,7 +151,7 @@ int main(void)
 		  {
 			  //Nice
 			  float l = bmsPacket.avgCellVoltage;
-			  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &bmsPacket);
+			  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &bmsPacket);
 			  msg0.Send();
 		  }
 	  }

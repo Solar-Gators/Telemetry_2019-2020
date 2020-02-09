@@ -7,17 +7,20 @@
 
 //Include Files
 #include "main.h"
-
+//Public Constants
+#define GPS_LATITUDE_BYTES 11
+#define GPS_LONGITUDE_BYTES 12
+#define GPS_SPEED_BYTES 10
+#define GPS_TRUECOURSE_BYTES 10
+#define GPS_MSG_MAX_BYTES (GPS_LATITUDE_BYTES + GPS_LONGITUDE_BYTES + GPS_SPEED_BYTES + GPS_TRUECOURSE_BYTES)
 //Public Structs
 typedef struct gps_data
 {
-	char latitude[11]; //Format for lat lon is: lat: DDMM.MMMM(N/S) lon: DDDMM.MMMM(E/W)
-	char longitude[12]; //4042.6142,N 07400.4168,W. = +40  42.6142', -74  00.4168' in google maps
-	char speed[10]; //This is in knots
-	char trueCourse[10]; //This is in degrees
+	char latitude[GPS_LATITUDE_BYTES]; //Format for lat lon is: lat: DDMM.MMMM(N/S) lon: DDDMM.MMMM(E/W)
+	char longitude[GPS_LONGITUDE_BYTES]; //4042.6142,N 07400.4168,W. = +40  42.6142', -74  00.4168' in google maps
+	char speed[GPS_SPEED_BYTES]; //This is in knots
+	char trueCourse[GPS_TRUECOURSE_BYTES]; //This is in degrees
 }GPS_Data_t;
-//Public Constants
-
 //Public Variables
 
 //Public Function Prototypes
