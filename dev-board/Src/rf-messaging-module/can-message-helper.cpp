@@ -76,7 +76,7 @@ namespace GPS_TO_RF
 			//Define lambda to convert parameter string to data
 			auto addToConvertedData = [&index](char* convertedData, char* parameterString) -> void {
 				uint8_t parameterIndex = 0;
-				while(*parameterString)
+				while(parameterString[parameterIndex])
 				{
 					convertedData[index++] = parameterString[parameterIndex++];
 				}
