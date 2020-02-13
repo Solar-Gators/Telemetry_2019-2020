@@ -19,11 +19,11 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#include "rf-message-helper.h"
 #include "main.h"
 #include "mppt-data-module.hpp"
 #include "bms-data-module.hpp"
 #include "transport-layer.h"
-#include "can-message-helper.h"
 #include "gps-driver.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -101,8 +101,9 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  /***************************GPS/RF TEST*************************/
   RF_PACKET msg0{huart2.Instance};
-  GPS_init(&huart1);
+  GPS_init(huart1.Instance);
   GPS_startReception();
   while(1)
   {
@@ -120,22 +121,22 @@ int main(void)
   msg0.Send();
   CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
   msg0.Send();
-//
-//  MPPT_MESSAGE_0 mppt0;
-//  mppt0.SetupReceive(nullptr); //ID of 1024
-//  mppt0.txData = {12.2, 50, 33.1, 76};
-//  mppt0.SendData();
-//  mppt0.txData = {4, 23, 44, 87};
-//  mppt0.SendData();
-//  mppt0.txData = {33, 22, 44, 55};
-//  mppt0.SendData();
-//  mppt0.txData = {1, 2.34, 3.45, 8.53};
-//  mppt0.SendData();
+/***************************CAN TEST*************************/
+  MPPT_MESSAGE_0 mppt0;
+  mppt0.SetupReceive(nullptr);
   BMS_MESSAGE_0 bms0;
-  bms0.SetupReceive(nullptr); //ID of 1025
+  bms0.SetupReceive(nullptr);
   SUBSYSTEM_DATA_MODULE::StartCAN(&hcan);
-//  bms0.txData = {23, 55, 32, 1};
-//  bms0.SendData();
+  mppt0.txData = {12.2, 50, 33.1, 76};
+  mppt0.SendData();
+  mppt0.txData = {4, 23, 44, 87};
+  mppt0.SendData();
+  mppt0.txData = {33, 22, 44, 55};
+  mppt0.SendData();
+  mppt0.txData = {1, 2.34, 3.45, 8.53};
+  mppt0.SendData();
+  bms0.txData = {23, 55, 32, 1};
+  bms0.SendData();
   /* USER CODE END 2 */
 
   /* Infinite loop */

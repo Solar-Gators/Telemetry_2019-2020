@@ -2,8 +2,8 @@
 //Description: This contains the declarations for the actual transmission over rf
 
 //Header Guards
-#ifndef RF_TRANSPORT_LAYER_H_
-#define RF_TRANSPORT_LAYER_H_
+#ifndef RF_DATA_LINK_LAYER_H_
+#define RF_DATA_LINK_LAYER_H_
 
 //Include Files
 #include "main.h"
@@ -24,15 +24,15 @@ extern "C" {
 
 //C++ Interface
 //Class Definitions
-class RF_TRANSPORT_LAYER
+class RF_DATA_LINK_LAYER
 {
 public:
 //Delete all public constructors as this will be an inherited class only
-RF_TRANSPORT_LAYER() = delete;
-RF_TRANSPORT_LAYER(const RF_TRANSPORT_LAYER&) = delete;
-RF_TRANSPORT_LAYER(const RF_TRANSPORT_LAYER&&) = delete;
-RF_TRANSPORT_LAYER& operator=(const RF_TRANSPORT_LAYER&) = delete;
-RF_TRANSPORT_LAYER& operator=(const RF_TRANSPORT_LAYER&&) = delete;
+RF_DATA_LINK_LAYER() = delete;
+RF_DATA_LINK_LAYER(const RF_DATA_LINK_LAYER&) = delete;
+RF_DATA_LINK_LAYER(const RF_DATA_LINK_LAYER&&) = delete;
+RF_DATA_LINK_LAYER& operator=(const RF_DATA_LINK_LAYER&) = delete;
+RF_DATA_LINK_LAYER& operator=(const RF_DATA_LINK_LAYER&&) = delete;
 //Public Function Prototypes
 
 //Public Constants
@@ -51,7 +51,7 @@ static constexpr uint8_t END_CHAR = 0x3F;
  * @brief This takes in the initialized uart instance to use for communicating information
  * @param @uart_instance: initialized uart instance
  */
-RF_TRANSPORT_LAYER(USART_TypeDef* uart_instance);
+RF_DATA_LINK_LAYER(USART_TypeDef* uart_instance);
 //Protected Function Prototypes
 /**
  * @brief This sends a message pointed to be @data of @data_length length

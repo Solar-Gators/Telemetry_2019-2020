@@ -11,7 +11,7 @@
 #define FIFO_DEPTH 5
 #define RX_MESSAGE_MAX_SIZE 100
 //Private Variables
-static UART_HandleTypeDef* uartInstance;
+static USART_TypeDef* uartInstance;
 static HELPER_FIFO<GPS_Data_t,FIFO_DEPTH,1> dataFIFO;
 static char rxMessage[RX_MESSAGE_MAX_SIZE];
 static uint8_t messageStart = 0;
@@ -27,19 +27,23 @@ static uint8_t parseRMCString(const char* input, GPS_Data_t* output);
 //Private Function Definitions
 
 //Public Function Definitions
-void GPS_init(UART_HandleTypeDef* uart_instance)
+void GPS_init(USART_TypeDef* uart_instance)
 {
 	uartInstance = uart_instance;
 	//GPRMC only
 	const char options[] = "$PMTK314,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29\r\n";
-	HAL_UART_Transmit(uartInstance, (uint8_t *)options , sizeof(options), HAL_MAX_DELAY);
+	for(uint16_t i = 0; i < sizeof(options); i++)
+	{
+		while(!(uartInstance->ISR & USART_ISR_TXE));
+		uartInstance->TDR = options[i];
+	}
 	memset(rxMessage,0, RX_MESSAGE_MAX_SIZE);
 }
 
 void GPS_startReception(void)
 {
 	//Enable interrupts
-	uartInstance->Instance->CR1 |= USART_CR1_RXNEIE;
+	uartInstance->CR1 |= USART_CR1_RXNEIE;
 }
 
 uint8_t GPS_isDataAvailable(void)
@@ -56,7 +60,7 @@ GPS_Data_t GPS_getLatestData(void)
 extern "C"
 void GPS_RxCpltCallback(void)
 {
-	char rxChar = (char)uartInstance->Instance->RDR;
+	char rxChar = (char)uartInstance->RDR;
 	if(rxChar == '$')
 	{
 	  messageStart = 1;

@@ -24,7 +24,7 @@ typedef struct gps_data
 //Public Variables
 
 //Public Function Prototypes
-void GPS_init(UART_HandleTypeDef* uart_instance);
+void GPS_init(USART_TypeDef* uart_instance);
 
 void GPS_startReception(void);
 

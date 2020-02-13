@@ -17,28 +17,28 @@
 //Public Function Prototypes
 
 //Private Function Definitions
-inline void RF_TRANSPORT_LAYER::handleByteStuff(uint8_t data, uint16_t index, uint16_t message_length)
+inline void RF_DATA_LINK_LAYER::handleByteStuff(uint8_t data, uint16_t index, uint16_t message_length)
 {
 	if(index != 0 && index != (message_length - 1))
 	{
-		if(data == RF_TRANSPORT_LAYER::START_CHAR || data == RF_TRANSPORT_LAYER::END_CHAR || data == RF_TRANSPORT_LAYER::ESC_CHAR)
+		if(data == RF_DATA_LINK_LAYER::START_CHAR || data == RF_DATA_LINK_LAYER::END_CHAR || data == RF_DATA_LINK_LAYER::ESC_CHAR)
 		{
-			sendData(RF_TRANSPORT_LAYER::ESC_CHAR);
+			sendData(RF_DATA_LINK_LAYER::ESC_CHAR);
 		}
 	}
 }
 
-inline void RF_TRANSPORT_LAYER::sendData(uint8_t data)
+inline void RF_DATA_LINK_LAYER::sendData(uint8_t data)
 {
 	while(!(this->uartInstance->ISR & USART_ISR_TXE));
 	this->uartInstance->TDR = data;
 }
 //Public Function Definitions
-RF_TRANSPORT_LAYER::RF_TRANSPORT_LAYER(USART_TypeDef* uart_instance):
+RF_DATA_LINK_LAYER::RF_DATA_LINK_LAYER(USART_TypeDef* uart_instance):
 uartInstance{uart_instance}
 {}
 
-void RF_TRANSPORT_LAYER::sendMessage(uint8_t* data, uint16_t data_length)
+void RF_DATA_LINK_LAYER::sendMessage(uint8_t* data, uint16_t data_length)
 {
 	for(uint16_t i = 0; i < data_length; i++)
 	{

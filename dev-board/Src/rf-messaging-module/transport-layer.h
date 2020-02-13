@@ -25,7 +25,7 @@ extern "C" {
 
 //C++ Interface
 //Class Definitions
-class RF_PACKET: private RF_TRANSPORT_LAYER
+class RF_PACKET: private RF_DATA_LINK_LAYER
 {
 public:
 //Constructors
