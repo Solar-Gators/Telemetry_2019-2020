@@ -24,6 +24,7 @@
 #include "bms-data-module.hpp"
 #include "transport-layer.h"
 #include "can-message-helper.h"
+#include "bno055.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -124,6 +125,9 @@ int main(void)
   bms0.SendData();
   /* USER CODE END 2 */
 
+  //IMU INIT
+  bno055Init();
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -139,6 +143,13 @@ int main(void)
 			  float l = mpptPacket.arrayCurrent;
 		  }
 	  }
+
+
+	  //IMU Example
+	  struct bno055_3axis accel = bno055ReadAccel();
+	  //use accel
+
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
