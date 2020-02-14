@@ -19,12 +19,12 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
-#include "rf-message-helper.h"
 #include "main.h"
 #include "mppt-data-module.hpp"
 #include "bms-data-module.hpp"
-#include "transport-layer.h"
 #include "gps-driver.h"
+#include "rf-driver/rf-message-helper.h"
+#include "rf-driver/transport-layer.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
