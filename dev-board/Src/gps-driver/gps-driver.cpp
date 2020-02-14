@@ -46,7 +46,7 @@ void GPS_startReception(void)
 	uartInstance->CR1 |= USART_CR1_RXNEIE;
 }
 
-uint8_t GPS_isDataAvailable(void)
+bool GPS_isDataAvailable(void)
 {
 	return !dataFIFO.IsEmpty();
 }

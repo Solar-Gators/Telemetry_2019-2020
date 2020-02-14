@@ -28,7 +28,7 @@ void GPS_init(USART_TypeDef* uart_instance);
 
 void GPS_startReception(void);
 
-uint8_t GPS_isDataAvailable(void);
+bool GPS_isDataAvailable(void);
 
 GPS_Data_t GPS_getLatestData(void);
 
