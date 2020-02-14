@@ -148,4 +148,43 @@ static RX_BINARY_TREE rxModulesTree;
 //Private Function Prototypes
 };
 
+/**
+ * @brief This is a templated middleman class. The SUBSYSTEM_DATA_MODULE class isn't a template because it would be wasting program memory
+ * since only two of the functions need to be function templates.
+ */
+template <typename CHILD_OBJ, typename CHILD_DATA>
+class SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE: public SUBSYSTEM_DATA_MODULE
+{
+public:
+	/**
+	 * @brief This is used to get the first received data packet
+	 * @param success: returns true if there was data to get, false if the fifo was empty. You must pass in a value.
+	 * @return Corresponding Data Packet of Child Data Type
+	 */
+	CHILD_DATA GetOldestDataPacket(bool* success)
+	{
+		CHILD_DATA returnData;
+	    if(success)
+	    {
+	        uint8_t* raw_data = this->storageFifo.PopFront(success);
+
+	        //Only do the conversions if we successfully extracted from the fifo
+	        if(*success)
+	        {
+	        	returnData = static_cast<CHILD_OBJ*>(this)->arrayToDataPacket(raw_data);
+	        }
+	    }
+	    return returnData;
+	}
+protected:
+	SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE(uint32_t message_id, uint8_t data_length, bool is_ext_id):
+		SUBSYSTEM_DATA_MODULE{message_id, data_length, is_ext_id}
+		{}
+private:
+	virtual void fillTransmitBuffer(void) override
+	{
+		static_cast<CHILD_OBJ*>(this)->dataPacketToArray(static_cast<CHILD_OBJ*>(this)->txData, this->transmitBuffer);
+	}
+};
+
 #endif //End Header Guard
