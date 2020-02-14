@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f0xx_it.h"
+#include "subsystem-can-driver/subsystem-data-module.hpp"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -56,7 +57,6 @@ extern void GPS_RxCpltCallback(void);
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern CAN_HandleTypeDef hcan;
 extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
 
@@ -167,7 +167,7 @@ void CEC_CAN_IRQHandler(void)
   /* USER CODE BEGIN CEC_CAN_IRQn 0 */
 
   /* USER CODE END CEC_CAN_IRQn 0 */
-  HAL_CAN_IRQHandler(&hcan);
+  HAL_CAN_IRQHandler(&SUBSYSTEM_DATA_MODULE::hcan);
   /* USER CODE BEGIN CEC_CAN_IRQn 1 */
 
   /* USER CODE END CEC_CAN_IRQn 1 */

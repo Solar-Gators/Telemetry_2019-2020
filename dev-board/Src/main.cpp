@@ -47,8 +47,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-CAN_HandleTypeDef hcan = {0};
-
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
@@ -126,7 +124,7 @@ int main(void)
   mppt0.SetupReceive(nullptr);
   BMS_MESSAGE_0 bms0;
   bms0.SetupReceive(nullptr);
-  SUBSYSTEM_DATA_MODULE::StartCAN(&hcan);
+  SUBSYSTEM_DATA_MODULE::StartCAN();
   mppt0.txData = {12.2, 50, 33.1, 76};
   mppt0.SendData();
   mppt0.txData = {4, 23, 44, 87};

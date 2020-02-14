@@ -8,7 +8,7 @@
 
 //Private Variables
  RX_BINARY_TREE SUBSYSTEM_DATA_MODULE::rxModulesTree{};
- CAN_HandleTypeDef* SUBSYSTEM_DATA_MODULE::hcan{nullptr};
+ CAN_HandleTypeDef SUBSYSTEM_DATA_MODULE::hcan;
 //Public Constants
 
 //Public Variables
@@ -21,6 +21,7 @@
  * @param hcan: pointer to can handle
  * @important HAL_CAN_IRQHandler must be called in the CAN isr for this to be called
  */
+extern "C"
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	//Get all pending messages in fifo 0 in case there is more than one
@@ -46,6 +47,78 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 			}
 		}
 	}
+}
+
+/**
+* @brief CAN MSP Initialization
+* This function configures the hardware resources used in this example
+* @param hcan: CAN handle pointer
+* @retval None
+*/
+extern "C"
+void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  if(hcan->Instance==CAN)
+  {
+  /* USER CODE BEGIN CAN_MspInit 0 */
+
+  /* USER CODE END CAN_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_CAN1_CLK_ENABLE();
+
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    /**CAN GPIO Configuration
+    PA11     ------> CAN_RX
+    PA12     ------> CAN_TX
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF4_CAN;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /* CAN interrupt Init */
+    HAL_NVIC_SetPriority(CEC_CAN_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(CEC_CAN_IRQn);
+  /* USER CODE BEGIN CAN_MspInit 1 */
+
+  /* USER CODE END CAN_MspInit 1 */
+  }
+
+}
+
+/**
+* @brief CAN MSP De-Initialization
+* This function freeze the hardware resources used in this example
+* @param hcan: CAN handle pointer
+* @retval None
+*/
+extern "C"
+void HAL_CAN_MspDeInit(CAN_HandleTypeDef* hcan)
+{
+  if(hcan->Instance==CAN)
+  {
+  /* USER CODE BEGIN CAN_MspDeInit 0 */
+
+  /* USER CODE END CAN_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_CAN1_CLK_DISABLE();
+
+    /**CAN GPIO Configuration
+    PA11     ------> CAN_RX
+    PA12     ------> CAN_TX
+    */
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11|GPIO_PIN_12);
+
+    /* CAN interrupt DeInit */
+    HAL_NVIC_DisableIRQ(CEC_CAN_IRQn);
+  /* USER CODE BEGIN CAN_MspDeInit 1 */
+
+  /* USER CODE END CAN_MspDeInit 1 */
+  }
+
 }
 
 //Private Function Definitions
@@ -86,26 +159,25 @@ void SUBSYSTEM_DATA_MODULE::CallReceiveCallback(void)
     }
 }
 
-void SUBSYSTEM_DATA_MODULE::StartCAN(CAN_HandleTypeDef* in_hcan)
+void SUBSYSTEM_DATA_MODULE::StartCAN(void)
 {
-	hcan = in_hcan;
 	//Initialize CAN itself
-	hcan->Instance = CAN;
-	hcan->Init.Prescaler = 6;
-	hcan->Init.Mode = CAN_MODE_NORMAL;
+	hcan.Instance = CAN;
+	hcan.Init.Prescaler = 6;
+	hcan.Init.Mode = CAN_MODE_NORMAL;
 	//hcan->Init.Mode = CAN_MODE_LOOPBACK;
-	hcan->Init.SyncJumpWidth = CAN_SJW_1TQ;
-	hcan->Init.TimeSeg1 = CAN_BS1_13TQ;
-	hcan->Init.TimeSeg2 = CAN_BS2_2TQ;
-	hcan->Init.TimeTriggeredMode = DISABLE;
-	hcan->Init.AutoBusOff = DISABLE;
-	hcan->Init.AutoWakeUp = DISABLE;
-	hcan->Init.AutoRetransmission = DISABLE;
-	hcan->Init.ReceiveFifoLocked = DISABLE;
-	hcan->Init.TransmitFifoPriority = DISABLE;
-	if (HAL_CAN_Init(hcan) != HAL_OK)
+	hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
+	hcan.Init.TimeSeg1 = CAN_BS1_13TQ;
+	hcan.Init.TimeSeg2 = CAN_BS2_2TQ;
+	hcan.Init.TimeTriggeredMode = DISABLE;
+	hcan.Init.AutoBusOff = DISABLE;
+	hcan.Init.AutoWakeUp = DISABLE;
+	hcan.Init.AutoRetransmission = DISABLE;
+	hcan.Init.ReceiveFifoLocked = DISABLE;
+	hcan.Init.TransmitFifoPriority = DISABLE;
+	if (HAL_CAN_Init(&hcan) != HAL_OK)
 	{
-	Error_Handler();
+		Error_Handler();
 	}
 
 	//Initialize a hardware filter that passes everything
@@ -117,22 +189,22 @@ void SUBSYSTEM_DATA_MODULE::StartCAN(CAN_HandleTypeDef* in_hcan)
 	sFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT; /*One 32-bit filter*/
 	sFilterConfig.FilterBank = 0; /*Init bank 0*/
 	sFilterConfig.FilterFIFOAssignment = 0; /*Assign to FIFO 0*/
-	HAL_CAN_ConfigFilter(hcan, &sFilterConfig);
+	HAL_CAN_ConfigFilter(&hcan, &sFilterConfig);
 
     //Set Up CAN interrupt receive callback
-	HAL_CAN_ActivateNotification(hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
+	HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
 
 	//Start the CAN bus
-	HAL_CAN_Start(hcan);
+	HAL_CAN_Start(&hcan);
 }
 
 void SUBSYSTEM_DATA_MODULE::sendTransmitBufferData(void)
 {
 	//Only continue if hcan has been initialized
-	if(hcan != nullptr)
+	if(hcan.Instance != nullptr)
 	{
 		//Spinlock until a tx mailbox is empty
-		while(!HAL_CAN_GetTxMailboxesFreeLevel(hcan));
+		while(!HAL_CAN_GetTxMailboxesFreeLevel(&hcan));
 
 		//Initialize Header
 		uint32_t pTxMailbox;
@@ -149,7 +221,7 @@ void SUBSYSTEM_DATA_MODULE::sendTransmitBufferData(void)
 			pHeader.IDE = CAN_ID_STD;
 		}
 		//Put CAN message in tx mailbox
-		HAL_CAN_AddTxMessage(hcan, &pHeader, this->transmitBuffer, &pTxMailbox);
+		HAL_CAN_AddTxMessage(&hcan, &pHeader, this->transmitBuffer, &pTxMailbox);
 	}
 }
 
