@@ -36,6 +36,10 @@ extern "C" {
 //Class Definitions
 struct AUX_MESSAGE_0_DATA_PACKET
 {
+	bool cplusOn;
+	bool cminusOn;
+	bool hornOn;
+	bool regenOn;
 	bool hazardsOn;
 	bool leftOn;
 	bool rightOn;

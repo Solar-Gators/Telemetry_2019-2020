@@ -32,10 +32,14 @@ void AUX_MESSAGE_0::dataPacketToArray(AUX_MESSAGE_0_DATA_PACKET input, uint8_t o
 	assert_param(output != nullptr);
 	output[0] = 0;
 
-	output[0] |= static_cast<uint32_t>(input.hazardsOn) << 0;
-	output[0] |= static_cast<uint32_t>(input.headlightsOn) << 1;
-	output[0] |= static_cast<uint32_t>(input.leftOn) << 2;
-	output[0] |= static_cast<uint32_t>(input.rightOn) << 3;
+	output[0] |= static_cast<uint8_t>(input.hazardsOn) << 0;
+	output[0] |= static_cast<uint8_t>(input.headlightsOn) << 1;
+	output[0] |= static_cast<uint8_t>(input.leftOn) << 2;
+	output[0] |= static_cast<uint8_t>(input.rightOn) << 3;
+	output[0] |= static_cast<uint8_t>(input.cplusOn) << 4;
+	output[0] |= static_cast<uint8_t>(input.cminusOn) << 5;
+	output[0] |= static_cast<uint8_t>(input.hornOn) << 6;
+	output[0] |= static_cast<uint8_t>(input.regenOn) << 7;
 }
 
 AUX_MESSAGE_0_DATA_PACKET AUX_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_BYTES])
@@ -47,6 +51,10 @@ AUX_MESSAGE_0_DATA_PACKET AUX_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_BYT
 	output.headlightsOn = input[0] & (1 << 1);
 	output.leftOn = input[0] & (1 << 2);
 	output.rightOn = input[0] & (1 << 3);
+	output.cplusOn = input[0] & (1 << 4);
+	output.cminusOn = input[0] & (1 << 5);
+	output.hornOn = input[0] & (1 << 6);
+	output.regenOn = input[0] & (1 << 7);
 
 	return output;
 }
