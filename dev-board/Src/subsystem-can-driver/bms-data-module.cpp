@@ -29,10 +29,10 @@
 //Protected Function Definitions
 void BMS_MESSAGE_0::dataPacketToArray(BMS_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES])
 {
-	float convLowCellVoltage = input.lowCellVoltage * 1;
-	float convHighCellVoltage = input.highCellVoltage * 1;
-	float convAvgCellVoltage = input.avgCellVoltage * 1;
-	float convPackSummedVoltage = input.packSummedVoltage * 1;
+	float convLowCellVoltage = input.lowCellVoltage * 10000;
+	float convHighCellVoltage = input.highCellVoltage * 10000;
+	float convAvgCellVoltage = input.avgCellVoltage * 10000;
+	float convPackSummedVoltage = input.packSummedVoltage * 100;
 
 	output[0] = static_cast<uint32_t>(convLowCellVoltage) & 0xFF;
 	output[1] = (static_cast<uint32_t>(convLowCellVoltage) >> 8) & 0xFF;
@@ -54,6 +54,7 @@ BMS_MESSAGE_0_DATA_PACKET BMS_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_BYT
 	output.lowCellVoltage = static_cast<float>(preLCV)/10000;
 	output.highCellVoltage = static_cast<float>(preHCV)/10000;
 	output.avgCellVoltage = static_cast<float>(preACV)/10000;
+	//TODO: figure out whether this should be 1000 or 100
 	output.packSummedVoltage = static_cast<float>(prePCV)/1000;
 
 	return output;
