@@ -7,7 +7,8 @@
 
 //Include Files
 #include "main.h"
-#include "data-link-layer.h"
+
+#include "../rf-driver/data-link-layer.h"
 
 //C Interface
 #ifdef __cplusplus
@@ -25,7 +26,7 @@ extern "C" {
 
 //C++ Interface
 //Class Definitions
-class RF_PACKET: private RF_TRANSPORT_LAYER
+class RF_PACKET: private RF_DATA_LINK_LAYER
 {
 public:
 //Constructors
@@ -57,11 +58,6 @@ void ClearPacket(void);
 //Public Variable
 private:
 //Private Constants
-/**
- * @brief These are the special characters in the packet
- */
-static constexpr uint8_t START_CHAR = 0xFF;
-static constexpr uint8_t END_CHAR = 0x3F;
 /**
  * @brief This is the max bytes in a packet
  */

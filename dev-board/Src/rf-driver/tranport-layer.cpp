@@ -2,7 +2,7 @@
 //Description: This implements the overall transmission and construction of an RF packet.
 
 //Include Files
-#include "transport-layer.h"
+#include "../rf-driver/transport-layer.h"
 
 //Private Constants
 /*This is an example description for constants and variables. Delete this if it is unused here and copy and paste it to where it is needed. */
@@ -28,9 +28,9 @@
 
 //Public Function Definitions
 RF_PACKET::RF_PACKET(USART_TypeDef* uart_instance):
-RF_TRANSPORT_LAYER{uart_instance} ,dataPacket{0}, numMessagesInPacket{0}, packetLength{RF_PACKET::MIN_PACKET_LENGTH}
+RF_DATA_LINK_LAYER{uart_instance} ,dataPacket{0}, numMessagesInPacket{0}, packetLength{RF_PACKET::MIN_PACKET_LENGTH}
 {
-	dataPacket[0] = RF_PACKET::START_CHAR;
+	dataPacket[0] = RF_DATA_LINK_LAYER::START_CHAR;
 	dataPacket[1] = this->numMessagesInPacket;
 }
 
@@ -39,7 +39,7 @@ void RF_PACKET::Send()
 	//Set the num messages in packet
 	this->dataPacket[1] = this->numMessagesInPacket;
 	//Add the end character
-	this->dataPacket[this->packetLength - 1] = RF_PACKET::END_CHAR;
+	this->dataPacket[this->packetLength - 1] = RF_DATA_LINK_LAYER::END_CHAR;
 	//Send out Message
 	this->sendMessage(this->dataPacket, this->packetLength);
 	//Reset data packet
