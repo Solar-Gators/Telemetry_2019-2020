@@ -47,8 +47,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-CAN_HandleTypeDef hcan = {0};
-
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
@@ -68,6 +66,9 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
+//Testing Defines
+//#define GPS_TEST
+#define CAN_TEST
 
 /**
   * @brief  The application entry point.
@@ -102,6 +103,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   /***************************GPS/RF TEST*************************/
+#ifdef GPS_TEST
   RF_PACKET msg0{huart2.Instance};
   GPS_init(huart1.Instance);
   GPS_startReception();
@@ -121,12 +123,14 @@ int main(void)
   msg0.Send();
   CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
   msg0.Send();
+#endif
 /***************************CAN TEST*************************/
+#ifdef CAN_TEST
   MPPT_MESSAGE_0 mppt0;
   mppt0.SetupReceive(nullptr);
   BMS_MESSAGE_0 bms0;
   bms0.SetupReceive(nullptr);
-  SUBSYSTEM_DATA_MODULE::StartCAN(&hcan);
+  SUBSYSTEM_DATA_MODULE::StartCAN();
   mppt0.txData = {12.2, 50, 33.1, 76};
   mppt0.SendData();
   mppt0.txData = {4, 23, 44, 87};
@@ -135,7 +139,7 @@ int main(void)
   mppt0.SendData();
   mppt0.txData = {1, 2.34, 3.45, 8.53};
   mppt0.SendData();
-  bms0.txData = {23, 55, 32, 1};
+  bms0.txData = {3.45, 4.2, 2.65, 0.9};
   bms0.SendData();
   /* USER CODE END 2 */
 
@@ -152,12 +156,13 @@ int main(void)
 		  {
 			  //Nice
 			  float l = bmsPacket.avgCellVoltage;
-			  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &bmsPacket);
-			  msg0.Send();
 		  }
 	  }
     /* USER CODE BEGIN 3 */
   }
+#endif
+  //Infinite Loop
+  while(1);
   /* USER CODE END 3 */
 }
 

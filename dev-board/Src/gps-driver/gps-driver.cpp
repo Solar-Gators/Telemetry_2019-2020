@@ -57,7 +57,6 @@ GPS_Data_t GPS_getLatestData(void)
 	return *dataFIFO.PopFront(&success);
 }
 
-extern "C"
 void GPS_RxCpltCallback(void)
 {
 	char rxChar = (char)uartInstance->RDR;
