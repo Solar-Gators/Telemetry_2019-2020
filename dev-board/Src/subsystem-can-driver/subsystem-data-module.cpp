@@ -16,12 +16,13 @@
 //Private Function Prototypes
 
 //Special Functions
+extern "C"
+{
 /**
  * @brief This function is called when a rx msg is pending in can rx fifo 0
  * @param hcan: pointer to can handle
  * @important HAL_CAN_IRQHandler must be called in the CAN isr for this to be called
  */
-extern "C"
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
 	//Get all pending messages in fifo 0 in case there is more than one
@@ -50,12 +51,25 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 }
 
 /**
+  * @brief This function handles HDMI-CEC and CAN interrupts / HDMI-CEC wake-up interrupt through EXTI line 27.
+  */
+void CEC_CAN_IRQHandler(void)
+{
+  /* USER CODE BEGIN CEC_CAN_IRQn 0 */
+
+  /* USER CODE END CEC_CAN_IRQn 0 */
+  HAL_CAN_IRQHandler(&SUBSYSTEM_DATA_MODULE::hcan);
+  /* USER CODE BEGIN CEC_CAN_IRQn 1 */
+
+  /* USER CODE END CEC_CAN_IRQn 1 */
+}
+
+/**
 * @brief CAN MSP Initialization
 * This function configures the hardware resources used in this example
 * @param hcan: CAN handle pointer
 * @retval None
 */
-extern "C"
 void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -95,7 +109,6 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef* hcan)
 * @param hcan: CAN handle pointer
 * @retval None
 */
-extern "C"
 void HAL_CAN_MspDeInit(CAN_HandleTypeDef* hcan)
 {
   if(hcan->Instance==CAN)
@@ -121,6 +134,7 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* hcan)
 
 }
 
+}//End extern "C"
 //Private Function Definitions
 
 //Protected Function Definitions
@@ -164,8 +178,8 @@ void SUBSYSTEM_DATA_MODULE::StartCAN(void)
 	//Initialize CAN itself
 	hcan.Instance = CAN;
 	hcan.Init.Prescaler = 6;
-	hcan.Init.Mode = CAN_MODE_NORMAL;
-	//hcan->Init.Mode = CAN_MODE_LOOPBACK;
+	//hcan.Init.Mode = CAN_MODE_NORMAL;
+	hcan.Init.Mode = CAN_MODE_LOOPBACK;
 	hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
 	hcan.Init.TimeSeg1 = CAN_BS1_13TQ;
 	hcan.Init.TimeSeg2 = CAN_BS2_2TQ;
