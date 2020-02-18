@@ -6,10 +6,35 @@
 #include "main.h"
 
 I2C_HandleTypeDef hi2c1;
+
+/**
+ * @brief Reads a register
+ * @param reg - Should be from register from BNO055_ADDRESSES
+ */
 static uint8_t bno055ReadReg(uint8_t reg);
+
+/**
+ * @brief writes to a register
+ * @param reg - Should be from register from BNO055_ADDRESSES
+ * @param data - data to write
+ */
 static void bno055SendReg(uint8_t reg, uint8_t data);
+
+/**
+ * @brief Reads two sequential register and returns them combined
+ * @param lsbReg - Should be from register from BNO055_ADDRESSES
+ */
 static int16_t bno055ReadData(uint8_t lsbReg);
+
+/**
+ * @brief returns xyz of reg value
+ * @param reg - Should be from register from BNO055_ADDRESSES
+ */
 static struct bno055_3axis bno055Read3Axis(uint8_t reg);
+
+/**
+ * @brief INIT for I2C
+ */
 static void MX_I2C1_Init(void);
 
 

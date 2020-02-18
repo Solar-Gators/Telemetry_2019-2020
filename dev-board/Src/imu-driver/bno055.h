@@ -1,12 +1,21 @@
 #include <stdint.h>
-#include <stdbool.h>
-#include <stdarg.h>
+//File Name: bno055.h
+//Description: This contains the declarations for BNO055 IMU
 
+//Header Guards
 #ifndef BNO055_H_
 #define BNO055_H_
 
+//C Public Constants
+
+/**
+ * @brief I2C address of the BNO
+ */
 #define BNO055_ADDRESS 0x28
 
+/**
+ * @brief Register addresses for BNO055
+ */
 typedef enum BNO055_ADDRESSES
 {
     CHIP_ID = 0,
@@ -99,6 +108,9 @@ typedef enum BNO055_ADDRESSES
     MAG_RADIUS_MSB
 } BNO055_ADDRESSES;
 
+/**
+ * @brief Operational modes for BNO, see datasheet for details
+ */
 typedef enum OPR_MODES
 {
     CONFIGMODE,
@@ -117,45 +129,82 @@ typedef enum OPR_MODES
     NDOF
 } ORP_MODES;
 
-struct bno055_3axis
+/**
+ * @brief Struct for xyz axis return types
+ */
+typedef struct bno055_3axis
 {
     int16_t x;
     int16_t y;
     int16_t z;
-};
-struct bno055_quat
+} bno055_3axis;
+
+/**
+ * @brief Struct for the Quaternion return type
+ */
+typedef struct bno055_quat
 {
     int16_t w;
     int16_t x;
     int16_t y;
     int16_t z;
-};
+} bno055_quat;
 
-//Initializes in IMU mode, so only the Accel, Gyro and Relative orientations
+
+//C Public Function Prototypes
+
+/**
+ * @brief Initializes in IMU mode, so only the Accel, Gyro and Relative orientations
+ */
 extern void bno055Init(void);
 
-//Returns Acceleration data
+/**
+ * @brief Acceleration data
+ * @ret Returns xyz struct of Acceleration data
+ */
 extern struct bno055_3axis bno055ReadAccel(void);
 
-//Returns Gyroscope data
+/**
+ * @brief Gyroscope data
+ * @ret Returns xyz struct of Gyroscope data
+ */
 extern struct bno055_3axis bno055ReadGyro(void);
 
-//Returns Magnetometer data - CAN NOT BE USED IN IMU MODE SEE bno055Init
+/**
+ * @brief Magnetometer data - CAN NOT BE USED IN IMU MODE SEE bno055Init
+ * @ret Returns xyz struct of Magnetometer data
+ */
 extern struct bno055_3axis bno055ReadMag(void);
 
-//Returns heading/YAW data
+/**
+ * @brief heading/YAW data - CAN NOT BE USED IN IMU MODE SEE bno055Init
+ * @ret Returns xyz struct of heading/YAW data
+ */
 extern struct bno055_3axis bno055ReadHead(void);
 
-//Returns Quaternion data
+/**
+ * @brief Quaternion data - CAN NOT BE USED IN IMU MODE SEE bno055Init
+ * @ret Returns wxyz struct of Quaternion data
+ */
 extern struct bno055_quat bno055ReadQuat(void);
 
-//Returns Linear Acceleration
+/**
+ * @brief Linear Acceleration data
+ * @ret Returns xyz struct of Linear Acceleration data
+ */
 extern struct bno055_3axis bno055ReadLinAccel(void);
 
-//Returns Gravity Vector
+/**
+ * @brief Gravity Vector data
+ * @ret Returns xyz struct of Gravity Vector data
+ */
 extern struct bno055_3axis bno055ReadGrav(void);
 
 //Returns temperature
+/**
+ * @brief Outside temperature
+ * @ret Returns temoerature as a uint8
+ */
 extern uint8_t bno055ReadTemp(void);
 
 
