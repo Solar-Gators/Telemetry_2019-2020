@@ -138,11 +138,14 @@ int main(void)
   mppt0.SendData();
   bms0.txData = {23, 55, 32, 1};
   bms0.SendData();
-  /* USER CODE END 2 */
 
-  //IMU INIT
+  /***************************IMU TEST*************************/
   bno055Init();
+  //IMU Example
+  struct bno055_3axis accel = bno055ReadAccel();
+  //use accel
 
+  /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -161,10 +164,6 @@ int main(void)
 		  }
 	  }
 
-
-	  //IMU Example
-	  struct bno055_3axis accel = bno055ReadAccel();
-	  //use accel
 
 
     /* USER CODE BEGIN 3 */
