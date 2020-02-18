@@ -143,11 +143,6 @@ int main(void)
   bms0.txData = {3.45, 4.2, 2.65, 0.9};
   bms0.SendData();
 
-  /***************************IMU TEST*************************/
-  bno055Init();
-  //IMU Example
-  struct bno055_3axis accel = bno055ReadAccel();
-  //use accel
 
   /* USER CODE END 2 */
   /* Infinite loop */
@@ -171,6 +166,15 @@ int main(void)
     /* USER CODE BEGIN 3 */
   }
 #endif
+
+  /***************************IMU TEST*************************/
+#ifdef IMU_TEST
+  bno055Init();
+  //IMU Example
+  struct bno055_3axis accel = bno055ReadAccel();
+  //use accel
+#endif
+
   //Infinite Loop
   while(1);
   /* USER CODE END 3 */
