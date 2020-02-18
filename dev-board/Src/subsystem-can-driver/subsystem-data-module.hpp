@@ -77,7 +77,7 @@ bool addToFifo(uint8_t* incoming_data);
  * @IMPORTANT You must implement HAL_CAN_MspInit yourself. You must also implement
  * CEC_CAN_IRQHandler yourself and have it call HAL_CAN_IRQHandler.
  */
-static void StartCAN(CAN_HandleTypeDef* in_hcan);
+static void StartCAN(void);
 /**
  * @brief This searches for modules that have been initialized for receiving
  * @param message_id: The CAN message id corresponding to the message
@@ -105,6 +105,10 @@ const uint8_t dataLength;
  * @brief This is true if the id is an extended id false otherwise
  */
 const bool isExtID;
+/**
+ * @brief This is the instance of the CAN handle needed to use the HAL CAN operations
+ */
+static CAN_HandleTypeDef hcan;
 protected:
 //Protected Constructor
 SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length, bool is_ext_id);
@@ -128,10 +132,6 @@ uint8_t transmitBuffer[ARRAY_SIZE];
 HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
 private:
 //Private Variables
-/**
- * @brief This is the instance of the CAN handle needed to use the HAL CAN operations
- */
-static CAN_HandleTypeDef* hcan;
 /**
  * @brief This is the callback which will be called when the corresponding subsystem receives a message
  * @param SUBSYSTEM_DATA_MODULE*: This is a pointer to this object aka the subsystem specific data module

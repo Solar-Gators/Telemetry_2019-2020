@@ -2,8 +2,8 @@
 //Description: This holds aux-specific data storage implementation
 
 //Header Guards
-#ifndef MPPT_DATA_MODULE_H_
-#define MPPT_DATA_MODULE_H_
+#ifndef AUX_DATA_MODULE_H_
+#define AUX_DATA_MODULE_H_
 
 //Include Files
 #include "subsystem-data-module.hpp"
@@ -36,6 +36,10 @@ extern "C" {
 //Class Definitions
 struct AUX_MESSAGE_0_DATA_PACKET
 {
+	bool cplusOn;
+	bool cminusOn;
+	bool hornOn;
+	bool regenOn;
 	bool hazardsOn;
 	bool leftOn;
 	bool rightOn;

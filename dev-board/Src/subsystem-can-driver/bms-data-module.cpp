@@ -32,7 +32,7 @@ void BMS_MESSAGE_0::dataPacketToArray(BMS_MESSAGE_0_DATA_PACKET input, uint8_t o
 	float convLowCellVoltage = input.lowCellVoltage * 10000;
 	float convHighCellVoltage = input.highCellVoltage * 10000;
 	float convAvgCellVoltage = input.avgCellVoltage * 10000;
-	float convPackSummedVoltage = input.packSummedVoltage * 100;
+	float convPackSummedVoltage = input.packSummedVoltage * 1000;
 
 	output[0] = static_cast<uint32_t>(convLowCellVoltage) & 0xFF;
 	output[1] = (static_cast<uint32_t>(convLowCellVoltage) >> 8) & 0xFF;
