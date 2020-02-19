@@ -12,8 +12,10 @@ This can be found in the 'subsystem-can-driver' which contains all of the header
 6. Delete all CAN initialization/interrupt code from 'main.cpp', 'stm32f0xx_hal_msp.c', and 'stm32f0xx_it.c'
 7. You are now ready to start using this library!
 ### RF Driver
-The API for this driver can be found in the 'transport-layer.h' for initalizing and sending out RF packets and 'rf-message-helper.h' for adding messages to the RF packet before sending it.
+This is a driver for the RFD900x board from RFDesign. The API for this driver can be found in the 'transport-layer.h' for initalizing and sending out RF packets and 'rf-message-helper.h' for adding messages to the RF packet before sending it.
 ### GPS Driver
-This is a simple driver that initializes and starts reception before checking if data is available and then getting the latest data. This driver utilizes a FIFO, so that more than one packet can be received at once.
+This is a simple driver for the Ultimate GPS Breakout from Adafruit that initializes and starts reception before checking if data is available and then getting the latest data. This driver utilizes a FIFO, so that more than one packet can be received at once.
+### IMU Driver
+This is another simple driver used to interface with the bno055 IMU. All API documentation can be found in 'bno055.h'. This header also includes all initialization for the I2C peripheral which it uses inside of the source file, therefore no other initialization should be done for this I2C peripheral outside the library.
 ## templates Folder
 This folder holds templates for all C and C++ header and source files that should be used when developing for this project. These templates contain commenting styles as well as example comments. 
