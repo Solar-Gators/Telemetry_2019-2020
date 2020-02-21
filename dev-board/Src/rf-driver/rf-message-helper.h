@@ -13,6 +13,9 @@
 //GPS include files
 #include "gps-driver.h"
 
+//IMU include files
+#include "bno055.h"
+
 //RF include files
 #include "../rf-driver/transport-layer.h"
 
@@ -38,6 +41,7 @@ enum struct RF_ADDRESSES
 	GPS,
 	MPPT,
 	BMS,
+	IMU,
 	//Do not edit this following line
 	END
 };

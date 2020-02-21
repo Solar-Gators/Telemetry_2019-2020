@@ -18,7 +18,36 @@
 
 //Private Function Definitions
 
+
 //Public Function Definitions
+namespace IMU_TO_RF
+{
+bool AddMessage(RF_PACKET* tx_packet, IMU_DATA_t* tx_msg)
+{
+	bool success = false;
+    if(tx_packet != nullptr && tx_msg != nullptr)
+    {
+		uint16_t convertedData[sizeof(IMU_DATA_t)];
+		convertedData[0] = tx_msg->accel.x;
+		convertedData[1] = tx_msg->accel.y;
+		convertedData[2] = tx_msg->accel.z;
+
+		convertedData[3] = tx_msg->gyro.x;
+		convertedData[4] = tx_msg->gyro.y;
+		convertedData[5] = tx_msg->gyro.z;
+
+		convertedData[6] = tx_msg->linear.x;
+		convertedData[7] = tx_msg->linear.y;
+		convertedData[8] = tx_msg->linear.z;
+
+		convertedData[9] = tx_msg->temp;
+
+		success = tx_packet->AddToPacket((uint8_t)RF_ADDRESSES::IMU, 20, (uint8_t*)convertedData);
+    }
+    return success;
+}
+}
+
 namespace CAN_TO_RF
 {
     bool AddMessage(RF_PACKET* tx_packet, RF_ADDRESSES rf_addr, void* tx_msg)
