@@ -169,10 +169,15 @@ int main(void)
 
   /***************************IMU TEST*************************/
 #ifdef IMU_TEST
+  RF_PACKET msg0{huart2.Instance};
   bno055Init();
   //IMU Example
-  struct bno055_3axis accel = bno055ReadAccel();
-  //use accel
+  while(1)
+  {
+	  IMU_DATA_t imuData = bno055GetPacket();
+	  IMU_TO_RF::AddMessage(&msg0, &imuData);
+	  msg0.Send();
+  }
 #endif
 
   //Infinite Loop

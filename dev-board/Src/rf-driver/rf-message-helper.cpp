@@ -27,7 +27,7 @@ namespace IMU_TO_RF
 		bool success = false;
 		if(tx_packet != nullptr && tx_msg != nullptr)
 		{
-			uint16_t convertedData[sizeof(IMU_DATA_t)];
+			uint16_t convertedData[50];
 			convertedData[0] = tx_msg->accel.x;
 			convertedData[1] = tx_msg->accel.y;
 			convertedData[2] = tx_msg->accel.z;
@@ -40,7 +40,7 @@ namespace IMU_TO_RF
 			convertedData[7] = tx_msg->linear.y;
 			convertedData[8] = tx_msg->linear.z;
 
-			convertedData[9] = tx_msg->temp;
+			convertedData[9] = ((uint16_t)tx_msg->temp) & 0x00FF ;
 
 			success = tx_packet->AddToPacket((uint8_t)RF_ADDRESSES::IMU, 20, (uint8_t*)convertedData);
 		}

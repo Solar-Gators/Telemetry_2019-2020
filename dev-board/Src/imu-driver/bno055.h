@@ -165,6 +165,12 @@ typedef struct IMU_DATA_t
 //C Public Function Prototypes
 
 /**
+ * @brief Get IMU data for RF
+ * @ret Returns struct of IMU data
+ */
+extern IMU_DATA_t bno055GetPacket();
+
+/**
  * @brief Initializes in IMU mode, so only the Accel, Gyro and Relative orientations
  */
 extern void bno055Init(void);
