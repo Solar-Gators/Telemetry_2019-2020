@@ -50,9 +50,9 @@ public:
  */
 void SetupReceive(subsystemReceiveCallback rx_func_ptr);
 /**
- * @brief This function is used to take in a mppt data packet and send it over CAN.
+ * @brief This function is used to take in a mppt data packet and send it over CAN. This should be overriding with an empty function for messages that can't transmit
  */
-void SendData(void);
+virtual void SendData(void);
 /**
  * @brief This calls the callback set up for receiving if there was one otherwise it does nothing.
  */

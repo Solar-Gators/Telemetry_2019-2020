@@ -40,16 +40,30 @@ namespace subsystem_info
      * @brief This is a count of the number of messages as listed below
      * @important Must be up to date
      */
-    static constexpr uint8_t NUM_MESSAGES = 3;
+    static constexpr uint8_t NUM_MESSAGES = 7;
     //Message info
+    /******************AUX MESSAGES*****************/
     static constexpr uint16_t AUX0_MSG_ID = 1023;
     static constexpr uint8_t AUX0_MSG_LENGTH = 1;
-
+    /****************MPPT MESSAGES*****************/
     static constexpr uint16_t MPPT0_MSG_ID = 1024;
     static constexpr uint8_t MPPT0_MSG_LENGTH = 8;
-
+    /****************BMS MESSAGES*****************/
     static constexpr uint16_t BMS0_MSG_ID = 0x6B0;
     static constexpr uint8_t BMS0_MSG_LENGTH = 8;
+    /****************MOTOR DRIVER MESSAGES*****************/
+    //TX Messages
+    static constexpr uint32_t MOTORTX_RL_MSG_ID = 0x08F89540;
+    static constexpr uint8_t MOTORTX_RL_MSG_LENGTH = 1;
+    //RX Messages
+    static constexpr uint32_t MOTORRX0_RL_MSG_ID = 0x08850225;
+    static constexpr uint8_t MOTORRX0_RL_MSG_LENGTH = 8;
+
+    static constexpr uint32_t MOTORRX1_RL_MSG_ID = 0x08950225;
+    static constexpr uint8_t MOTORRX1_RL_MSG_LENGTH = 5;
+
+    static constexpr uint32_t MOTORRX2_RL_MSG_ID = 0x08A50225;
+    static constexpr uint8_t MOTORRX2_RL_MSG_LENGTH = 5;
 };
 
 #endif //End Header Guard

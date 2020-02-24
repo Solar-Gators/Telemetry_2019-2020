@@ -22,6 +22,7 @@
 #include "main.h"
 #include "mppt-data-module.hpp"
 #include "bms-data-module.hpp"
+#include "motor-driver-data-module.hpp"
 #include "gps-driver.h"
 #include "rf-driver/rf-message-helper.h"
 #include "rf-driver/transport-layer.h"
@@ -131,6 +132,8 @@ int main(void)
   mppt0.SetupReceive(nullptr);
   BMS_MESSAGE_0 bms0;
   bms0.SetupReceive(nullptr);
+  MOTOR_DRIVER_RX_FRAME_0 motorRx0;
+  motorRx0.SetupReceive(nullptr);
   SUBSYSTEM_DATA_MODULE::StartCAN();
   mppt0.txData = {12.2, 50, 33.1, 76};
   mppt0.SendData();
@@ -150,14 +153,14 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  if(!bms0.isFifoEmpty())
+	  if(!motorRx0.isFifoEmpty())
 	  {
 		  bool receivedSomething;
-		  BMS_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
+		  MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
 		  if(receivedSomething)
 		  {
 			  //Nice
-			  float l = bmsPacket.avgCellVoltage;
+			  float l = motorPacket.motorRPM;
 		  }
 	  }
 
