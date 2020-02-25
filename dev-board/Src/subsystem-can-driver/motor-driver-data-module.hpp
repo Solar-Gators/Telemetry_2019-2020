@@ -95,10 +95,6 @@ static void dataPacketToArray(MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET input, uint8_t
  * @retval A data packet
  */
 static MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_BYTES]);
-/**
- * @brief This is an empty override for SendData because this is a rx packet only
- */
-void SendData(void) override{}
 //Public Variables
 /**
  * @brief This variable does nothing
@@ -134,10 +130,6 @@ static void dataPacketToArray(MOTOR_DRIVER_RX_FRAME_2_DATA_PACKET input, uint8_t
  * @retval A data packet
  */
 static MOTOR_DRIVER_RX_FRAME_2_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_BYTES]);
-/**
- * @brief This is an empty override for SendData because this is a rx packet only
- */
-void SendData(void) override{}
 //Public Variables
 /**
  * @brief This variable does nothing

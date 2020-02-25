@@ -70,6 +70,7 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE END 0 */
 //Testing Defines
 //#define GPS_TEST
+//#define IMU_TEST
 #define CAN_TEST
 
 /**
@@ -135,16 +136,13 @@ int main(void)
   MOTOR_DRIVER_RX_FRAME_0 motorRx0;
   motorRx0.SetupReceive(nullptr);
   SUBSYSTEM_DATA_MODULE::StartCAN();
-  mppt0.txData = {12.2, 50, 33.1, 76};
-  mppt0.SendData();
-  mppt0.txData = {4, 23, 44, 87};
-  mppt0.SendData();
-  mppt0.txData = {33, 22, 44, 55};
-  mppt0.SendData();
-  mppt0.txData = {1, 2.34, 3.45, 8.53};
-  mppt0.SendData();
   bms0.txData = {3.45, 4.2, 2.65, 0.9};
   bms0.SendData();
+  bms0.txData = {12.2, 50, 33.1, 76};
+  bms0.SendData();
+  bms0.txData = {4, 23, 44, 87};
+  bms0.SendData();
+  mppt0.SendData();
 
 
   /* USER CODE END 2 */
