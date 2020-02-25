@@ -64,7 +64,7 @@ static void dataPacketToArray(MPPT_MESSAGE_0_DATA_PACKET input, uint8_t output[N
 static MPPT_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_BYTES]);
 //Public Variables
 /**
- * @brief Fill this out prior to calling SendData()
+ * @brief This is useless
  */
 MPPT_MESSAGE_0_DATA_PACKET txData;
 };

@@ -272,6 +272,7 @@ void SUBSYSTEM_DATA_MODULE::sendRTRMessage(void)
 			pHeader.IDE = CAN_ID_STD;
 		}
 		//Put CAN message in tx mailbox
+		//It doesn't matter what is in transmit buffer, since this doesnt send a data frame
 		HAL_CAN_AddTxMessage(&hcan, &pHeader, this->transmitBuffer, &pTxMailbox);
 	}
 }
