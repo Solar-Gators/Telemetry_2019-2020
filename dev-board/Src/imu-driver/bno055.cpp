@@ -45,6 +45,16 @@ void bno055Init()
     bno055SendReg(OPR_MODE, IMU);
 }
 
+IMU_DATA_t bno055GetPacket()
+{
+	IMU_DATA_t data;
+	data.accel = bno055ReadAccel();
+	data.gyro = bno055ReadMag();
+	data.linear = bno055ReadLinAccel();
+	data.temp = bno055ReadTemp();
+	return data;
+}
+
 struct bno055_3axis bno055ReadAccel()
 {
     return bno055Read3Axis(ACC_DATA_X_LSB);

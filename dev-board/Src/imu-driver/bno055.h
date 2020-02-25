@@ -150,8 +150,25 @@ typedef struct bno055_quat
     int16_t z;
 } bno055_quat;
 
+/**
+ * @brief Struct for the IMU RF data
+ */
+typedef struct IMU_DATA_t
+{
+	bno055_3axis accel;
+	bno055_3axis gyro;
+	bno055_3axis linear;
+	uint8_t temp;
+} IMU_DATA_t;
+
 
 //C Public Function Prototypes
+
+/**
+ * @brief Get IMU data for RF
+ * @ret Returns struct of IMU data
+ */
+extern IMU_DATA_t bno055GetPacket();
 
 /**
  * @brief Initializes in IMU mode, so only the Accel, Gyro and Relative orientations

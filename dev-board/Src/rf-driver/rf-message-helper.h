@@ -13,6 +13,9 @@
 //GPS include files
 #include "gps-driver.h"
 
+//IMU include files
+#include "bno055.h"
+
 //RF include files
 #include "../rf-driver/transport-layer.h"
 
@@ -38,9 +41,21 @@ enum struct RF_ADDRESSES
 	GPS,
 	MPPT,
 	BMS,
+	IMU,
 	//Do not edit this following line
 	END
 };
+
+namespace IMU_TO_RF
+{
+	/**
+	 * @brief This adds @tx_msg to @tx_packet
+	 * @param tx_packet: this is a pointer to an rf packet
+	 * @param tx_msg: pointer to imu message
+	 * @retval True on success false otherwise
+	 */
+	bool AddMessage(RF_PACKET* tx_packet, IMU_DATA_t* tx_msg);
+}
 
 namespace CAN_TO_RF
 {
