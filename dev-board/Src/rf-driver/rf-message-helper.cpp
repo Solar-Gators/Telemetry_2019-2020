@@ -22,12 +22,13 @@
 //Public Function Definitions
 namespace IMU_TO_RF
 {
+	#define PACKET_SIZE 20
 	bool AddMessage(RF_PACKET* tx_packet, IMU_DATA_t* tx_msg)
 	{
 		bool success = false;
 		if(tx_packet != nullptr && tx_msg != nullptr)
 		{
-			uint16_t convertedData[50];
+			uint16_t convertedData[PACKET_SIZE];
 			convertedData[0] = tx_msg->accel.x;
 			convertedData[1] = tx_msg->accel.y;
 			convertedData[2] = tx_msg->accel.z;
@@ -42,7 +43,7 @@ namespace IMU_TO_RF
 
 			convertedData[9] = ((uint16_t)tx_msg->temp) & 0x00FF ;
 
-			success = tx_packet->AddToPacket((uint8_t)RF_ADDRESSES::IMU, 20, (uint8_t*)convertedData);
+			success = tx_packet->AddToPacket((uint8_t)RF_ADDRESSES::IMU, PACKET_SIZE, (uint8_t*)convertedData);
 		}
 		return success;
 	}
