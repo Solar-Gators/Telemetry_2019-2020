@@ -138,8 +138,8 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* hcan)
 //Private Function Definitions
 
 //Protected Function Definitions
-SUBSYSTEM_DATA_MODULE::SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length, bool is_ext_id, bool is_rx_only, bool is_tx_rtr):
-messageIdentifier{message_id}, dataLength{data_length}, storageFifo{}, isExtID{is_ext_id}, isRxOnly{is_rx_only}, isTxRtr{is_tx_rtr}, rxFuncPtr{nullptr}, isReceiving{false}
+SUBSYSTEM_DATA_MODULE::SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length, bool is_ext_id):
+messageIdentifier{message_id}, dataLength{data_length}, isExtID{is_ext_id}, storageFifo{}, rxFuncPtr{nullptr}, isReceiving{false}
 {}
 //Public Function Definitions
 SUBSYSTEM_DATA_MODULE* SUBSYSTEM_DATA_MODULE::FindReceivingModule(uint32_t message_id)
@@ -161,18 +161,8 @@ void SUBSYSTEM_DATA_MODULE::SetupReceive(subsystemReceiveCallback rx_func_ptr)
 
 void SUBSYSTEM_DATA_MODULE::SendData(void)
 {
-	if(this->isRxOnly)
-	{
-		//Do Nothing
-	}else if(this->isTxRtr)
-	{
-		//Send RTR message
-		this->sendRTRMessage();
-	}else{
-		//Send normal data message
-	    this->fillTransmitBuffer();
-	    this->sendTransmitBufferData();
-	}
+    fillTransmitBuffer();
+    sendTransmitBufferData();
 }
 
 void SUBSYSTEM_DATA_MODULE::CallReceiveCallback(void)
@@ -234,33 +224,6 @@ void SUBSYSTEM_DATA_MODULE::sendTransmitBufferData(void)
 		uint32_t pTxMailbox;
 		CAN_TxHeaderTypeDef pHeader;
 		pHeader.RTR = CAN_RTR_DATA;
-		pHeader.DLC = this->dataLength;
-		if(this->isExtID)
-		{
-			pHeader.ExtId = this->messageIdentifier;
-			pHeader.IDE = CAN_ID_EXT;
-		}else
-		{
-			pHeader.StdId = this->messageIdentifier;
-			pHeader.IDE = CAN_ID_STD;
-		}
-		//Put CAN message in tx mailbox
-		HAL_CAN_AddTxMessage(&hcan, &pHeader, this->transmitBuffer, &pTxMailbox);
-	}
-}
-
-void SUBSYSTEM_DATA_MODULE::sendRTRMessage(void)
-{
-	//Only continue if hcan has been initialized
-	if(hcan.Instance != nullptr)
-	{
-		//Spinlock until a tx mailbox is empty
-		while(!HAL_CAN_GetTxMailboxesFreeLevel(&hcan));
-
-		//Initialize Header
-		uint32_t pTxMailbox;
-		CAN_TxHeaderTypeDef pHeader;
-		pHeader.RTR = CAN_RTR_REMOTE;
 		pHeader.DLC = this->dataLength;
 		if(this->isExtID)
 		{
