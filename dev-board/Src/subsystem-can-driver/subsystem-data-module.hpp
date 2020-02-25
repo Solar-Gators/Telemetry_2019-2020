@@ -102,25 +102,17 @@ const uint32_t messageIdentifier;
  */
 const uint8_t dataLength;
 /**
- * @brief This is true if the id is an extended id false otherwise
- */
-const bool isExtID;
-/**
  * @brief This is the instance of the CAN handle needed to use the HAL CAN operations
  */
 static CAN_HandleTypeDef hcan;
 protected:
 //Protected Constructor
-SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length, bool is_ext_id);
+SUBSYSTEM_DATA_MODULE(uint32_t message_id, uint8_t data_length, bool is_ext_id, bool is_rx_only, bool is_tx_rtr);
 //Protected Function Prototypes
 /**
  * @brief This fills the transmit buffer using the subsystem specific txData
  */
 virtual void fillTransmitBuffer(void) = 0;
-/**
- * @brief This is called to send data on the CAN lines using the txDataPacket
- */
-void sendTransmitBufferData(void);
 //Protected Variables
 /**
  * @brief This holds the data to be transmitted directly over CAN
@@ -131,6 +123,19 @@ uint8_t transmitBuffer[ARRAY_SIZE];
  */
 HELPER_FIFO<uint8_t,FIFO_DEPTH,ARRAY_SIZE> storageFifo;
 private:
+//Private Constants
+/**
+ * @brief This is true if the id is an extended id false otherwise
+ */
+const bool isExtID;
+/**
+ * @brief This is true if the module is rx only and shouldn't tx anything
+ */
+const bool isRxOnly;
+/**
+ * @brief This is true if the module only sends rtr's
+ */
+const bool isTxRtr;
 //Private Variables
 /**
  * @brief This is the callback which will be called when the corresponding subsystem receives a message
@@ -146,6 +151,14 @@ bool isReceiving;
  */
 static RX_BINARY_TREE rxModulesTree;
 //Private Function Prototypes
+/**
+ * @brief This is called to send data on the CAN lines using the txDataPacket
+ */
+void sendTransmitBufferData(void);
+/**
+ * @brief This should be called to send an RTR message
+ */
+void sendRTRMessage(void);
 };
 
 /**
@@ -177,8 +190,8 @@ public:
 	    return returnData;
 	}
 protected:
-	SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE(uint32_t message_id, uint8_t data_length, bool is_ext_id):
-		SUBSYSTEM_DATA_MODULE{message_id, data_length, is_ext_id}
+	SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE(uint32_t message_id, uint8_t data_length, bool is_ext_id, bool is_rx_only, bool is_tx_rtr):
+		SUBSYSTEM_DATA_MODULE{message_id, data_length, is_ext_id, is_rx_only, is_tx_rtr}
 		{}
 private:
 	virtual void fillTransmitBuffer(void) override
