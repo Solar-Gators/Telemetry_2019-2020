@@ -1,0 +1,13 @@
+cmath:599:3:constexpr bool std::isinf(double)	32	static
+cmath:626:3:constexpr bool std::isnan(double)	16	static
+main.cpp:117:5:int main()	264	static
+main.cpp:253:6:void IntToString(char*, int, int)	24	static
+main.cpp:260:8:char* dtoa(char*, double)	72	static
+main.cpp:332:6:void updateIntSelector(TFT_TEXT_BOX&, int)	32	static
+main.cpp:349:6:void updateFloatSelector(TFT_TEXT_BOX&, float, int, int, int, int)	80	dynamic
+main.cpp:404:6:void SystemClock_Config()	112	static
+main.cpp:444:13:void MX_SPI2_Init()	16	static
+main.cpp:489:13:void MX_TIM6_Init()	16	static
+main.cpp:529:13:void MX_GPIO_Init()	56	static
+main.cpp:605:6:void Error_Handler()	8	static
+cmath:415:5:constexpr typename __gnu_cxx::__promote_2<_Tp, _Up>::__type std::pow(_Tp, _Up) [with _Tp = double; _Up = int]	32	static

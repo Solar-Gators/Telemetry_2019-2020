@@ -1,0 +1,5 @@
+sw-debounce.cpp:20:13:void SW_DEBOUNCE::startCriticalSection()	16	static
+sw-debounce.cpp:24:13:void SW_DEBOUNCE::stopCriticalSection()	16	static
+sw-debounce.cpp:29:1:SW_DEBOUNCE::SW_DEBOUNCE(GPIO_TypeDef*, uint16_t, uint32_t, uint8_t, TIM_TypeDef*)	32	static
+sw-debounce.cpp:35:6:void SW_DEBOUNCE::process()	16	static
+sw-debounce.cpp:75:14:SWITCH_STATE SW_DEBOUNCE::getCurrentState()	24	static

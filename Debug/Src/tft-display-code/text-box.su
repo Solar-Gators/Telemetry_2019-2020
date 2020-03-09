@@ -1,0 +1,4 @@
+text-box.cpp:22:1:TFT_TEXT_BOX::TFT_TEXT_BOX(TFT_GFX*, uint16_t, uint16_t, uint16_t, int16_t, bool)	32	static
+text-box.cpp:33:1:TFT_TEXT_BOX::TFT_TEXT_BOX()	16	static
+text-box.cpp:37:10:uint16_t TFT_TEXT_BOX::write(const char*, uint16_t, uint8_t)	64	static
+text-box.cpp:48:6:void TFT_TEXT_BOX::clear()	32	static

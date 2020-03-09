@@ -1,0 +1,15 @@
+quarter-sorter-specific.cpp:25:6:void UI_API::enableEncoder(uint16_t, uint16_t)	16	static
+quarter-sorter-specific.cpp:29:6:void UI_API::disableEncoder(uint16_t, uint16_t)	16	static
+quarter-sorter-specific.cpp:37:6:void GUI_API::resetSelectionGUI(TFT_GFX&, TFT_TEXT_BOX&, TFT_TEXT_BOX&, TFT_TEXT_BOX&, CHOSEN_STATE_TEXT_BOX*, uint16_t, uint16_t, uint16_t, uint16_t, uint8_t, uint8_t&, SELECTION_ENCODER*)	48	static
+quarter-sorter-specific.cpp:52:6:void GUI_API::drawSelectionLines(TFT_GFX&, uint16_t, uint16_t, uint16_t, uint16_t)	48	static
+quarter-sorter-specific.cpp:82:6:void GUI_API::writeSelectionWords(TFT_TEXT_BOX&, TFT_TEXT_BOX&, TFT_TEXT_BOX&, uint16_t, uint8_t)	32	static
+quarter-sorter-specific.cpp:90:6:void GUI_API::printCurrentState(CHOSEN_STATE_TEXT_BOX*, uint8_t&, SELECTION_ENCODER*)	32	static
+quarter-sorter-specific.cpp:101:6:void GUI_API::clearCurrentState(CHOSEN_STATE_TEXT_BOX*, uint8_t&)	16	static
+quarter-sorter-specific.cpp:110:6:void GUI_API::displayInProgress(TFT_GFX&, TFT_TEXT_BOX&, uint16_t, uint16_t, uint16_t, uint16_t)	80	static
+quarter-sorter-specific.cpp:119:6:void GUI_API::addConfirmQuit(TFT_GFX&, uint16_t, uint16_t, uint16_t)	104	static
+quarter-sorter-specific.cpp:127:6:void GUI_API::removeConfirmQuit(TFT_GFX&, uint16_t, uint16_t)	48	static
+quarter-sorter-specific.cpp:135:1:CHOSEN_STATE_TEXT_BOX::CHOSEN_STATE_TEXT_BOX(uint8_t, uint16_t, uint8_t, const TFT_TEXT_BOX&)	24	static
+quarter-sorter-specific.cpp:140:7:CHOSEN_STATE_TEXT_BOX::CHOSEN_STATE_TEXT_BOX()	16	static
+quarter-sorter-specific.cpp:144:12:void CHOSEN_STATE_TEXT_BOX::printState(const char*)	48	static
+quarter-sorter-specific.cpp:152:19:const char* CHOSEN_STATE_TEXT_BOX::getCurrentText()	16	static
+quarter-sorter-specific.cpp:157:12:void CHOSEN_STATE_TEXT_BOX::clearCurrentText()	16	static

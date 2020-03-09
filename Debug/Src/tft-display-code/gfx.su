@@ -1,0 +1,18 @@
+gfx.cpp:35:9:uint8_t TFT_GFX::getWordSize(const char*)	24	static
+gfx.cpp:46:9:uint8_t TFT_GFX::getLineSize(const char*, uint8_t)	40	static
+gfx.cpp:74:9:uint8_t TFT_GFX::getStringSize(const char*)	24	static
+gfx.cpp:84:1:TFT_GFX::TFT_GFX(SPI_TypeDef*)	16	static
+gfx.cpp:88:6:void TFT_GFX::setAddrWindow(uint16_t, uint16_t, uint16_t, uint16_t)	48	static
+gfx.cpp:106:6:void TFT_GFX::writePixel(int16_t, int16_t, uint16_t)	40	static
+gfx.cpp:115:6:void TFT_GFX::writeFillRect(int16_t, int16_t, int16_t, int16_t, uint16_t)	48	static
+gfx.cpp:145:13:void TFT_GFX::writeFillRectPreclipped(int16_t, int16_t, int16_t, int16_t, uint16_t)	40	static
+gfx.cpp:151:6:void TFT_GFX::writeColor(uint16_t, uint32_t)	32	static
+gfx.cpp:157:13:void TFT_GFX::writeFastVLine(int16_t, int16_t, int16_t, uint16_t)	48	static
+gfx.cpp:194:6:void TFT_GFX::drawChar(int16_t, int16_t, unsigned char, uint16_t, uint16_t, uint8_t, uint8_t)	56	static
+move.h:73:5:constexpr _Tp&& std::forward(typename std::remove_reference<_From>::type&) [with _Tp = short unsigned int&]	16	static
+stl_pair.h:330:12:constexpr std::pair<_T1, _T2>::pair(_U1&&, _U2&&) [with _U1 = short unsigned int&; _U2 = short unsigned int&; typename std::enable_if<(std::_PCC<true, _T1, _T2>::_MoveConstructiblePair<_U1, _U2>() && std::_PCC<true, _T1, _T2>::_ImplicitlyMoveConvertiblePair<_U1, _U2>()), bool>::type <anonymous> = 1; _T1 = short unsigned int; _T2 = short unsigned int]	24	static
+stl_pair.h:519:5:constexpr std::pair<typename std::__decay_and_strip<_Tp>::__type, typename std::__decay_and_strip<_T2>::__type> std::make_pair(_T1&&, _T2&&) [with _T1 = short unsigned int&; _T2 = short unsigned int&]	32	static
+gfx.cpp:228:31:std::pair<short unsigned int, short unsigned int> TFT_GFX::drawString(int16_t, int16_t, const char*, uint16_t, uint16_t, uint8_t, uint8_t, uint16_t, bool)	80	static
+gfx.cpp:289:6:void TFT_GFX::setRotation(uint8_t)	24	static
+gfx.cpp:317:10:uint16_t TFT_GFX::width()	16	static
+gfx.cpp:322:10:uint16_t TFT_GFX::height()	16	static

@@ -1,0 +1,8 @@
+hspi.c:4:6:resetTftBoard	8	static
+hspi.c:12:6:pullCSLow	8	static
+hspi.c:17:6:pullCSHigh	8	static
+hspi.c:22:6:hspi_w8	16	static
+hspi.c:29:6:hspi_w16	16	static
+hspi.c:38:6:hspi_cmd	16	static
+hspi.c:46:6:sendCommand	40	static
+hspi.c:55:6:ili9341_hspi_init	16	static

@@ -1,0 +1,7 @@
+selection-encoder.cpp:26:6:bool {anonymous}::stringsEqual(const char*, const char*)	16	static
+selection-encoder.cpp:43:1:SELECTION_ENCODER::SELECTION_ENCODER(uint8_t, TFT_TEXT_BOX*, uint16_t, uint8_t, const char* const*, uint16_t, CHOSEN_STATE_TEXT_BOX*, uint8_t)	32	static
+selection-encoder.cpp:51:10:uint16_t SELECTION_ENCODER::getCurrentNameIndex()	16	static
+selection-encoder.cpp:56:6:void SELECTION_ENCODER::setCurrentNameIndex(uint16_t)	16	static
+selection-encoder.cpp:61:6:void SELECTION_ENCODER::printNextAvailableState()	16	static
+selection-encoder.cpp:66:6:bool SELECTION_ENCODER::stringAlreadyPresent(const char*)	24	static
+selection-encoder.cpp:78:6:virtual void SELECTION_ENCODER::doStep(bool)	24	static

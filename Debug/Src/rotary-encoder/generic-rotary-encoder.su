@@ -1,0 +1,2 @@
+generic-rotary-encoder.cpp:50:1:ROTARY_ENCODER::ROTARY_ENCODER(uint8_t)	16	static
+generic-rotary-encoder.cpp:54:6:void ROTARY_ENCODER::process(uint8_t, uint8_t)	24	static
