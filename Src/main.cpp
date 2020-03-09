@@ -85,7 +85,6 @@ void IntToString(char * buff, int input, int base = 10);
 static double PRECISION = 0.01;
 char * dtoa(char *s, double n);
 
-void updateIntSelector(TFT_TEXT_BOX &selector, int value);
 void updateFloatSelector(TFT_TEXT_BOX &selector, float value, int precision, int minValue = -1000, int maxValue = -1000, int backgroundColor = -1);
 
 #define MIN_BAT_VOLTAGE 78
@@ -95,7 +94,7 @@ void updateFloatSelector(TFT_TEXT_BOX &selector, float value, int precision, int
 #define MAX_TEMP		0
 #define MAX_BAT_CURRENT 0
 
-//void updateSpeed(TFT_TEXT_BOX &speedSelector, int value);
+void updateSpeed(float value, int precision, TFT_TEXT_BOX &selector, int minValue = -1000, int maxValue = -1000, int backgroundColor = -1);
 //void updateVoltage();
 //void updateCurrent();
 //void updateTemperature();
@@ -208,54 +207,52 @@ int main(void)
 	 * 3. IMPLEMENT COLOR FONT CHANGE FOR TOO HIGH/TOO LOW
 	 */
 
-	int prev_s = 0;
-	int prev_t = 0;
+	int prev_speed = 0;
+	int prev_temp = 0;
+	int prev_voltage = 0;
+	int prev_current = 0;
+
 	while(true){
 
-		int i;
-
-
-		int s = rand() % 2;
-		//		int s = 20;
-
-		//		if(s != prev_s)
-		//		{
-		//			updateFloatSelector(selectorSpeed, s, 3);
-		//			int prev_s = s;
-		//		}
-
-		if(s != prev_s)
+		int speed = rand() % 3;
+		if(speed != prev_speed)
 		{
-			updateFloatSelector(selectorSpeed, 20, 3);
-			int prev_s = s;
+			updateFloatSelector(selectorSpeed, speed, 3);
+			prev_speed = speed;
 		}
 
 
-		int t = rand() % 110;
-		updateFloatSelector(selectorTemp, t, 3);
+		int temp = rand() % 3;
+		if(temp != prev_temp)
+		{
+			updateFloatSelector(selectorTemp, temp, 3);
+			prev_temp = temp;
+		}
 
-		float q = (float)rand()/(RAND_MAX + 1)+1+(rand()%150);
-		float r = (float)rand()/(RAND_MAX + 1)+1+(rand()%150);
-		updateFloatSelector(selectorBatVolt, q, 3, MIN_BAT_VOLTAGE, MAX_BAT_VOLTAGE);
-		updateFloatSelector(selectorBatCurrent, r, 3);
+
+		float voltage = (float)rand()/(RAND_MAX + 1)+1+(rand()%3);
+		if(voltage != prev_voltage)
+		{
+			updateFloatSelector(selectorBatVolt, voltage, 3, MIN_BAT_VOLTAGE, MAX_BAT_VOLTAGE);
+			prev_voltage = voltage;
+		}
 
 
-		// 20ms ~ 50Hz
-		//HAL_Delay(20);
+		float current = (float)rand()/(RAND_MAX + 1)+1+(rand()%3);
+		if(current != prev_current)
+		{
+			updateFloatSelector(selectorBatCurrent, current, 3);
+			prev_current = current;
+		}
+
+
+//				 20ms ~ 50Hz
+				HAL_Delay(20);
 
 	}
 
 }
 
-/**
- * @brief Change an int to char buffer
- */
-void IntToString(char * buff, int input, int base)
-{
-	itoa(input, buff, base);
-	return;
-	//	return buf;
-}
 
 char * dtoa(char *s, double n) {
 	// handle special cases
@@ -329,22 +326,6 @@ char * dtoa(char *s, double n) {
 	return s;
 }
 
-void updateIntSelector(TFT_TEXT_BOX &selector, int value)
-{
-	char buffer[10];
-	IntToString(buffer, value);
-
-
-	if(value > 30 && value < 70)
-		selector.write(buffer, fontColor, 6);
-	else if(value < 30)
-		selector.write(buffer, fontColorLow, 6);
-	else
-		selector.write(buffer, fontColorHigh, 6);
-
-
-	return;
-}
 
 void updateFloatSelector(TFT_TEXT_BOX &selector, float value, int precision, int minValue, int maxValue, int backgroundColor)
 {
@@ -379,10 +360,35 @@ void updateFloatSelector(TFT_TEXT_BOX &selector, float value, int precision, int
 /**
  * Might not need these but keep them here anyways in case i decide to implement them
  */
-//void updateSpeed()
-//{
-//	return;
-//}
+void updateSpeed(float value, int precision, TFT_TEXT_BOX &selector, int minValue, int maxValue, int backgroundColor)
+
+{
+	char buffer[precision + 2];
+	dtoa(buffer, value);
+
+	if(backgroundColor != -1)
+	{
+		selector.write(buffer, backgroundColor, 4);
+	}
+
+
+	else if(minValue == -1000 && maxValue == -1000)
+	{
+		selector.write(buffer, fontColor, 4);
+	}
+
+	else
+	{
+		if(value >= maxValue)
+			selector.write(buffer, fontColorHigh, 4);
+		else if(value <= minValue)
+			selector.write(buffer, fontColorLow, 4);
+		else
+			selector.write(buffer, fontColorGood, 4);
+	}
+
+	return;
+}
 //void updateVoltage()
 //{
 //	return;
