@@ -14,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: make
-      run: make -j12
+      run: cd dev-board/Debug && make -j12
