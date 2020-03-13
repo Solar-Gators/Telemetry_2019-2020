@@ -1,0 +1,22 @@
+subsystem-data-module.cpp:26:6:void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef*)	64	static
+subsystem-data-module.cpp:56:6:void CEC_CAN_IRQHandler()	8	static
+subsystem-data-module.cpp:73:6:void HAL_CAN_MspInit(CAN_HandleTypeDef*)	48	static
+subsystem-data-module.cpp:112:6:void HAL_CAN_MspDeInit(CAN_HandleTypeDef*)	16	static
+subsystem-data-module.cpp:141:1:SUBSYSTEM_DATA_MODULE::SUBSYSTEM_DATA_MODULE(uint32_t, uint8_t, bool, bool, bool)	24	static
+subsystem-data-module.cpp:145:24:static SUBSYSTEM_DATA_MODULE* SUBSYSTEM_DATA_MODULE::FindReceivingModule(uint32_t)	16	static
+subsystem-data-module.cpp:150:6:void SUBSYSTEM_DATA_MODULE::SetupReceive(subsystemReceiveCallback)	16	static
+subsystem-data-module.cpp:162:6:void SUBSYSTEM_DATA_MODULE::SendData()	16	static
+subsystem-data-module.cpp:178:6:void SUBSYSTEM_DATA_MODULE::CallReceiveCallback()	16	static
+subsystem-data-module.cpp:186:6:static void SUBSYSTEM_DATA_MODULE::StartCAN()	48	static
+subsystem-data-module.cpp:225:6:void SUBSYSTEM_DATA_MODULE::sendTransmitBufferData()	48	static
+subsystem-data-module.cpp:252:6:void SUBSYSTEM_DATA_MODULE::sendRTRMessage()	48	static
+subsystem-data-module.cpp:280:6:bool SUBSYSTEM_DATA_MODULE::isFifoEmpty()	16	static
+subsystem-data-module.cpp:285:6:bool SUBSYSTEM_DATA_MODULE::isFifoFull()	16	static
+subsystem-data-module.cpp:290:6:bool SUBSYSTEM_DATA_MODULE::addToFifo(uint8_t*)	32	static
+helper-fifo.hpp:45:5:HELPER_FIFO<T, DEPTH, SIZE>::HELPER_FIFO() [with T = unsigned char; short unsigned int DEPTH = 3; short unsigned int SIZE = 8]	16	static
+helper-fifo.hpp:49:10:bool HELPER_FIFO<T, DEPTH, SIZE>::IsEmpty() [with T = unsigned char; short unsigned int DEPTH = 3; short unsigned int SIZE = 8]	16	static
+helper-fifo.hpp:53:10:bool HELPER_FIFO<T, DEPTH, SIZE>::IsFull() [with T = unsigned char; short unsigned int DEPTH = 3; short unsigned int SIZE = 8]	16	static
+helper-fifo.hpp:58:10:void HELPER_FIFO<T, DEPTH, SIZE>::PushBack(T*, bool*) [with T = unsigned char; short unsigned int DEPTH = 3; short unsigned int SIZE = 8]	24	static
+helper-fifo.hpp:120:10:void HELPER_FIFO<T, DEPTH, SIZE>::copyArrayData(uint16_t, T*) [with T = unsigned char; short unsigned int DEPTH = 3; short unsigned int SIZE = 8]	40	static
+subsystem-data-module.cpp:295:1:void __static_initialization_and_destruction_0(int, int)	16	static
+subsystem-data-module.cpp:295:1:cpp)	8	static

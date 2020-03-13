@@ -1,0 +1,17 @@
+bno055.cpp:41:6:void bno055Init()	8	static
+bno055.cpp:48:12:IMU_DATA_t bno055GetPacket()	32	static
+bno055.cpp:58:21:bno055_3axis bno055ReadAccel()	16	static
+bno055.cpp:62:21:bno055_3axis bno055ReadGyro()	16	static
+bno055.cpp:66:21:bno055_3axis bno055ReadMag()	16	static
+bno055.cpp:70:21:bno055_3axis bno055ReadHead()	16	static
+bno055.cpp:74:20:bno055_quat bno055ReadQuat()	16	static
+bno055.cpp:83:21:bno055_3axis bno055ReadLinAccel()	16	static
+bno055.cpp:87:21:bno055_3axis bno055ReadGrav()	16	static
+bno055.cpp:91:9:uint8_t bno055ReadTemp()	8	static
+bno055.cpp:96:16:uint8_t bno055ReadReg(uint8_t)	48	static
+bno055.cpp:103:13:void bno055SendReg(uint8_t, uint8_t)	40	static
+bno055.cpp:109:16:int16_t bno055ReadData(uint8_t)	40	static
+bno055.cpp:120:28:bno055_3axis bno055Read3Axis(uint8_t)	16	static
+bno055.cpp:129:13:void MX_I2C1_Init()	8	static
+bno055.cpp:178:6:void HAL_I2C_MspInit(I2C_HandleTypeDef*)	48	static
+bno055.cpp:214:6:void HAL_I2C_MspDeInit(I2C_HandleTypeDef*)	16	static
