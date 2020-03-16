@@ -1,5 +1,0 @@
-aux-data-module.cpp:30:6:static void AUX_MESSAGE_0::dataPacketToArray(AUX_MESSAGE_0_DATA_PACKET, uint8_t*)	32	static
-aux-data-module.cpp:45:27:static AUX_MESSAGE_0_DATA_PACKET AUX_MESSAGE_0::arrayToDataPacket(uint8_t*)	16	static
-aux-data-module.cpp:63:1:AUX_MESSAGE_0::AUX_MESSAGE_0()	24	static
-subsystem-data-module.hpp:193:2:SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<CHILD_OBJ, CHILD_DATA>::SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE(uint32_t, uint8_t, bool, bool, bool) [with CHILD_OBJ = AUX_MESSAGE_0; CHILD_DATA = AUX_MESSAGE_0_DATA_PACKET]	40	static
-subsystem-data-module.hpp:197:15:void SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<CHILD_OBJ, CHILD_DATA>::fillTransmitBuffer() [with CHILD_OBJ = AUX_MESSAGE_0; CHILD_DATA = AUX_MESSAGE_0_DATA_PACKET]	24	static

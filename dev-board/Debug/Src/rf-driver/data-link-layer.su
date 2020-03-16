@@ -1,4 +1,0 @@
-data-link-layer.cpp:20:13:void RF_DATA_LINK_LAYER::handleByteStuff(uint8_t, uint16_t, uint16_t)	32	static
-data-link-layer.cpp:31:13:void RF_DATA_LINK_LAYER::sendData(uint8_t)	16	static
-data-link-layer.cpp:37:1:RF_DATA_LINK_LAYER::RF_DATA_LINK_LAYER(USART_TypeDef*)	16	static
-data-link-layer.cpp:41:6:void RF_DATA_LINK_LAYER::sendMessage(uint8_t*, uint16_t)	40	static
