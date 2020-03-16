@@ -1,6 +1,0 @@
-stm32f0xx_it.cpp:70:6:void NMI_Handler()	8	static
-stm32f0xx_it.cpp:83:6:void HardFault_Handler()	8	static
-stm32f0xx_it.cpp:98:6:void SVC_Handler()	8	static
-stm32f0xx_it.cpp:111:6:void PendSV_Handler()	8	static
-stm32f0xx_it.cpp:124:6:void SysTick_Handler()	8	static
-stm32f0xx_it.cpp:145:6:void USART1_IRQHandler()	8	static

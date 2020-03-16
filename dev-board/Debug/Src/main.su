@@ -1,8 +1,0 @@
-main.cpp:80:5:int main()	248	static
-main.cpp:194:6:void SystemClock_Config()	112	static
-main.cpp:234:13:void MX_USART1_UART_Init()	8	static
-main.cpp:269:13:void MX_USART2_UART_Init()	8	static
-main.cpp:304:13:void MX_GPIO_Init()	48	static
-main.cpp:339:6:void Error_Handler()	8	static
-subsystem-data-module.hpp:177:13:CHILD_DATA SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<CHILD_OBJ, CHILD_DATA>::GetOldestDataPacket(bool*) [with CHILD_OBJ = MOTOR_DRIVER_RX_FRAME_0; CHILD_DATA = MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET]	24	static
-helper-fifo.hpp:82:8:T* HELPER_FIFO<T, DEPTH, SIZE>::PopFront(bool*) [with T = unsigned char; short unsigned int DEPTH = 3; short unsigned int SIZE = 8]	24	static
