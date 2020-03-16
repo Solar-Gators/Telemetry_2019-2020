@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>TFT_Test</name>
+=======
+	<name>Telemetry_2019-2020</name>
+>>>>>>> master
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
+<<<<<<< HEAD
 		<buildCommand>
 			<name>org.eclipse.cdt.managedbuilder.core.genmakebuilder</name>
 			<triggers>clean,full,incremental,</triggers>
@@ -130,4 +135,9 @@
 			<locationURI>PROJECT_LOC/tft-display-code/text-box.h</locationURI>
 		</link>
 	</linkedResources>
+=======
+	</buildSpec>
+	<natures>
+	</natures>
+>>>>>>> master
 </projectDescription>

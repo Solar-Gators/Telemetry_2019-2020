@@ -22,8 +22,11 @@
 #include "main.h"
 #include "mppt-data-module.hpp"
 #include "bms-data-module.hpp"
-#include "transport-layer.h"
-#include "can-message-helper.h"
+#include "motor-driver-data-module.hpp"
+#include "gps-driver.h"
+#include "rf-driver/rf-message-helper.h"
+#include "rf-driver/transport-layer.h"
+#include "bno055.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -46,10 +49,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-CAN_HandleTypeDef hcan = {0};
-
 UART_HandleTypeDef huart2;
-
+UART_HandleTypeDef huart1;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -57,6 +58,7 @@ UART_HandleTypeDef huart2;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -66,6 +68,10 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
+//Testing Defines
+//#define GPS_TEST
+//#define IMU_TEST
+#define CAN_TEST
 
 /**
   * @brief  The application entry point.
@@ -97,50 +103,86 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  /***************************GPS/RF TEST*************************/
+#ifdef GPS_TEST
   RF_PACKET msg0{huart2.Instance};
-  BMS_MESSAGE_0_DATA_PACKET test{1.2 , 22.1, 33.55, 4.87};
-  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
-  test.arrayVoltage = 33;
-  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  GPS_init(huart1.Instance);
+  GPS_startReception();
+  while(1)
+  {
+	  if(GPS_isDataAvailable())
+	  {
+		  GPS_Data_t data = GPS_getLatestData();
+		  GPS_TO_RF::AddMessage(&msg0, &data);
+		  msg0.Send();
+	  }
+  }
+  BMS_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
+  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
+  test.packSummedVoltage = 52.32;
+  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
   msg0.Send();
-  CAN_TO_RF::AddMessage(&msg0, CAN_TO_RF::CAN_MSG_RF_ADDR::BMS, &test);
+  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
   msg0.Send();
-
+#endif
+/***************************CAN TEST*************************/
+#ifdef CAN_TEST
   MPPT_MESSAGE_0 mppt0;
+  mppt0.SetupReceive(nullptr);
   BMS_MESSAGE_0 bms0;
-  mppt0.SetupReceive(nullptr); //ID of 1024
-  bms0.SetupReceive(nullptr); //ID of 1025
-  SUBSYSTEM_DATA_MODULE::StartCAN(&hcan);
-  mppt0.txData = {12.2, 50, 33.1, 76};
-  mppt0.SendData();
-  mppt0.txData = {4, 23, 44, 87};
-  mppt0.SendData();
-  mppt0.txData = {33, 22, 44, 55};
-  mppt0.SendData();
-  mppt0.txData = {1, 2.34, 3.45, 8.53};
-  mppt0.SendData();
-  bms0.txData = {23, 55, 32, 1};
+  bms0.SetupReceive(nullptr);
+  MOTOR_DRIVER_RX_FRAME_0 motorRx0;
+  motorRx0.SetupReceive(nullptr);
+  SUBSYSTEM_DATA_MODULE::StartCAN();
+  bms0.txData = {3.45, 4.2, 2.65, 0.9};
   bms0.SendData();
-  /* USER CODE END 2 */
+  bms0.txData = {12.2, 50, 33.1, 76};
+  bms0.SendData();
+  bms0.txData = {4, 23, 44, 87};
+  bms0.SendData();
+  mppt0.SendData();
 
+
+  /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-	  if(!mppt0.isFifoEmpty())
+	  if(!motorRx0.isFifoEmpty())
 	  {
 		  bool receivedSomething;
-		  MPPT_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
+		  MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
 		  if(receivedSomething)
 		  {
 			  //Nice
-			  float l = mpptPacket.arrayCurrent;
+			  float l = motorPacket.motorRPM;
 		  }
 	  }
+
+
+
     /* USER CODE BEGIN 3 */
   }
+#endif
+
+  /***************************IMU TEST*************************/
+#ifdef IMU_TEST
+  RF_PACKET msg0{huart2.Instance};
+  bno055Init();
+  //IMU Example
+  while(1)
+  {
+	  IMU_DATA_t imuData = bno055GetPacket();
+	  IMU_TO_RF::AddMessage(&msg0, &imuData);
+	  msg0.Send();
+  }
+#endif
+
+  //Infinite Loop
+  while(1);
   /* USER CODE END 3 */
 }
 
@@ -185,6 +227,41 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 9600;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
   * @brief USART2 Initialization Function
   * @param None
   * @retval None
@@ -200,7 +277,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
+  huart2.Init.BaudRate = 57600;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="com.st.stm32cube.ide.mcu.debug.launch.launchConfigurationType">
+<stringAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.device" value="STM32F072RB"/>
+<stringAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.endian" value="little"/>
+<stringAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.init_speed" value="4000"/>
+<booleanAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.jlink_check_serial_number" value="false"/>
+<stringAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.jlink_script_path" value=""/>
+<booleanAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.jlink_script_used" value="false"/>
+<stringAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.jlink_txt_serial_number" value=""/>
+<stringAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.reset_strategy" value="type_0_normal"/>
+<booleanAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.scan_chain_auto" value="true"/>
+<intAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.scan_chain_irpre" value="0"/>
+<intAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.scan_chain_pos" value="0"/>
+<stringAttribute key="com.st.stm32cube.ide.mcu.debug.jlink.selected_rtos" value="No RTOS"/>
 <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.launch.enable_live_expr" value="true"/>
 <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.launch.enable_swv" value="false"/>
 <intAttribute key="com.st.stm32cube.ide.mcu.debug.launch.formatVersion" value="2"/>
@@ -16,7 +28,7 @@
 <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.enable_logging" value="false"/>
 <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.enable_shared_stlink" value="false"/>
 <stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.external_loader" value=""/>
-<stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.log_file" value="/home/nzinn/Documents/Telemetry_2019-2020/dev-board/Debug/st-link_gdbserver_log.txt"/>
+<stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.log_file" value="D:\Documents\code\Telemetry_2019-2020\dev-board\Debug\st-link_gdbserver_log.txt"/>
 <stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.stlink_ap_id" value="0"/>
 <booleanAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.stlink_check_serial_number" value="false"/>
 <stringAttribute key="com.st.stm32cube.ide.mcu.debug.stlink.stlink_txt_serial_number" value=""/>
@@ -44,6 +56,7 @@
 <booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useProjBinaryForSymbols" value="true"/>
 <stringAttribute key="org.eclipse.cdt.dsf.gdb.DEBUG_NAME" value="${TOOLCHAIN_PATH}/arm-none-eabi-gdb"/>
 <booleanAttribute key="org.eclipse.cdt.dsf.gdb.NON_STOP" value="true"/>
+<intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="2"/>
 <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="remote"/>
 <booleanAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN" value="true"/>
 <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN_SYMBOL" value="main"/>
@@ -57,6 +70,6 @@
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="4"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.dsf.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;memoryBlockExpressionList context=&quot;reserved-for-future-use&quot;/&gt;&#10;"/>
+<stringAttribute key="org.eclipse.dsf.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;memoryBlockExpressionList context=&quot;reserved-for-future-use&quot;/&gt;&#13;&#10;"/>
 <stringAttribute key="process_factory_id" value="org.eclipse.cdt.dsf.gdb.GdbProcessFactory"/>
 </launchConfiguration>
