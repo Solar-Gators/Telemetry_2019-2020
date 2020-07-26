@@ -72,7 +72,14 @@ MOTOR_DRIVER_TX_RL_DATA_PACKET txData;
 /*****************RX Classes*****************/
 struct MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET
 {
+	uint16_t battVoltage;
+	uint16_t battCurrent;
+	bool 	 battCurrentDir;
+	uint16_t motorCurrentPkAvg;
+	uint8_t  FETtemp;
 	uint16_t motorRPM;
+	uint16_t PWMDuty;
+	uint8_t  LeadAngle;
 };
 
 class MOTOR_DRIVER_RX_FRAME_0 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<MOTOR_DRIVER_RX_FRAME_0, MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET>
@@ -102,11 +109,64 @@ static MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_B
 MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET txData;
 };
 
+struct MOTOR_DRIVER_RX_FRAME_1_DATA_PACKET
+{
+	bool 	 powerMode;
+	bool 	 MCmode;
+	uint16_t AcceleratorPosition;
+	uint16_t regenVRposition;
+	uint8_t	 digitSWposition;
+	uint16_t outTargetVal;
+	uint8_t  driveActStat;
+	bool	 regenStat;
+};
+
+class MOTOR_DRIVER_RX_FRAME_1 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<MOTOR_DRIVER_RX_FRAME_1, MOTOR_DRIVER_RX_FRAME_1_DATA_PACKET>
+{
+public:
+//Constructors
+MOTOR_DRIVER_RX_FRAME_1();
+//Public Constants
+static constexpr uint8_t NUM_BYTES = 5;
+//Public Function Prototypes
+/**
+ * @brief This function converts @input to fill the encoded @output array
+ * @param input: Data to be converted
+ * @param output: Array that should be allocated at least @ARRAY_SIZE bytes
+ */
+static void dataPacketToArray(MOTOR_DRIVER_RX_FRAME_1_DATA_PACKET input, uint8_t output[NUM_BYTES]);
+/**
+ * @brief This converts the encoded @input array to a data packet
+ * @param input: Encoded array of @ARRAY_SIZE bytes
+ * @retval A data packet
+ */
+static MOTOR_DRIVER_RX_FRAME_1_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_BYTES]);
+//Public Variables
+/**
+ * @brief This variable does nothing
+ */
+MOTOR_DRIVER_RX_FRAME_1_DATA_PACKET txData;
+};
+
 struct MOTOR_DRIVER_RX_FRAME_2_DATA_PACKET
 {
 	bool adSensorError;
+	bool motorCurrSensorError;
+	bool fetThermError;
+	bool battVoltSensorError;
+	bool battCurrSensorError;
+	bool battCurrSensorAdjError;
+	bool motorCurrSensorAdjError;
+	bool accelPosError;
+	bool contVoltSensorError;
 	bool powerSystemError;
+	bool overCurrSensorError;
+	bool overVoltSensorError;
+	bool overCurrLimit;
 	bool motorSystemError;
+	bool motorLock;
+	bool hallSensorShort;
+	bool hallSensorOpen;
 	uint8_t overHeatLevel;
 };
 

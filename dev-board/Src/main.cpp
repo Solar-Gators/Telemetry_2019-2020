@@ -71,7 +71,8 @@ static void MX_USART2_UART_Init(void);
 //Testing Defines
 //#define GPS_TEST
 //#define IMU_TEST
-#define CAN_TEST
+//#define CAN_TEST
+#define MC_TEST
 
 /**
   * @brief  The application entry point.
@@ -126,6 +127,35 @@ int main(void)
   msg0.Send();
   CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
   msg0.Send();
+#endif
+/***************************MC TEST*************************/
+#ifdef MC_TEST
+  MOTOR_DRIVER_TX_RL_MESSAGE mcRequest;
+  MOTOR_DRIVER_RX_FRAME_0 motorRx0;
+  MOTOR_DRIVER_RX_FRAME_2 motorRx2;
+  motorRx0.SetupReceive(nullptr);
+  motorRx2.SetupReceive(nullptr);
+  SUBSYSTEM_DATA_MODULE::StartCAN();
+  mcRequest.txData = { 1, 1, 1 };
+  mcRequest.SendData();
+  int i=0;
+  while(1)
+  {
+	  if(!motorRx0.isFifoEmpty())
+	  {
+		  bool receivedSomething;
+		  MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
+		  if(receivedSomething)
+		  {
+
+			  //Nice
+			  float l = motorPacket.motorRPM;
+			  i++;
+			  __NOP();
+		  }
+	  }
+  }
+
 #endif
 /***************************CAN TEST*************************/
 #ifdef CAN_TEST
