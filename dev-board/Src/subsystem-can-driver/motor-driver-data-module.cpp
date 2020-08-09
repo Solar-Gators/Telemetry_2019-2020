@@ -64,8 +64,27 @@ void MOTOR_DRIVER_RX_FRAME_0::dataPacketToArray(MOTOR_DRIVER_RX_FRAME_0_DATA_PAC
 MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET MOTOR_DRIVER_RX_FRAME_0::arrayToDataPacket(uint8_t input[NUM_BYTES])
 {
 	MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET output;
+	uint32_t preBattVoltage = (static_cast<uint32_t>(input[1] & 3) << 8) | (input[0]);
+	output.battVoltage = static_cast<uint16_t>(preBattVoltage);
+
+	uint32_t preBattCurrent = (static_cast<uint32_t>(input[2] & 7) << 6) | (input[1] >> 2);
+	output.battCurrent = static_cast<uint16_t>(preBattCurrent);
+
+	output.battCurrentDir = static_cast<bool>(input[2] & 8);
+
+	uint32_t preMotorCurrent = static_cast<uint32_t>((input[3] & 0x3F) << 4) | (input[2] >> 4);
+	output.motorCurrentPkAvg = static_cast<uint16_t>(preMotorCurrent);
+
+	uint32_t preFETtemp = static_cast<uint32_t>((input[4] & 7) << 2) | (input[3] >> 6);
+	output.FETtemp = static_cast<uint16_t>(preFETtemp);
+
 	uint32_t preMotorRPM = (static_cast<uint32_t>(input[5] & 0x7F) << 5) | (input[4] >> 3);
 	output.motorRPM = static_cast<uint16_t>(preMotorRPM);
+
+	uint32_t preDuty = (static_cast<uint32_t>(input[7] & 1) << 9) | (input[6] << 1) | (input[5] >> 7);
+	output.PWMDuty = static_cast<uint16_t>(preDuty);
+
+	output.LeadAngle = static_cast<uint16_t>((input[7] >> 1));
 
 	return output;
 }

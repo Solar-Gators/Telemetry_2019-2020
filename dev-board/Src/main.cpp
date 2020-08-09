@@ -150,8 +150,7 @@ int main(void)
 
 			  //Nice
 			  float l = motorPacket.motorRPM;
-			  i++;
-			  __NOP();
+			  float k = l + 1;
 		  }
 	  }
   }
