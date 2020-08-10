@@ -151,7 +151,8 @@ MOTOR_DRIVER_RX_FRAME_1_DATA_PACKET txData;
 struct MOTOR_DRIVER_RX_FRAME_2_DATA_PACKET
 {
 	bool adSensorError;
-	bool motorCurrSensorError;
+	bool motorCurrSensorUError;
+	bool motorCurrSensorWError;
 	bool fetThermError;
 	bool battVoltSensorError;
 	bool battCurrSensorError;
@@ -160,8 +161,8 @@ struct MOTOR_DRIVER_RX_FRAME_2_DATA_PACKET
 	bool accelPosError;
 	bool contVoltSensorError;
 	bool powerSystemError;
-	bool overCurrSensorError;
-	bool overVoltSensorError;
+	bool overCurrError;
+	bool overVoltError;
 	bool overCurrLimit;
 	bool motorSystemError;
 	bool motorLock;
