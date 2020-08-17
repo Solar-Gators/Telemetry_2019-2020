@@ -71,8 +71,8 @@ static void MX_USART2_UART_Init(void);
 //Testing Defines
 //#define GPS_TEST
 //#define IMU_TEST
-//#define CAN_TEST
-#define MC_TEST
+#define CAN_TEST
+//#define MC_TEST
 
 /**
   * @brief  The application entry point.
@@ -150,8 +150,7 @@ int main(void)
 
 			  //Nice
 			  float l = motorPacket.motorRPM;
-			  float k = l + 1;
-		  }
+	  }
 	  }
   }
 
@@ -160,38 +159,72 @@ int main(void)
 #ifdef CAN_TEST
   MPPT_MESSAGE_0 mppt0;
   mppt0.SetupReceive(nullptr);
+
   BMS_MESSAGE_0 bms0;
   bms0.SetupReceive(nullptr);
+  // Motor Controller
+  // request message
+  MOTOR_DRIVER_TX_RL_MESSAGE mcRequest;
+  // first return message
   MOTOR_DRIVER_RX_FRAME_0 motorRx0;
   motorRx0.SetupReceive(nullptr);
+  // second return message
+  MOTOR_DRIVER_RX_FRAME_2 motorRx2;
+  motorRx2.SetupReceive(nullptr);
+  // Start the CAN peripheral
   SUBSYSTEM_DATA_MODULE::StartCAN();
-  bms0.txData = {3.45, 4.2, 2.65, 0.9};
-  bms0.SendData();
-  bms0.txData = {12.2, 50, 33.1, 76};
-  bms0.SendData();
-  bms0.txData = {4, 23, 44, 87};
-  bms0.SendData();
+  // request data from the motor controller
+  mcRequest.txData = { 1, 0, 1 };
+  mcRequest.SendData();
   mppt0.SendData();
-
-
   /* USER CODE END 2 */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
-	  if(!motorRx0.isFifoEmpty())
-	  {
-		  bool receivedSomething;
-		  MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
-		  if(receivedSomething)
-		  {
-			  //Nice
-			  float l = motorPacket.motorRPM;
-		  }
-	  }
-
-
+	/* USER CODE END WHILE */
+	// check to see if we have gotten any messages
+	if(!motorRx0.isFifoEmpty())
+	{
+		bool receivedSomething;
+		MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
+		if(receivedSomething)
+		{
+			//Nice
+			float l = motorPacket.motorRPM;
+		}
+	}
+	if(!motorRx2.isFifoEmpty())
+	{
+		bool receivedSomething;
+		MOTOR_DRIVER_RX_FRAME_2_DATA_PACKET motorPacket = motorRx2.GetOldestDataPacket(&receivedSomething);
+		if(receivedSomething)
+		{
+			//Nice
+			float l = motorPacket.accelPosError;
+		}
+	}
+	if(!mppt0.isFifoEmpty())
+	{
+		bool receivedSomething;
+		MPPT_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
+		if(receivedSomething)
+		{
+			//Nice
+			float vin = mpptPacket.arrayVoltage;
+		}
+	}
+	if(!bms0.isFifoEmpty())
+	{
+		bool receivedSomething;
+		BMS_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
+		if(receivedSomething)
+		{
+			//Nice
+			float voltH = bmsPacket.highCellVoltage;
+		}
+	}
 
     /* USER CODE BEGIN 3 */
   }
