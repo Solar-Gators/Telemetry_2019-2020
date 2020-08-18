@@ -69,7 +69,7 @@ void MOTOR_DRIVER_RX_FRAME_0::dataPacketToArray(MOTOR_DRIVER_RX_FRAME_0_DATA_PAC
 
 	output[3] = 0;
 	output[3] |= static_cast<uint8_t>(input.motorCurrentPkAvg >> 4);
-	output[3] |= static_Cast<uint8_t>(static_cast<uint32_t>(input.FETtemp) << 6);
+	output[3] |= static_cast<uint8_t>(static_cast<uint32_t>(input.FETtemp) << 6);
 
 
 	uint32_t convMotorRPM = input.motorRPM * 1;
