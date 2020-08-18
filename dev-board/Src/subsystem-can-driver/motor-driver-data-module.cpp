@@ -55,10 +55,38 @@ SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<MOTOR_DRIVER_TX_RL_MESSAGE, MOTOR_DRIVE
 //RX Frame 0
 void MOTOR_DRIVER_RX_FRAME_0::dataPacketToArray(MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET input, uint8_t output[NUM_BYTES])
 {
-	uint32_t convMotorRPM = input.motorRPM * 1;
+	output[0] = 0;
+	output[0] |= static_cast<uint8_t>(input.battVoltage);
 
-	output[4] = (static_cast<uint32_t>(convMotorRPM) & 0x1F) << 3;
-	output[5] = (static_cast<uint32_t>(convMotorRPM) & 0xFE0) >> 5;
+	output[1] = 0;
+	output[1] |= static_cast<uint8_t>(input.battVoltage >> 8);
+	output[1] |= static_cast<uint8_t>(static_cast<uint32_t>(input.battCurrent) << 2);
+
+	output[2] = 0;
+	output[2] |= static_cast<uint8_t>(input.battCurrent >> 6);
+	output[2] |= static_cast<uint8_t>(static_cast<uint32_t>(input.battCurrentDir) << 3);
+	output[2] |= static_cast<uint8_t>(input.motorCurrentPkAvg << 4);
+
+	output[3] = 0;
+	output[3] |= static_cast<uint8_t>(input.motorCurrentPkAvg >> 4);
+	output[3] |= static_Cast<uint8_t>(static_cast<uint32_t>(input.FETtemp) << 6);
+
+
+	uint32_t convMotorRPM = input.motorRPM * 1;
+	output[4] = 0;
+	output[4] |= static_cast<uint8_t>(input.FETtemp >> 2);
+	output[4] |= (static_cast<uint32_t>(convMotorRPM) & 0x1F) << 3;
+
+	output[5] = 0;
+	output[5] |= (static_cast<uint32_t>(convMotorRPM) & 0xFE0) >> 5;
+	output[5] |= (static_cast<uint8_t>(input.PWMDuty << 7));
+
+	output[6] = 0;
+	output[6] |= static_cast<uint8_t>(input.PWMDuty >> 1);
+
+	output[7] = 0;
+	output[7] |= static_cast<uint8_t>(input.PWMDuty >> 9);
+	output[7] |= static_cast<uint8_t>(static_cast<uint32_t>(input.LeadAngle) << 1);
 }
 
 MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET MOTOR_DRIVER_RX_FRAME_0::arrayToDataPacket(uint8_t input[NUM_BYTES])
@@ -96,7 +124,27 @@ SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<MOTOR_DRIVER_RX_FRAME_0, MOTOR_DRIVER_R
 //RX Frame 1
 void MOTOR_DRIVER_RX_FRAME_1::dataPacketToArray(MOTOR_DRIVER_RX_FRAME_1_DATA_PACKET input, uint8_t output[NUM_BYTES])
 {
-	__NOP();
+	output[0] = 0;
+	output[0] |= static_cast<uint8_t>(input.powerMode);
+	output[0] |= static_cast<uint8_t>(input.MCmode) << 1;
+	output[0] |= static_cast<uint8_t>(input.AcceleratorPosition << 2);
+
+	output[1] = 0;
+	output[1] |= static_cast<uint8_t>(input.AcceleratorPosition >> 6);
+	output[1] |= static_cast<uint8_t>(input.regenVRposition << 4);
+
+	output[2] = 0;
+	output[2] |= static_cast<uint8_t>(input.regenVRposition >> 4);
+	output[2] |= static_cast<uint8_t>(static_cast<uint32_t>(input.digitSWposition) << 6);
+
+	output[3] = 0;
+	output[3] |= static_cast<uint8_t>(input.digitSWposition >> 2);
+	output[3] |= static_cast<uint8_t>(input.outTargetVal << 2);
+
+	output[4] = 0;
+	output[4] |= static_cast<uint8_t>(input.outTargetVal >> 6);
+	output[4] |= static_cast<uint8_t>(input.driveActStat << 4);
+	output[4] |= static_cast<uint8_t>(static_cast<uint8_t>(input.regenStat) << 6);
 }
 
 MOTOR_DRIVER_RX_FRAME_1_DATA_PACKET MOTOR_DRIVER_RX_FRAME_1::arrayToDataPacket(uint8_t input[NUM_BYTES])
