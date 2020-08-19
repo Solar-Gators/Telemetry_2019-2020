@@ -121,11 +121,11 @@ int main(void)
 	  }
   }
   ORION_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
-  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
+  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
   test.packSummedVoltage = 52.32;
-  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
+  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
   msg0.Send();
-  CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
+  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
   msg0.Send();
 #endif
 /***************************MC TEST*************************/

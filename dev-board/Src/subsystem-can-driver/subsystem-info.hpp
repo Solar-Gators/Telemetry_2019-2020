@@ -65,5 +65,4 @@ namespace subsystem_info
     static constexpr uint32_t MOTORRX2_RL_MSG_ID = 0x08A50225;
     static constexpr uint8_t MOTORRX2_RL_MSG_LENGTH = 5;
 };
-
 #endif //End Header Guard
