@@ -66,8 +66,8 @@ namespace CAN_TO_RF
                 {
                     case RF_ADDRESSES::MPPT:
                     {
-                        actualMessageSize = MPPT_MESSAGE_0::NUM_BYTES;
-                        MPPT_MESSAGE_0::dataPacketToArray(*static_cast<MPPT_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
+                        actualMessageSize = PROTON1_MESSAGE_0::NUM_BYTES;
+                        PROTON1_MESSAGE_0::dataPacketToArray(*static_cast<PROTON1_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
                         break;
                     }
                     case RF_ADDRESSES::BMS:

@@ -19,8 +19,8 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#include <proton1-data-module.hpp>
 #include "main.h"
-#include "mppt-data-module.hpp"
 #include "bms-data-module.hpp"
 #include "motor-driver-data-module.hpp"
 #include "gps-driver.h"
@@ -157,7 +157,7 @@ int main(void)
 #endif
 /***************************CAN TEST*************************/
 #ifdef CAN_TEST
-  MPPT_MESSAGE_0 mppt0;
+  PROTON1_MESSAGE_0 mppt0;
   mppt0.SetupReceive(nullptr);
 
   BMS_MESSAGE_0 bms0;
@@ -208,7 +208,7 @@ int main(void)
 	if(!mppt0.isFifoEmpty())
 	{
 		bool receivedSomething;
-		MPPT_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
+		PROTON1_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
 		if(receivedSomething)
 		{
 			//Nice

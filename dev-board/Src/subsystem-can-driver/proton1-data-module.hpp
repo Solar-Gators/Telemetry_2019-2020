@@ -34,7 +34,7 @@ extern "C" {
 
 //C++ Interface
 //Class Definitions
-struct MPPT_MESSAGE_0_DATA_PACKET
+struct PROTON1_MESSAGE_0_DATA_PACKET
 {
     float arrayVoltage;
     float arrayCurrent;
@@ -42,11 +42,11 @@ struct MPPT_MESSAGE_0_DATA_PACKET
     float mpptTemperature;
 };
 
-class MPPT_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<MPPT_MESSAGE_0, MPPT_MESSAGE_0_DATA_PACKET>
+class PROTON1_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<PROTON1_MESSAGE_0, PROTON1_MESSAGE_0_DATA_PACKET>
 {
 public:
 //Constructors
-MPPT_MESSAGE_0();
+PROTON1_MESSAGE_0();
 //Public Constants
 static constexpr uint8_t NUM_BYTES = 8;
 //Public Function Prototypes
@@ -55,18 +55,18 @@ static constexpr uint8_t NUM_BYTES = 8;
  * @param input: Data to be converted
  * @param output: Array that should be allocated at least @ARRAY_SIZE bytes
  */
-static void dataPacketToArray(MPPT_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES]);
+static void dataPacketToArray(PROTON1_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES]);
 /**
  * @brief This converts the encoded @input array to a data packet
  * @param input: Encoded array of @ARRAY_SIZE bytes
  * @retval A data packet
  */
-static MPPT_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_BYTES]);
+static PROTON1_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_BYTES]);
 //Public Variables
 /**
  * @brief This is useless
  */
-MPPT_MESSAGE_0_DATA_PACKET txData;
+PROTON1_MESSAGE_0_DATA_PACKET txData;
 };
 
 #endif //End Header Guard

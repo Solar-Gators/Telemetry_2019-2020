@@ -2,7 +2,7 @@
 //Description: This implements mppt-specific data storage functions
 
 //Include Files
-#include "mppt-data-module.hpp"
+#include <proton1-data-module.hpp>
 
 //Private Constants
 /*This is an example description for constants and variables. Delete this if it is unused here and copy and paste it to where it is needed. */
@@ -27,7 +27,7 @@
 //Private Function Definitions
 
 //Protected Function Definitions
-void MPPT_MESSAGE_0::dataPacketToArray(MPPT_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES])
+void PROTON1_MESSAGE_0::dataPacketToArray(PROTON1_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES])
 {
 	assert_param(output != nullptr);
 
@@ -46,11 +46,11 @@ void MPPT_MESSAGE_0::dataPacketToArray(MPPT_MESSAGE_0_DATA_PACKET input, uint8_t
 	output[7] = (static_cast<uint32_t>(convMpptTemperature) >> 8) & 0xFF;
 }
 
-MPPT_MESSAGE_0_DATA_PACKET MPPT_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_BYTES])
+PROTON1_MESSAGE_0_DATA_PACKET PROTON1_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_BYTES])
 {
 	assert_param(input != nullptr);
 
-	MPPT_MESSAGE_0_DATA_PACKET output;
+	PROTON1_MESSAGE_0_DATA_PACKET output;
 	uint32_t preArrayVoltage = (static_cast<uint32_t>(input[1]) << 8) | input[0];
 	uint32_t preArrayCurrent = (static_cast<uint32_t>(input[3]) << 8) | input[2];
 	uint32_t preBatteryVoltage = (static_cast<uint32_t>(input[5]) << 8) | input[4];
@@ -64,6 +64,6 @@ MPPT_MESSAGE_0_DATA_PACKET MPPT_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_B
 }
 
 //Public Function Definitions
-MPPT_MESSAGE_0::MPPT_MESSAGE_0():
-SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<MPPT_MESSAGE_0, MPPT_MESSAGE_0_DATA_PACKET>{subsystem_info::MPPT0_MSG_ID,subsystem_info::MPPT0_MSG_LENGTH, false, false, true}
+PROTON1_MESSAGE_0::PROTON1_MESSAGE_0():
+SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<PROTON1_MESSAGE_0, PROTON1_MESSAGE_0_DATA_PACKET>{subsystem_info::MPPT0_MSG_ID,subsystem_info::MPPT0_MSG_LENGTH, false, false, true}
 {}
