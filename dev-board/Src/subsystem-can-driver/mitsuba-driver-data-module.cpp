@@ -10,7 +10,7 @@
  * @brief This is a brief description
  */
 //Private Variables
-static uint8_t MITSUBA_COUNT = 0;
+
 //Public Constants
 
 //Public Variables
@@ -159,7 +159,7 @@ MITSUBA_DRIVER_RX_FRAME_1_DATA_PACKET MITSUBA_DRIVER_RX_FRAME_1::arrayToDataPack
 	output.AcceleratorPosition = static_cast<uint16_t>(preAccelPos);
 
 	uint32_t preRegenVRposition = static_cast<uint32_t>((input[2] & 0x3F) << 4) | (input[1] >> 4);
-	output.regenVRposition = static_cast<uint16_t>(preAccelPos);
+	output.regenVRposition = static_cast<uint16_t>(preRegenVRposition);
 
 	uint32_t preDigitSWposition = static_cast<uint32_t>((input[3] & 0x3) << 2) | (input[2] >> 6);
 	output.digitSWposition = static_cast<uint8_t>(preDigitSWposition);

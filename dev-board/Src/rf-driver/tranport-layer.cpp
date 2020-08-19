@@ -46,7 +46,7 @@ void RF_PACKET::Send()
 	this->ClearPacket();
 }
 
-bool RF_PACKET::AddToPacket(uint8_t address, uint8_t data_size, uint8_t* data)
+bool RF_PACKET::AddToPacket(uint8_t address, uint8_t id, uint8_t data_size, uint8_t* data)
 {
 	bool packetSmallEnough = false;
 	//Continue only if data size isn't 0
@@ -54,9 +54,10 @@ bool RF_PACKET::AddToPacket(uint8_t address, uint8_t data_size, uint8_t* data)
 	{
 		//Continue if the total packet length after adding 1 byte for address + 1 byte for data size + @data_size
 		//bytes for this message is less than or equal to max length.
-		if(this->packetLength + 2 + data_size <= RF_PACKET::MAX_PACKET_LENGTH)
+		if(this->packetLength + 3 + data_size <= RF_PACKET::MAX_PACKET_LENGTH)
 		{
 			this->dataPacket[(this->packetLength++) - 1] = address;
+			this->dataPacket[(this->packetLength++) - 1] = id;
 			this->dataPacket[(this->packetLength++) - 1] = data_size;
 			for(uint8_t i = 0; i < data_size; i++)
 			{

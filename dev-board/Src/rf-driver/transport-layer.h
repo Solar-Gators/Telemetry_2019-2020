@@ -43,12 +43,13 @@ RF_PACKET(USART_TypeDef* uart_instance);
 void Send();
 /**
  * @brief This adds a new message to the packet.
- * @param address: The address of the message
+ * @param address: The address of the message used in decoding on the pit side
+ * @param id: The identifier for which instance the data is from
  * @param data_size: the length in bytes of @data
  * @param data: A pointer to the data to append to the data packet
  * @retval True if there was sufficient space and the message was succesfully added, false otherwise
  */
-bool AddToPacket(uint8_t address, uint8_t data_size, uint8_t* data);
+bool AddToPacket(uint8_t address, uint8_t id, uint8_t data_size, uint8_t* data);
 /**
  * @brief This clears the current packet and resets the data
  */

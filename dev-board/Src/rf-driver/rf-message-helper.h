@@ -9,6 +9,7 @@
 //CAN include files
 #include <orion-data-module.hpp>
 #include <proton1-data-module.hpp>
+#include <mitsuba-driver-data-module.hpp>
 #include "gps-driver.h"
 
 //IMU include files
@@ -40,7 +41,9 @@ enum struct RF_TYPES
 	PROTON1,
 	ORION,
 	IMU,
-	MITSUBA,
+	MITSUBA_FRAME0,
+	MITSUBA_FRAME1,
+	MITSUBA_FRAME2,
 	//Do not edit this following line
 	END
 };
@@ -53,7 +56,7 @@ namespace IMU_TO_RF
 	 * @param tx_msg: pointer to imu message
 	 * @retval True on success false otherwise
 	 */
-	bool AddMessage(RF_PACKET* tx_packet, IMU_DATA_t* tx_msg);
+	bool AddMessage(RF_PACKET* tx_packet, uint8_t rf_id, IMU_DATA_t* tx_msg);
 }
 
 namespace CAN_TO_RF
@@ -65,7 +68,7 @@ namespace CAN_TO_RF
 	 * @param tx_msg: this is a can-specific data message that should correspond to the rf_addr chosen
 	 * @retval True on success false otherwise
 	 */
-    bool AddMessage(RF_PACKET* tx_packet, RF_TYPES rf_addr, void* tx_msg);
+    bool AddMessage(RF_PACKET* tx_packet, RF_TYPES rf_addr, uint8_t rf_id, void* tx_msg);
 }
 
 namespace GPS_TO_RF
@@ -77,7 +80,7 @@ namespace GPS_TO_RF
 	 * @param tx_msg: this is a pointer to data for a gps message
 	 * @retval True on success false otherwise
 	 */
-    bool AddMessage(RF_PACKET* tx_packet, GPS_Data_t* tx_msg);
+    bool AddMessage(RF_PACKET* tx_packet, uint8_t rf_id, GPS_Data_t* tx_msg);
 }
 //Class Definitions
 

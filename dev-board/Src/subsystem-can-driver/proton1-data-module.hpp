@@ -49,7 +49,6 @@ public:
 PROTON1_MESSAGE_0(uint16_t message_id);
 //Public Constants
 static constexpr uint8_t NUM_BYTES = 8;
-const uint8_t RF_ID;
 //Public Function Prototypes
 /**
  * @brief This function converts @input to fill the encoded @output array

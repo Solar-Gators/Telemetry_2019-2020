@@ -23,7 +23,7 @@
 namespace IMU_TO_RF
 {
 	#define PACKET_SIZE 20
-	bool AddMessage(RF_PACKET* tx_packet, IMU_DATA_t* tx_msg)
+	bool AddMessage(RF_PACKET* tx_packet, uint8_t rf_id, IMU_DATA_t* tx_msg)
 	{
 		bool success = false;
 		if(tx_packet != nullptr && tx_msg != nullptr)
@@ -43,7 +43,7 @@ namespace IMU_TO_RF
 
 			convertedData[9] = ((uint16_t)tx_msg->temp) & 0x00FF ;
 
-			success = tx_packet->AddToPacket((uint8_t)RF_TYPES::IMU, PACKET_SIZE, (uint8_t*)convertedData);
+			success = tx_packet->AddToPacket((uint8_t)RF_TYPES::IMU, rf_id, PACKET_SIZE, (uint8_t*)convertedData);
 		}
 		return success;
 	}
@@ -51,7 +51,8 @@ namespace IMU_TO_RF
 
 namespace CAN_TO_RF
 {
-    bool AddMessage(RF_PACKET* tx_packet, RF_TYPES rf_addr, void* tx_msg)
+//TODO Make this a template
+    bool AddMessage(RF_PACKET* tx_packet, RF_TYPES rf_addr, uint8_t rf_id, void* tx_msg)
     {
         bool success = false;
         if(tx_packet != nullptr && tx_msg != nullptr)
@@ -76,6 +77,24 @@ namespace CAN_TO_RF
                         ORION_MESSAGE_0::dataPacketToArray(*static_cast<ORION_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
                         break;
                     }
+                    case RF_TYPES::MITSUBA_FRAME0:
+                    {
+                    	actualMessageSize = MITSUBA_DRIVER_RX_FRAME_0::NUM_BYTES;
+                    	MITSUBA_DRIVER_RX_FRAME_0::dataPacketToArray(*static_cast<MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET*>(tx_msg), convertedData);
+                    	break;
+                    }
+                    case RF_TYPES::MITSUBA_FRAME1:
+					{
+						actualMessageSize = MITSUBA_DRIVER_RX_FRAME_1::NUM_BYTES;
+						MITSUBA_DRIVER_RX_FRAME_1::dataPacketToArray(*static_cast<MITSUBA_DRIVER_RX_FRAME_1_DATA_PACKET*>(tx_msg), convertedData);
+						break;
+					}
+                    case RF_TYPES::MITSUBA_FRAME2:
+					{
+						actualMessageSize = MITSUBA_DRIVER_RX_FRAME_2::NUM_BYTES;
+						MITSUBA_DRIVER_RX_FRAME_2::dataPacketToArray(*static_cast<MITSUBA_DRIVER_RX_FRAME_2_DATA_PACKET*>(tx_msg), convertedData);
+						break;
+					}
                     default:
                     {
                     	msgValid = false;
@@ -84,7 +103,7 @@ namespace CAN_TO_RF
                 }
                 if(msgValid)
                 {
-                    success = tx_packet->AddToPacket((uint8_t)rf_addr, actualMessageSize, convertedData);
+                    success = tx_packet->AddToPacket((uint8_t)rf_addr, rf_id, actualMessageSize, convertedData);
                 }
             }
         }
@@ -94,7 +113,7 @@ namespace CAN_TO_RF
 
 namespace GPS_TO_RF
 {
-	bool AddMessage(RF_PACKET* tx_packet, GPS_Data_t* tx_msg)
+	bool AddMessage(RF_PACKET* tx_packet, uint8_t rf_id, GPS_Data_t* tx_msg)
 	{
 		bool success = false;
         if(tx_packet != nullptr && tx_msg != nullptr)
@@ -120,7 +139,7 @@ namespace GPS_TO_RF
 			convertedData[index++] = ',';
 			addToConvertedData(convertedData, tx_msg->trueCourse);
 			//Add RF packet
-			success = tx_packet->AddToPacket((uint8_t)RF_TYPES::GPS, index, (uint8_t*)convertedData);
+			success = tx_packet->AddToPacket((uint8_t)RF_TYPES::GPS, rf_id, index, (uint8_t*)convertedData);
         }
         return success;
 	}
