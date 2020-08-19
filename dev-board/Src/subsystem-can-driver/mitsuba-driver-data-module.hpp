@@ -46,7 +46,7 @@ class MITSUBA_DRIVER_TX_RL_MESSAGE final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_
 {
 public:
 //Constructors
-MITSUBA_DRIVER_TX_RL_MESSAGE();
+MITSUBA_DRIVER_TX_RL_MESSAGE(uint32_t message_id);
 //Public Constants
 static constexpr uint8_t NUM_BYTES = 1;
 //Public Function Prototypes
@@ -86,7 +86,7 @@ class MITSUBA_DRIVER_RX_FRAME_0 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INT
 {
 public:
 //Constructors
-MITSUBA_DRIVER_RX_FRAME_0();
+MITSUBA_DRIVER_RX_FRAME_0(uint32_t message_id);
 //Public Constants
 static constexpr uint8_t NUM_BYTES = 8;
 //Public Function Prototypes
@@ -125,7 +125,7 @@ class MITSUBA_DRIVER_RX_FRAME_1 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INT
 {
 public:
 //Constructors
-MITSUBA_DRIVER_RX_FRAME_1();
+MITSUBA_DRIVER_RX_FRAME_1(uint32_t message_id);
 //Public Constants
 static constexpr uint8_t NUM_BYTES = 5;
 //Public Function Prototypes
@@ -175,7 +175,7 @@ class MITSUBA_DRIVER_RX_FRAME_2 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INT
 {
 public:
 //Constructors
-MITSUBA_DRIVER_RX_FRAME_2();
+MITSUBA_DRIVER_RX_FRAME_2(uint32_t message_id);
 //Public Constants
 static constexpr uint8_t NUM_BYTES = 5;
 //Public Function Prototypes

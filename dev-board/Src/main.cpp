@@ -165,12 +165,12 @@ int main(void)
   bms0.SetupReceive(nullptr);
   // Motor Controller
   // request message
-  MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest;
+  MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest(subsystem_info::MOTORTX_RL_MSG_ID);
   // first return message
-  MITSUBA_DRIVER_RX_FRAME_0 motorRx0;
+  MITSUBA_DRIVER_RX_FRAME_0 motorRx0(subsystem_info::MOTORRX0_RL_MSG_ID);
   motorRx0.SetupReceive(nullptr);
   // second return message
-  MITSUBA_DRIVER_RX_FRAME_2 motorRx2;
+  MITSUBA_DRIVER_RX_FRAME_2 motorRx2(subsystem_info::MOTORRX2_RL_MSG_ID);
   motorRx2.SetupReceive(nullptr);
   // Start the CAN peripheral
   SUBSYSTEM_DATA_MODULE::StartCAN();
