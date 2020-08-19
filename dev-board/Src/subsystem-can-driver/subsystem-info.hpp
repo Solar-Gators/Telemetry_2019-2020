@@ -64,5 +64,31 @@ namespace subsystem_info
 
     static constexpr uint32_t MOTORRX2_RL_MSG_ID = 0x08A50225;
     static constexpr uint8_t MOTORRX2_RL_MSG_LENGTH = 5;
+    /****************RF MESSAGE IDs*****************/
+    static constexpr uint8_t MPPT0 = 0;
+    static constexpr uint8_t MPPT1 = 1;
+    static constexpr uint8_t MPPT2 = 2;
+    static constexpr uint8_t MITSUBARX0_RL = 0;
+    static constexpr uint8_t MITSUBARX1_RL = 0;
+    static constexpr uint8_t MITSUBARX2_RL = 0;
+    static constexpr uint8_t BNO5550 = 0;
+
 };
+namespace subsystem_rf_ids
+{
+	/****************MPPT MESSAGE IDs*****************/
+    static constexpr uint8_t MPPT0 = 0;
+    static constexpr uint8_t MPPT1 = 1;
+    static constexpr uint8_t MPPT2 = 2;
+    /****************MOTOR MESSAGE IDs*****************/
+    static constexpr uint8_t MITSUBARX0_RL = 0;
+    static constexpr uint8_t MITSUBARX1_RL = 0;
+    static constexpr uint8_t MITSUBARX2_RL = 0;
+    /****************BMS MESSAGE IDs*****************/
+    static constexpr uint8_t ORION0 = 0;
+    /****************IMU MESSAGE IDs*****************/
+    static constexpr uint8_t BNO5550 = 0;
+    /****************GPS MESSAGE IDs*****************/
+    static constexpr uint8_t GPS = 0;
+}
 #endif //End Header Guard
