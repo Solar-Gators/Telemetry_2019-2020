@@ -32,14 +32,15 @@ extern "C" {
 #endif //End C Interface
 
 //C++ Interface
-enum struct RF_ADDRESSES
+enum struct RF_TYPES
 {
 	//Do not edit this following line
 	START = -1,
 	GPS,
-	MPPT,
-	BMS,
+	PROTON1,
+	ORION,
 	IMU,
+	MITSUBA,
 	//Do not edit this following line
 	END
 };
@@ -64,7 +65,7 @@ namespace CAN_TO_RF
 	 * @param tx_msg: this is a can-specific data message that should correspond to the rf_addr chosen
 	 * @retval True on success false otherwise
 	 */
-    bool AddMessage(RF_PACKET* tx_packet, RF_ADDRESSES rf_addr, void* tx_msg);
+    bool AddMessage(RF_PACKET* tx_packet, RF_TYPES rf_addr, void* tx_msg);
 }
 
 namespace GPS_TO_RF

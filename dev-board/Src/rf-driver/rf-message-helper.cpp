@@ -43,7 +43,7 @@ namespace IMU_TO_RF
 
 			convertedData[9] = ((uint16_t)tx_msg->temp) & 0x00FF ;
 
-			success = tx_packet->AddToPacket((uint8_t)RF_ADDRESSES::IMU, PACKET_SIZE, (uint8_t*)convertedData);
+			success = tx_packet->AddToPacket((uint8_t)RF_TYPES::IMU, PACKET_SIZE, (uint8_t*)convertedData);
 		}
 		return success;
 	}
@@ -51,12 +51,12 @@ namespace IMU_TO_RF
 
 namespace CAN_TO_RF
 {
-    bool AddMessage(RF_PACKET* tx_packet, RF_ADDRESSES rf_addr, void* tx_msg)
+    bool AddMessage(RF_PACKET* tx_packet, RF_TYPES rf_addr, void* tx_msg)
     {
         bool success = false;
         if(tx_packet != nullptr && tx_msg != nullptr)
         {
-            if(rf_addr > RF_ADDRESSES::START && rf_addr < RF_ADDRESSES::END)
+            if(rf_addr > RF_TYPES::START && rf_addr < RF_TYPES::END)
             {
             	bool msgValid = true;
                 static constexpr uint8_t MAX_CAN_MSG_SIZE = 8;
@@ -64,13 +64,13 @@ namespace CAN_TO_RF
                 uint8_t actualMessageSize = 0;
                 switch(rf_addr)
                 {
-                    case RF_ADDRESSES::MPPT:
+                    case RF_TYPES::PROTON1:
                     {
                         actualMessageSize = PROTON1_MESSAGE_0::NUM_BYTES;
                         PROTON1_MESSAGE_0::dataPacketToArray(*static_cast<PROTON1_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
                         break;
                     }
-                    case RF_ADDRESSES::BMS:
+                    case RF_TYPES::ORION:
                     {
                         actualMessageSize = ORION_MESSAGE_0::NUM_BYTES;
                         ORION_MESSAGE_0::dataPacketToArray(*static_cast<ORION_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
@@ -120,7 +120,7 @@ namespace GPS_TO_RF
 			convertedData[index++] = ',';
 			addToConvertedData(convertedData, tx_msg->trueCourse);
 			//Add RF packet
-			success = tx_packet->AddToPacket((uint8_t)RF_ADDRESSES::GPS, index, (uint8_t*)convertedData);
+			success = tx_packet->AddToPacket((uint8_t)RF_TYPES::GPS, index, (uint8_t*)convertedData);
         }
         return success;
 	}
