@@ -7,8 +7,8 @@
 
 //Include Files
 //CAN include files
+#include <orion-data-module.hpp>
 #include <proton1-data-module.hpp>
-#include "bms-data-module.hpp"
 #include "gps-driver.h"
 
 //IMU include files

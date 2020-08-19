@@ -20,9 +20,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <mitsuba-driver-data-module.hpp>
+#include <orion-data-module.hpp>
 #include <proton1-data-module.hpp>
 #include "main.h"
-#include "bms-data-module.hpp"
 #include "gps-driver.h"
 #include "rf-driver/rf-message-helper.h"
 #include "rf-driver/transport-layer.h"
@@ -120,7 +120,7 @@ int main(void)
 		  msg0.Send();
 	  }
   }
-  BMS_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
+  ORION_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
   CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
   test.packSummedVoltage = 52.32;
   CAN_TO_RF::AddMessage(&msg0, RF_ADDRESSES::BMS, &test);
@@ -160,7 +160,7 @@ int main(void)
   PROTON1_MESSAGE_0 mppt0;
   mppt0.SetupReceive(nullptr);
 
-  BMS_MESSAGE_0 bms0;
+  ORION_MESSAGE_0 bms0;
   bms0.SetupReceive(nullptr);
   // Motor Controller
   // request message
@@ -218,7 +218,7 @@ int main(void)
 	if(!bms0.isFifoEmpty())
 	{
 		bool receivedSomething;
-		BMS_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
+		ORION_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
 		if(receivedSomething)
 		{
 			//Nice

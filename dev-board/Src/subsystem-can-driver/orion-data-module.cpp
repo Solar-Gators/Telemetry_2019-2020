@@ -2,7 +2,7 @@
 //Description: This implements bms-specific data storage functions
 
 //Include Files
-#include "bms-data-module.hpp"
+#include <orion-data-module.hpp>
 
 //Private Constants
 /*This is an example description for constants and variables. Delete this if it is unused here and copy and paste it to where it is needed. */
@@ -27,7 +27,7 @@
 //Private Function Definitions
 
 //Protected Function Definitions
-void BMS_MESSAGE_0::dataPacketToArray(BMS_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES])
+void ORION_MESSAGE_0::dataPacketToArray(ORION_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES])
 {
 	float convLowCellVoltage = input.lowCellVoltage * 10000;
 	float convHighCellVoltage = input.highCellVoltage * 10000;
@@ -44,9 +44,9 @@ void BMS_MESSAGE_0::dataPacketToArray(BMS_MESSAGE_0_DATA_PACKET input, uint8_t o
 	output[7] = (static_cast<uint32_t>(convPackSummedVoltage) >> 8) & 0xFF;
 }
 
-BMS_MESSAGE_0_DATA_PACKET BMS_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_BYTES])
+ORION_MESSAGE_0_DATA_PACKET ORION_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_BYTES])
 {
-	BMS_MESSAGE_0_DATA_PACKET output;
+	ORION_MESSAGE_0_DATA_PACKET output;
 	uint32_t preLCV = (static_cast<uint32_t>(input[1]) << 8) | input[0];
 	uint32_t preHCV = (static_cast<uint32_t>(input[3]) << 8) | input[2];
 	uint32_t preACV = (static_cast<uint32_t>(input[5]) << 8) | input[4];
@@ -61,7 +61,7 @@ BMS_MESSAGE_0_DATA_PACKET BMS_MESSAGE_0::arrayToDataPacket(uint8_t input[NUM_BYT
 }
 
 //Public Function Definitions
-BMS_MESSAGE_0::BMS_MESSAGE_0():
-SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<BMS_MESSAGE_0, BMS_MESSAGE_0_DATA_PACKET>{subsystem_info::BMS0_MSG_ID,subsystem_info::BMS0_MSG_LENGTH, false, false, false}
+ORION_MESSAGE_0::ORION_MESSAGE_0():
+SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<ORION_MESSAGE_0, ORION_MESSAGE_0_DATA_PACKET>{subsystem_info::BMS0_MSG_ID,subsystem_info::BMS0_MSG_LENGTH, false, false, false}
 {}
 

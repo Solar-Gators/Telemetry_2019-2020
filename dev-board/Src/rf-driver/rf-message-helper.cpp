@@ -72,8 +72,8 @@ namespace CAN_TO_RF
                     }
                     case RF_ADDRESSES::BMS:
                     {
-                        actualMessageSize = BMS_MESSAGE_0::NUM_BYTES;
-                        BMS_MESSAGE_0::dataPacketToArray(*static_cast<BMS_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
+                        actualMessageSize = ORION_MESSAGE_0::NUM_BYTES;
+                        ORION_MESSAGE_0::dataPacketToArray(*static_cast<ORION_MESSAGE_0_DATA_PACKET*>(tx_msg), convertedData);
                         break;
                     }
                     default:

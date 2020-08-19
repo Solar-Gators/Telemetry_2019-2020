@@ -34,7 +34,7 @@ extern "C" {
 
 //C++ Interface
 //Class Definitions
-struct BMS_MESSAGE_0_DATA_PACKET
+struct ORION_MESSAGE_0_DATA_PACKET
 {
     float lowCellVoltage;
     float highCellVoltage;
@@ -42,11 +42,11 @@ struct BMS_MESSAGE_0_DATA_PACKET
     float packSummedVoltage;
 };
 
-class BMS_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<BMS_MESSAGE_0, BMS_MESSAGE_0_DATA_PACKET>
+class ORION_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<ORION_MESSAGE_0, ORION_MESSAGE_0_DATA_PACKET>
 {
 public:
 //Constructors
-BMS_MESSAGE_0();
+ORION_MESSAGE_0();
 //Public Constants
 static constexpr uint8_t NUM_BYTES = 8;
 //Public Function Prototypes
@@ -55,18 +55,18 @@ static constexpr uint8_t NUM_BYTES = 8;
  * @param input: Data to be converted
  * @param output: Array that should be allocated at least @ARRAY_SIZE bytes
  */
-static void dataPacketToArray(BMS_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES]);
+static void dataPacketToArray(ORION_MESSAGE_0_DATA_PACKET input, uint8_t output[NUM_BYTES]);
 /**
  * @brief This converts the encoded @input array to a data packet
  * @param input: Encoded array of @ARRAY_SIZE bytes
  * @retval A data packet
  */
-static BMS_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_BYTES]);
+static ORION_MESSAGE_0_DATA_PACKET arrayToDataPacket(uint8_t input[NUM_BYTES]);
 //Public Variables
 /**
  * @brief Fill this out prior to calling SendData()
  */
-BMS_MESSAGE_0_DATA_PACKET txData;
+ORION_MESSAGE_0_DATA_PACKET txData;
 };
 
 #endif //End Header Guard
