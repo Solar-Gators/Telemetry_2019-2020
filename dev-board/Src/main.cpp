@@ -19,10 +19,10 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#include <mitsuba-driver-data-module.hpp>
 #include <proton1-data-module.hpp>
 #include "main.h"
 #include "bms-data-module.hpp"
-#include "motor-driver-data-module.hpp"
 #include "gps-driver.h"
 #include "rf-driver/rf-message-helper.h"
 #include "rf-driver/transport-layer.h"
@@ -130,9 +130,9 @@ int main(void)
 #endif
 /***************************MC TEST*************************/
 #ifdef MC_TEST
-  MOTOR_DRIVER_TX_RL_MESSAGE mcRequest;
-  MOTOR_DRIVER_RX_FRAME_0 motorRx0;
-  MOTOR_DRIVER_RX_FRAME_2 motorRx2;
+  MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest;
+  MITSUBA_DRIVER_RX_FRAME_0 motorRx0;
+  MITSUBA_DRIVER_RX_FRAME_2 motorRx2;
   motorRx0.SetupReceive(nullptr);
   motorRx2.SetupReceive(nullptr);
   SUBSYSTEM_DATA_MODULE::StartCAN();
@@ -144,7 +144,7 @@ int main(void)
 	  if(!motorRx0.isFifoEmpty())
 	  {
 		  bool receivedSomething;
-		  MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
+		  MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
 		  if(receivedSomething)
 		  {
 
@@ -164,12 +164,12 @@ int main(void)
   bms0.SetupReceive(nullptr);
   // Motor Controller
   // request message
-  MOTOR_DRIVER_TX_RL_MESSAGE mcRequest;
+  MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest;
   // first return message
-  MOTOR_DRIVER_RX_FRAME_0 motorRx0;
+  MITSUBA_DRIVER_RX_FRAME_0 motorRx0;
   motorRx0.SetupReceive(nullptr);
   // second return message
-  MOTOR_DRIVER_RX_FRAME_2 motorRx2;
+  MITSUBA_DRIVER_RX_FRAME_2 motorRx2;
   motorRx2.SetupReceive(nullptr);
   // Start the CAN peripheral
   SUBSYSTEM_DATA_MODULE::StartCAN();
@@ -188,7 +188,7 @@ int main(void)
 	if(!motorRx0.isFifoEmpty())
 	{
 		bool receivedSomething;
-		MOTOR_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
+		MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
 		if(receivedSomething)
 		{
 			//Nice
@@ -198,7 +198,7 @@ int main(void)
 	if(!motorRx2.isFifoEmpty())
 	{
 		bool receivedSomething;
-		MOTOR_DRIVER_RX_FRAME_2_DATA_PACKET motorPacket = motorRx2.GetOldestDataPacket(&receivedSomething);
+		MITSUBA_DRIVER_RX_FRAME_2_DATA_PACKET motorPacket = motorRx2.GetOldestDataPacket(&receivedSomething);
 		if(receivedSomething)
 		{
 			//Nice
