@@ -154,6 +154,7 @@ void SUBSYSTEM_DATA_MODULE::SetupReceive(subsystemReceiveCallback rx_func_ptr)
     if(!isReceiving)
     {
         bool success = SUBSYSTEM_DATA_MODULE::rxModulesTree.AddNode(this);
+        // TODO figure out a way to make this better
 		#ifdef DEBUG
         	if(!success)
         	{
