@@ -56,7 +56,7 @@ public:
      * @brief This adds a new node of element new_element to the binary tree if there is room left
      * @param new_element: the element to add
      */
-    void AddNode(SUBSYSTEM_DATA_MODULE* new_element);
+    bool AddNode(SUBSYSTEM_DATA_MODULE* new_element);
     /**
      * @brief This finds and returns an element that matches the key
      * @param message_id_key: the key to match

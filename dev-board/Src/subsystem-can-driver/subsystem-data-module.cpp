@@ -153,8 +153,14 @@ void SUBSYSTEM_DATA_MODULE::SetupReceive(subsystemReceiveCallback rx_func_ptr)
     //Add node to receive tree if not already receiving
     if(!isReceiving)
     {
-        SUBSYSTEM_DATA_MODULE::rxModulesTree.AddNode(this);
-        //TODO: Fix We are currently receiving even if add Node fails.
+        bool success = SUBSYSTEM_DATA_MODULE::rxModulesTree.AddNode(this);
+		#ifdef DEBUG
+        	if(!success)
+        	{
+        		__BKPT(0);
+        	}
+			  // If you are at this breakpoint then your number of messages is incorrect
+		#endif
         isReceiving = true;
     } 
 }

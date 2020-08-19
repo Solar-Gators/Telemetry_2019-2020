@@ -19,13 +19,15 @@ RX_BINARY_TREE::RX_BINARY_TREE():
 root{nullptr}, currentTreeSize{0}
 {}
 
-void RX_BINARY_TREE::AddNode(SUBSYSTEM_DATA_MODULE* new_element)
+bool RX_BINARY_TREE::AddNode(SUBSYSTEM_DATA_MODULE* new_element)
 {
     //Only insert a node if there is room and we have a valid message id
     if(currentTreeSize < subsystem_info::NUM_MESSAGES && new_element != nullptr)
     {
         root = insert(root,new_element);
+        return true;
     }
+    return false;
 }
 
 SUBSYSTEM_DATA_MODULE* RX_BINARY_TREE::FindElement(uint32_t message_id_key)
