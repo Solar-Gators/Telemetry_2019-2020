@@ -157,10 +157,11 @@ int main(void)
 #endif
 /***************************CAN TEST*************************/
 #ifdef CAN_TEST
-  PROTON1_MESSAGE_0 mppt0;
+  PROTON1_MESSAGE_0 mppt0(subsystem_info::MPPT0_MSG_ID);
   mppt0.SetupReceive(nullptr);
-
-  ORION_MESSAGE_0 bms0;
+  PROTON1_MESSAGE_0 mppt1(subsystem_info::MPPT0_MSG_ID + 1);
+  mppt1.SetupReceive(nullptr);
+  ORION_MESSAGE_0 bms0(subsystem_info::BMS0_MSG_ID);
   bms0.SetupReceive(nullptr);
   // Motor Controller
   // request message

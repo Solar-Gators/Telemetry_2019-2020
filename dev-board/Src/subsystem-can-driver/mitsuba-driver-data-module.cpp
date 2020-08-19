@@ -10,7 +10,7 @@
  * @brief This is a brief description
  */
 //Private Variables
-
+static uint8_t MITSUBA_COUNT = 0;
 //Public Constants
 
 //Public Variables

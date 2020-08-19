@@ -10,7 +10,7 @@
  * @brief This is a brief description
  */
 //Private Variables
-
+static uint8_t PROTON1_COUNT = 0;
 //Public Constants
 
 //Public Variables
@@ -64,6 +64,7 @@ PROTON1_MESSAGE_0_DATA_PACKET PROTON1_MESSAGE_0::arrayToDataPacket(uint8_t input
 }
 
 //Public Function Definitions
-PROTON1_MESSAGE_0::PROTON1_MESSAGE_0():
-SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<PROTON1_MESSAGE_0, PROTON1_MESSAGE_0_DATA_PACKET>{subsystem_info::MPPT0_MSG_ID,subsystem_info::MPPT0_MSG_LENGTH, false, false, true}
+PROTON1_MESSAGE_0::PROTON1_MESSAGE_0(uint16_t canAddress):
+SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<PROTON1_MESSAGE_0, PROTON1_MESSAGE_0_DATA_PACKET>{canAddress,subsystem_info::MPPT0_MSG_LENGTH, false, false, true},
+RF_ID{PROTON1_COUNT++}
 {}

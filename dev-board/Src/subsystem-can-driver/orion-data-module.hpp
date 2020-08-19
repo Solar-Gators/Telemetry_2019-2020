@@ -46,7 +46,7 @@ class ORION_MESSAGE_0 final: public SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<ORI
 {
 public:
 //Constructors
-ORION_MESSAGE_0();
+ORION_MESSAGE_0(uint16_t canAddress);
 //Public Constants
 static constexpr uint8_t NUM_BYTES = 8;
 //Public Function Prototypes
