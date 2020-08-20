@@ -66,13 +66,16 @@ static void MX_USART2_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 //Testing Defines
 //#define GPS_TEST
 //#define IMU_TEST
-#define CAN_TEST
+//#define CAN_TEST
 //#define MC_TEST
+#define CAN_RF_TEST
+#include <string.h>
+#include <stdio.h>
+/* USER CODE END 0 */
+
 
 /**
   * @brief  The application entry point.
@@ -159,8 +162,6 @@ int main(void)
 #ifdef CAN_TEST
   PROTON1_MESSAGE_0 mppt0(subsystem_info::MPPT0_MSG_ID);
   mppt0.SetupReceive(nullptr);
-  PROTON1_MESSAGE_0 mppt1(subsystem_info::MPPT0_MSG_ID + 1);
-  mppt1.SetupReceive(nullptr);
   ORION_MESSAGE_0 bms0(subsystem_info::BMS0_MSG_ID);
   bms0.SetupReceive(nullptr);
   // Motor Controller
@@ -230,7 +231,88 @@ int main(void)
     /* USER CODE BEGIN 3 */
   }
 #endif
+/***************************CAN RF TEST*************************/
+#ifdef CAN_RF_TEST
+  // Setup RF module
+  RF_PACKET msg0{huart2.Instance};
+  // MPPT
+  PROTON1_MESSAGE_0 mppt0(subsystem_info::MPPT0_MSG_ID);
+  mppt0.SetupReceive(nullptr);
+  ORION_MESSAGE_0 bms0(subsystem_info::BMS0_MSG_ID);
+  bms0.SetupReceive(nullptr);
+  // Motor Controller
+  // request message
+  MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest(subsystem_info::MOTORTX_RL_MSG_ID);
+  // first return message
+  MITSUBA_DRIVER_RX_FRAME_0 motorRx0(subsystem_info::MOTORRX0_RL_MSG_ID);
+  motorRx0.SetupReceive(nullptr);
+  // second return message
+  MITSUBA_DRIVER_RX_FRAME_2 motorRx2(subsystem_info::MOTORRX2_RL_MSG_ID);
+  motorRx2.SetupReceive(nullptr);
+  // Start the CAN peripheral
+  SUBSYSTEM_DATA_MODULE::StartCAN();
+  // request data from the motor controller
+  mcRequest.txData = { 1, 0, 1 };
+  mcRequest.SendData();
+  // request data from the mppt
+  mppt0.SendData();
+  /* USER CODE END 2 */
 
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
+  {
+	/* USER CODE END WHILE */
+	// check to see if we have gotten any messages
+	if(!motorRx0.isFifoEmpty())
+	{
+		bool receivedSomething;
+		MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
+		if(receivedSomething)
+		{
+			//Nice
+			float l = motorPacket.motorRPM;
+			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::MITSUBA_FRAME0, subsystem_rf_ids::MITSUBARX0_RL, &motorPacket);
+
+		}
+	}
+	if(!motorRx2.isFifoEmpty())
+	{
+		bool receivedSomething;
+		MITSUBA_DRIVER_RX_FRAME_2_DATA_PACKET motorPacket = motorRx2.GetOldestDataPacket(&receivedSomething);
+		if(receivedSomething)
+		{
+			//Nice
+			float l = motorPacket.accelPosError;
+			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::MITSUBA_FRAME2, subsystem_rf_ids::MITSUBARX2_RL, &motorPacket);
+		}
+	}
+	if(!mppt0.isFifoEmpty())
+	{
+		bool receivedSomething;
+		PROTON1_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
+		if(receivedSomething)
+		{
+			//Nice
+			float vin = mpptPacket.arrayVoltage;
+			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::PROTON1, subsystem_rf_ids::MPPT0, &mpptPacket);
+		}
+	}
+	if(!bms0.isFifoEmpty())
+	{
+		bool receivedSomething;
+		ORION_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
+		if(receivedSomething)
+		{
+			//Nice
+			float voltH = bmsPacket.highCellVoltage;
+			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, subsystem_rf_ids::ORION0, &bmsPacket);
+		}
+	}
+	msg0.Send();
+    /* USER CODE BEGIN 3 */
+  }
+#endif
   /***************************IMU TEST*************************/
 #ifdef IMU_TEST
   RF_PACKET msg0{huart2.Instance};
