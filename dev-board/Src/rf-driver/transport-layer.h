@@ -54,6 +54,11 @@ bool AddToPacket(uint8_t address, uint8_t id, uint8_t data_size, uint8_t* data);
  * @brief This clears the current packet and resets the data
  */
 void ClearPacket(void);
+/*
+ * @brief This checks to see if there are no messages in the packet
+ * @retval True if packet is empty
+ */
+bool isPacketEmpty(void);
 //Public Constants
 
 //Public Variable

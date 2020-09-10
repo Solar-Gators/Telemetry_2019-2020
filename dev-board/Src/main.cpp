@@ -309,7 +309,8 @@ int main(void)
 			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, subsystem_rf_ids::ORION0, &bmsPacket);
 		}
 	}
-	msg0.Send();
+	if(!msg0.isPacketEmpty())
+		msg0.Send();
     /* USER CODE BEGIN 3 */
   }
 #endif

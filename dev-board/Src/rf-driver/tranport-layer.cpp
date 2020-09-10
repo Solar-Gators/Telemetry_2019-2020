@@ -75,3 +75,12 @@ void RF_PACKET::ClearPacket(void)
 	this->packetLength = RF_PACKET::MIN_PACKET_LENGTH;
 	this->numMessagesInPacket = 0;
 }
+
+bool RF_PACKET::isPacketEmpty(void)
+{
+	if(this->numMessagesInPacket == 0)
+	{
+		return true;
+	}
+	return false;
+}
