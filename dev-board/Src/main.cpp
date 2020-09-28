@@ -23,6 +23,7 @@
 #include <orion-data-module.hpp>
 #include <proton1-data-module.hpp>
 #include "main.h"
+#include "cmsis_os.h"
 #include "gps-driver.h"
 #include "rf-driver/rf-message-helper.h"
 #include "rf-driver/transport-layer.h"
@@ -51,6 +52,13 @@
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart1;
+osThreadId GPS_RequestHandle;
+osThreadId MC_RequestHandle;
+osThreadId CAN_RequestHandle;
+osThreadId RF_RequestHandle;
+osThreadId IMU_RequestHandle;
+osMutexId RF_FIFOHandle;
+
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -60,6 +68,12 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
+void Start_MC_Request(void const * argument);
+void Start_GPS_Request(void const * argument);
+void Start_IMU_Request(void const * argument);
+void Start_CAN_Request(void const * argument);
+void Start_RF_Request(void const * argument);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -67,10 +81,10 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 //Testing Defines
-//#define GPS_TEST
-//#define IMU_TEST
-//#define CAN_TEST
-//#define MC_TEST
+#define GPS_TEST
+#define IMU_TEST
+#define CAN_TEST
+#define MC_TEST
 #define CAN_RF_TEST
 #include <string.h>
 #include <stdio.h>
@@ -108,131 +122,201 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
+
   /* USER CODE BEGIN 2 */
+
+  /* Create the mutex(es) */
+  /* definition and creation of RF_FIFO */
+  osMutexDef(RF_FIFO);
+  RF_FIFOHandle = osMutexCreate(osMutex(RF_FIFO));
   /***************************GPS/RF TEST*************************/
 #ifdef GPS_TEST
-  RF_PACKET msg0{huart2.Instance};
-  GPS_init(huart1.Instance);
-  GPS_startReception();
-  while(1)
-  {
-	  if(GPS_isDataAvailable())
-	  {
-		  GPS_Data_t data = GPS_getLatestData();
-		  GPS_TO_RF::AddMessage(&msg0, &data);
-		  msg0.Send();
-	  }
-  }
-  ORION_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
-  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
-  test.packSummedVoltage = 52.32;
-  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
-  msg0.Send();
-  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
-  msg0.Send();
+  osThreadDef(GPS_Request, Start_GPS_Request, osPriorityNormal, 0, 128);
+  GPS_RequestHandle = osThreadCreate(osThread(GPS_Request), NULL);
 #endif
 /***************************MC TEST*************************/
 #ifdef MC_TEST
-  MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest;
-  MITSUBA_DRIVER_RX_FRAME_0 motorRx0;
-  MITSUBA_DRIVER_RX_FRAME_2 motorRx2;
-  motorRx0.SetupReceive(nullptr);
-  motorRx2.SetupReceive(nullptr);
-  SUBSYSTEM_DATA_MODULE::StartCAN();
-  mcRequest.txData = { 1, 1, 1 };
-  mcRequest.SendData();
-  int i=0;
-  while(1)
-  {
-	  if(!motorRx0.isFifoEmpty())
-	  {
-		  bool receivedSomething;
-		  MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
-		  if(receivedSomething)
-		  {
-
-			  //Nice
-			  float l = motorPacket.motorRPM;
-	  }
-	  }
-  }
-
+  osThreadDef(MC_Request, Start_MC_Request, osPriorityNormal, 0, 128);
+  MC_RequestHandle = osThreadCreate(osThread(MC_Request), NULL);
 #endif
 /***************************CAN TEST*************************/
 #ifdef CAN_TEST
-  PROTON1_MESSAGE_0 mppt0(subsystem_info::MPPT0_MSG_ID);
-  mppt0.SetupReceive(nullptr);
-  ORION_MESSAGE_0 bms0(subsystem_info::BMS0_MSG_ID);
-  bms0.SetupReceive(nullptr);
-  // Motor Controller
-  // request message
-  MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest(subsystem_info::MOTORTX_RL_MSG_ID);
-  // first return message
-  MITSUBA_DRIVER_RX_FRAME_0 motorRx0(subsystem_info::MOTORRX0_RL_MSG_ID);
-  motorRx0.SetupReceive(nullptr);
-  // second return message
-  MITSUBA_DRIVER_RX_FRAME_2 motorRx2(subsystem_info::MOTORRX2_RL_MSG_ID);
-  motorRx2.SetupReceive(nullptr);
-  // Start the CAN peripheral
-  SUBSYSTEM_DATA_MODULE::StartCAN();
-  // request data from the motor controller
-  mcRequest.txData = { 1, 0, 1 };
-  mcRequest.SendData();
-  mppt0.SendData();
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-	/* USER CODE END WHILE */
-	// check to see if we have gotten any messages
-	if(!motorRx0.isFifoEmpty())
-	{
-		bool receivedSomething;
-		MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
-		if(receivedSomething)
-		{
-			//Nice
-			float l = motorPacket.motorRPM;
-		}
-	}
-	if(!motorRx2.isFifoEmpty())
-	{
-		bool receivedSomething;
-		MITSUBA_DRIVER_RX_FRAME_2_DATA_PACKET motorPacket = motorRx2.GetOldestDataPacket(&receivedSomething);
-		if(receivedSomething)
-		{
-			//Nice
-			float l = motorPacket.accelPosError;
-		}
-	}
-	if(!mppt0.isFifoEmpty())
-	{
-		bool receivedSomething;
-		PROTON1_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
-		if(receivedSomething)
-		{
-			//Nice
-			float vin = mpptPacket.arrayVoltage;
-		}
-	}
-	if(!bms0.isFifoEmpty())
-	{
-		bool receivedSomething;
-		ORION_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
-		if(receivedSomething)
-		{
-			//Nice
-			float voltH = bmsPacket.highCellVoltage;
-		}
-	}
-
-    /* USER CODE BEGIN 3 */
-  }
+  osThreadDef(CAN_Request, Start_CAN_Request, osPriorityNormal, 0, 128);
+  CAN_RequestHandle = osThreadCreate(osThread(CAN_Request), NULL);
 #endif
 /***************************CAN RF TEST*************************/
 #ifdef CAN_RF_TEST
+  osThreadDef(RF_Request, Start_RF_Request, osPriorityNormal, 0, 128);
+  RF_RequestHandle = osThreadCreate(osThread(RF_Request), NULL);
+#endif
+  /***************************IMU TEST*************************/
+#ifdef IMU_TEST
+  osThreadDef(IMU_Request, Start_IMU_Request, osPriorityNormal, 0, 128);
+  IMU_RequestHandle = osThreadCreate(osThread(IMU_Request), NULL);
+
+#endif
+
+  /* Start scheduler */
+  osKernelStart();
+  //Infinite Loop
+  while(1);
+  /* USER CODE END 3 */
+}
+
+#ifdef GPS_TEST
+
+  /* USER CODE BEGIN Header_Start_MC_Request */
+  /**
+  * @brief Function implementing the MC_Request thread.
+  * @param argument: Not used
+  * @retval None
+  */
+  /* USER CODE END Header_Start_MC_Request */
+  void Start_GPS_Request(void const * argument)
+  {
+    /* USER CODE BEGIN Start_MC_Request */
+    /* Infinite loop */
+	RF_PACKET msg0{huart2.Instance};
+	GPS_init(huart1.Instance);
+	GPS_startReception();
+    for(;;)
+    {
+  	  if(GPS_isDataAvailable())
+  	  {
+  		  GPS_Data_t data = GPS_getLatestData();
+  		  GPS_TO_RF::AddMessage(&msg0,333, &data); //TODO!! missing rf_id
+  		  msg0.Send();
+  	  }
+      osDelay(1);
+    }
+    //TODO! NEVER RUNS?!
+    ORION_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
+    CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION,334, &test); //TODO!! missing rf_id
+    test.packSummedVoltage = 52.32;
+    CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION,335, &test); //TODO!! missing rf_id
+    msg0.Send();void StartDefaultTask(void const * argument);
+
+    CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION,555, &test); //TODO!! missing rf_id
+    msg0.Send();
+    /* USER CODE END Start_MC_Request */
+  }
+#endif
+#ifdef CAN_TEST
+  /* USER CODE BEGIN Header_Start_MC_Request */
+  /**
+  * @brief Function implementing the MC_Request thread.
+  * @param argument: Not used
+  * @retval None
+  */
+  /* USER CODE END Header_Start_MC_Request */
+  void Start_MC_Request(void const * argument)
+  {
+    /* USER CODE BEGIN Start_MC_Request */
+	MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest(88); //TODO!!! message_id ID?
+	MITSUBA_DRIVER_RX_FRAME_0 motorRx0(387); //TODO: message_id ID?!
+	MITSUBA_DRIVER_RX_FRAME_2 motorRx2(102); //TODO: message_id!!
+	motorRx0.SetupReceive(nullptr);
+	motorRx2.SetupReceive(nullptr);
+	SUBSYSTEM_DATA_MODULE::StartCAN();
+	mcRequest.txData = { 1, 1, 1 };
+	mcRequest.SendData();
+	int i=0;
+    /* Infinite loop */
+    for(;;)
+    {
+  	  if(!motorRx0.isFifoEmpty())
+  	  {
+  		  bool receivedSomething;
+  		  MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
+  		  if(receivedSomething)
+  		  {
+
+  			  //Nice
+  			  float l = motorPacket.motorRPM;
+  	  }
+  	  }
+      osDelay(1);
+    }
+    /* USER CODE END Start_MC_Request */
+  }
+#endif
+
+#ifdef CAN_TEST
+
+  void Start_CAN_Request(void const * argument)
+  {
+    /* USER CODE BEGIN Start_MC_Request */
+	PROTON1_MESSAGE_0 mppt0(subsystem_info::MPPT0_MSG_ID);
+	mppt0.SetupReceive(nullptr);
+	ORION_MESSAGE_0 bms0(subsystem_info::BMS0_MSG_ID);
+	bms0.SetupReceive(nullptr);
+	// Motor Controller
+	// request message
+	MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest(subsystem_info::MOTORTX_RL_MSG_ID);
+	// first return message
+	MITSUBA_DRIVER_RX_FRAME_0 motorRx0(subsystem_info::MOTORRX0_RL_MSG_ID);
+	motorRx0.SetupReceive(nullptr);
+	// second return message
+	MITSUBA_DRIVER_RX_FRAME_2 motorRx2(subsystem_info::MOTORRX2_RL_MSG_ID);
+	motorRx2.SetupReceive(nullptr);
+	// Start the CAN peripheral
+	SUBSYSTEM_DATA_MODULE::StartCAN();
+	// request data from the motor controller
+	mcRequest.txData = { 1, 0, 1 };
+	mcRequest.SendData();
+	mppt0.SendData();
+    /* Infinite loop */
+    for(;;)
+    {
+    	if(!motorRx0.isFifoEmpty())
+    	{
+    		bool receivedSomething;
+    		MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
+    		if(receivedSomething)
+    		{
+    			//Nice
+    			float l = motorPacket.motorRPM;
+    		}
+    	}
+    	if(!motorRx2.isFifoEmpty())
+    	{
+    		bool receivedSomething;
+    		MITSUBA_DRIVER_RX_FRAME_2_DATA_PACKET motorPacket = motorRx2.GetOldestDataPacket(&receivedSomething);
+    		if(receivedSomething)
+    		{
+    			//Nice
+    			float l = motorPacket.accelPosError;
+    		}
+    	}
+    	if(!mppt0.isFifoEmpty())
+    	{
+    		bool receivedSomething;
+    		PROTON1_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
+    		if(receivedSomething)
+    		{
+    			//Nice
+    			float vin = mpptPacket.arrayVoltage;
+    		}
+    	}
+    	if(!bms0.isFifoEmpty())
+    	{
+    		bool receivedSomething;
+    		ORION_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
+    		if(receivedSomething)
+    		{
+    			//Nice
+    			float voltH = bmsPacket.highCellVoltage;
+    		}
+    	}
+      osDelay(1);
+    }
+    /* USER CODE END Start_MC_Request */
+  }
+#endif
+
+#ifdef CAN_RF_TEST
+  void Start_RF_Request(void const * argument)
+  {
   // Setup RF module
   RF_PACKET msg0{huart2.Instance};
   // MPPT
@@ -260,7 +344,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
+  for(;;)
   {
 	/* USER CODE END WHILE */
 	// check to see if we have gotten any messages
@@ -312,26 +396,36 @@ int main(void)
 	if(!msg0.isPacketEmpty())
 		msg0.Send();
     /* USER CODE BEGIN 3 */
+	osDelay(1);
+  }
   }
 #endif
-  /***************************IMU TEST*************************/
+
 #ifdef IMU_TEST
-  RF_PACKET msg0{huart2.Instance};
-  bno055Init();
-  //IMU Example
-  while(1)
+  /* USER CODE BEGIN Header_Start_MC_Request */
+  /**
+  * @brief Function implementing the MC_Request thread.
+  * @param argument: Not used
+  * @retval None
+  */
+  /* USER CODE END Header_Start_MC_Request */
+  void Start_IMU_Request(void const * argument)
   {
-	  IMU_DATA_t imuData = bno055GetPacket();
-	  IMU_TO_RF::AddMessage(&msg0, &imuData);
-	  msg0.Send();
+    /* USER CODE BEGIN Start_MC_Request */
+	RF_PACKET msg0{huart2.Instance};
+//	uint8_t rf_id=123;
+	bno055Init();
+    /* Infinite loop */
+    for(;;)
+    {
+  	  IMU_DATA_t imuData = bno055GetPacket();
+  	  IMU_TO_RF::AddMessage(&msg0, 123, &imuData); //TODO!! RF_ID!!
+  	  msg0.Send();
+      osDelay(1);
+    }
+    /* USER CODE END Start_MC_Request */
   }
 #endif
-
-  //Infinite Loop
-  while(1);
-  /* USER CODE END 3 */
-}
-
 
 /**
   * @brief System Clock Configuration
@@ -364,7 +458,9 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
+//  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_USART2;
+  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
@@ -423,7 +519,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 57600;
+  huart2.Init.BaudRate = 38400;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
@@ -477,6 +573,27 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM1 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM1) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

@@ -194,7 +194,7 @@ void SUBSYSTEM_DATA_MODULE::StartCAN(void)
 {
 	//Initialize CAN itself
 	hcan.Instance = CAN;
-	hcan.Init.Prescaler = 6;
+	hcan.Init.Prescaler = 6; //16?? TODO!!
 	hcan.Init.Mode = CAN_MODE_NORMAL;
 //	hcan.Init.Mode = CAN_MODE_LOOPBACK;
 	hcan.Init.SyncJumpWidth = CAN_SJW_1TQ;
