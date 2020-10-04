@@ -1,6 +1,5 @@
 # Telemetry_2019-2020
-## dev-board Folder
-This folder holds all the source code for the project for the Telemetry board from 2019-2020. There are also several drivers that were created and can be found in the nested directories in the Src folder. Examples of how to use all of the drivers can be found in 'Src/main.cpp'
+This readme is a summary of the different components of this repo. For a more detailed persepective please check out [the docs](https://docs.ufsolargators.org/en/latest/index.html).
 ### CAN Driver
 This can be found in the 'subsystem-can-driver' which contains all of the header files for the CAN API. An example of how to use the CAN-driver can be found in 'Src/main.cpp' and documentation for all of the functions can be found in their respective header files. **Important** no external code is needed in order to get the CAN driver to run, the CAN driver handles all of the CAN peripheral initialization and interrupt handling that would normally be found in 'main.cpp', 'stm32f0xx_hal_msp.c', and 'stm32f0xx_it.c'. Therfore **delete any code related to CAN in these files.**
 #### Importing the CAN Driver to your STM32 project
@@ -17,5 +16,3 @@ This is a driver for the RFD900x board from RFDesign. The API for this driver ca
 This is a simple driver for the Ultimate GPS Breakout from Adafruit that initializes and starts reception before checking if data is available and then getting the latest data. This driver utilizes a FIFO, so that more than one packet can be received at once.
 ### IMU Driver
 This is another simple driver used to interface with the bno055 IMU. All API documentation can be found in 'bno055.h'. This header also includes all initialization for the I2C peripheral which it uses inside of the source file, therefore no other initialization should be done for this I2C peripheral outside the library.
-## templates Folder
-This folder holds templates for all C and C++ header and source files that should be used when developing for this project. These templates contain commenting styles as well as example comments. 
