@@ -1,1 +1,4 @@
 dev-board/Debug
+.cproject
+.mxproject
+.settings/language.settings.xml
