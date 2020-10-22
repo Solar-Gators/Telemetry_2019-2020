@@ -63,7 +63,8 @@ ORION_MESSAGE_0 bms0(subsystem_info::BMS0_MSG_ID);
 MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest(subsystem_info::MOTORTX_RL_MSG_ID);
 MITSUBA_DRIVER_RX_FRAME_0 motorRx0(subsystem_info::MOTORRX0_RL_MSG_ID);
 MITSUBA_DRIVER_RX_FRAME_2 motorRx2(subsystem_info::MOTORRX2_RL_MSG_ID);
-
+// Setup RF module
+RF_PACKET msg0{huart2.Instance};
 
 /* USER CODE BEGIN PV */
 
@@ -195,6 +196,12 @@ int main(void)
 //
 #endif
 
+#ifdef CAN_TEST
+  osThreadDef(CAN_Request, Start_CAN_Request, osPriorityNormal, 0, 128);
+  CAN_RequestHandle = osThreadCreate(osThread(CAN_Request), NULL);
+#endif
+
+
   /* Start scheduler */
   osKernelStart();
   //Infinite Loop
@@ -207,7 +214,7 @@ int main(void)
 #ifdef GPS_TEST
   void Start_GPS_Request(void const * argument)
   {
-	RF_PACKET msg0{huart2.Instance};
+//	RF_PACKET msg0{huart2.Instance};
 	GPS_init(huart1.Instance);
 	GPS_startReception();
     /* Infinite loop */
@@ -217,7 +224,7 @@ int main(void)
   	  {
   		  GPS_Data_t data = GPS_getLatestData();
   		  GPS_TO_RF::AddMessage(&msg0,333, &data); //TODO!! missing rf_id
-  		  msg0.Send();
+//  		  msg0.Send();
   	  }
       osDelay(1);
     }
@@ -226,7 +233,7 @@ int main(void)
     CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION,334, &test); //TODO!! missing rf_id
     test.packSummedVoltage = 52.32;
     CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION,335, &test); //TODO!! missing rf_id
-    msg0.Send();void StartDefaultTask(void const * argument);
+    msg0.Send();
 
     CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION,555, &test); //TODO!! missing rf_id
     msg0.Send();
@@ -236,8 +243,6 @@ int main(void)
 #ifdef CAN_RF_TEST
   void Start_RF_Request(void const * argument)
   {
-  // Setup RF module
-  RF_PACKET msg0{huart2.Instance};
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -290,8 +295,8 @@ int main(void)
 			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, subsystem_rf_ids::ORION0, &bmsPacket);
 		}
 	}
-	if(!msg0.isPacketEmpty())
-		msg0.Send();
+//	if(!msg0.isPacketEmpty())
+//		msg0.Send();
     /* USER CODE BEGIN 3 */
 	osDelay(1);
   }
@@ -301,18 +306,26 @@ int main(void)
 #ifdef IMU_TEST
   void Start_IMU_Request(void const * argument)
   {
-	RF_PACKET msg0{huart2.Instance};
+//	RF_PACKET msg0{huart2.Instance};
 	bno055Init();
     /* Infinite loop */
     for(;;)
     {
   	  IMU_DATA_t imuData = bno055GetPacket();
   	  IMU_TO_RF::AddMessage(&msg0, 123, &imuData); //TODO!! RF_ID!!
-  	  msg0.Send();
+//  	  msg0.Send();
       osDelay(1);
     }
   }
 #endif
+
+#ifdef CAN_TEST
+void Start_CAN_Request(void const * argument){
+	if(!msg0.isPacketEmpty())
+		msg0.Send();
+}
+#endif
+
 
 /**
   * @brief System Clock Configuration
