@@ -56,6 +56,7 @@ osThreadId GPS_RequestHandle;
 osThreadId MC_RequestHandle;
 osThreadId CAN_RequestHandle;
 osThreadId RF_RequestHandle;
+osThreadId CAN_SendHandle;
 osThreadId IMU_RequestHandle;
 osMutexId RF_FIFOHandle;
 PROTON1_MESSAGE_0 mppt0(subsystem_info::MPPT0_MSG_ID);
@@ -77,9 +78,9 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 void Start_MC_Request(void const * argument);
 void Start_GPS_Request(void const * argument);
-//void Start_CAN_Setup(void const * argument);
 void Start_IMU_Request(void const * argument);
 void Start_CAN_Request(void const * argument);
+void Start_CAN_Send(void const * argument);
 void Start_RF_Request(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -92,6 +93,8 @@ void Start_RF_Request(void const * argument);
 #define GPS_TEST
 #define IMU_TEST
 #define CAN_TEST
+#define CAN_REQUEST
+#define CAN_SEND
 #define MC_TEST
 #define CAN_RF_TEST
 #include <string.h>
@@ -161,11 +164,6 @@ int main(void)
 	// Start the CAN peripheral
 	SUBSYSTEM_DATA_MODULE::StartCAN();
 
-	// request data from the motor controller
-	mcRequest.txData = { 1, 1, 1 }; // what does this mean?
-	mcRequest.SendData();
-	mppt0.SendData();
-
 //  osThreadDef(CAN_Setup, Start_CAN_Setup, osPriorityNormal, 0, 128);
 //  CAN_RequestHandle = osThreadCreate(osThread(CAN_Setup), NULL);
 
@@ -197,9 +195,15 @@ int main(void)
 #endif
 
 #ifdef CAN_TEST
+  osThreadDef(CAN_Send, Start_CAN_Send, osPriorityNormal, 0, 128);
+  CAN_SendHandle = osThreadCreate(osThread(CAN_Send), NULL);
+#endif
+
+#ifdef CAN_REQUEST
   osThreadDef(CAN_Request, Start_CAN_Request, osPriorityNormal, 0, 128);
   CAN_RequestHandle = osThreadCreate(osThread(CAN_Request), NULL);
 #endif
+
 
 
   /* Start scheduler */
@@ -228,15 +232,6 @@ int main(void)
   	  }
       osDelay(1);
     }
-    //TODO! NEVER RUNS?!
-    ORION_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
-    CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION,334, &test); //TODO!! missing rf_id
-    test.packSummedVoltage = 52.32;
-    CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION,335, &test); //TODO!! missing rf_id
-    msg0.Send();
-
-    CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION,555, &test); //TODO!! missing rf_id
-    msg0.Send();
   }
 #endif
 
@@ -321,8 +316,18 @@ int main(void)
 
 #ifdef CAN_TEST
 void Start_CAN_Request(void const * argument){
-	if(!msg0.isPacketEmpty())
+	// request data from the motor controller
+	mcRequest.txData = { 1, 1, 1 }; // Do we request even if data not processed?
+	mcRequest.SendData();
+	mppt0.SendData();
+}
+#endif
+
+#ifdef CAN_REQUEST
+void Start_CAN_Send(void const * argument){
+	if(!msg0.isPacketEmpty()){
 		msg0.Send();
+	}
 }
 #endif
 
