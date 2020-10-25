@@ -48,6 +48,10 @@ namespace subsystem_info
     /****************MPPT MESSAGES*****************/
     static constexpr uint16_t MPPT0_MSG_ID = 1024;
     static constexpr uint8_t MPPT0_MSG_LENGTH = 8;
+//    static constexpr uint16_t MPPT1_MSG_ID = 1025; //TODO: assign id
+//    static constexpr uint8_t MPPT1_MSG_LENGTH = 8;
+//    static constexpr uint16_t MPPT2_MSG_ID = 1026; //TODO: assign id
+//    static constexpr uint8_t MPPT2_MSG_LENGTH = 8;
     /****************BMS MESSAGES*****************/
     static constexpr uint16_t BMS0_MSG_ID = 0x6B0;
     static constexpr uint8_t BMS0_MSG_LENGTH = 8;

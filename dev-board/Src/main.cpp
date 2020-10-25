@@ -60,6 +60,8 @@ osThreadId CAN_SendHandle;
 osThreadId IMU_RequestHandle;
 osMutexId RF_FIFOHandle;
 PROTON1_MESSAGE_0 mppt0(subsystem_info::MPPT0_MSG_ID);
+//PROTON1_MESSAGE_0 mppt1(subsystem_info::MPPT1_MSG_ID);
+//PROTON1_MESSAGE_0 mppt2(subsystem_info::MPPT2_MSG_ID);
 ORION_MESSAGE_0 bms0(subsystem_info::BMS0_MSG_ID);
 MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest(subsystem_info::MOTORTX_RL_MSG_ID);
 MITSUBA_DRIVER_RX_FRAME_0 motorRx0(subsystem_info::MOTORRX0_RL_MSG_ID);
@@ -95,7 +97,6 @@ void Start_RF_Request(void const * argument);
 #define CAN_TEST
 #define CAN_REQUEST
 #define CAN_SEND
-#define MC_TEST
 #define CAN_RF_TEST
 #include <string.h>
 #include <stdio.h>
@@ -141,70 +142,55 @@ int main(void)
   osMutexDef(RF_FIFO);
   RF_FIFOHandle = osMutexCreate(osMutex(RF_FIFO));
 
-	PROTON1_MESSAGE_0 mppt0(subsystem_info::MPPT0_MSG_ID);
-	mppt0.SetupReceive(nullptr);
-//	PROTON1_MESSAGE_0 mppt1(subsystem_info::MPPT1_MSG_ID);
-//	mppt1.SetupReceive(nullptr);
-//	PROTON1_MESSAGE_0 mppt2(subsystem_info::MPPT2_MSG_ID);
-//	mppt2.SetupReceive(nullptr);
+  PROTON1_MESSAGE_0 mppt0(subsystem_info::MPPT0_MSG_ID);
+  mppt0.SetupReceive(nullptr);
+//  PROTON1_MESSAGE_0 mppt1(subsystem_info::MPPT1_MSG_ID);
+//  mppt1.SetupReceive(nullptr);
+//  PROTON1_MESSAGE_0 mppt2(subsystem_info::MPPT2_MSG_ID);
+//  mppt2.SetupReceive(nullptr);
 
-	ORION_MESSAGE_0 bms0(subsystem_info::BMS0_MSG_ID);
-	bms0.SetupReceive(nullptr);
+  ORION_MESSAGE_0 bms0(subsystem_info::BMS0_MSG_ID);
+  bms0.SetupReceive(nullptr);
 
-	// Motor Controller
-	// request message
-	MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest(subsystem_info::MOTORTX_RL_MSG_ID);
-	// first return message
-	MITSUBA_DRIVER_RX_FRAME_0 motorRx0(subsystem_info::MOTORRX0_RL_MSG_ID);
-	motorRx0.SetupReceive(nullptr);
-	// second return message
-	MITSUBA_DRIVER_RX_FRAME_2 motorRx2(subsystem_info::MOTORRX2_RL_MSG_ID);
-	motorRx2.SetupReceive(nullptr);
+  // Motor Controller
+  // request message
+  MITSUBA_DRIVER_TX_RL_MESSAGE mcRequest(subsystem_info::MOTORTX_RL_MSG_ID);
+  // first return message
+  MITSUBA_DRIVER_RX_FRAME_0 motorRx0(subsystem_info::MOTORRX0_RL_MSG_ID);
+  motorRx0.SetupReceive(nullptr);
+  // second return message
+  MITSUBA_DRIVER_RX_FRAME_2 motorRx2(subsystem_info::MOTORRX2_RL_MSG_ID);
+  motorRx2.SetupReceive(nullptr);
 
-	// Start the CAN peripheral
-	SUBSYSTEM_DATA_MODULE::StartCAN();
+  // Start the CAN peripheral
+  SUBSYSTEM_DATA_MODULE::StartCAN();
+  Start_CAN_Request(); // Send the first request packets for data from CAN
 
-//  osThreadDef(CAN_Setup, Start_CAN_Setup, osPriorityNormal, 0, 128);
-//  CAN_RequestHandle = osThreadCreate(osThread(CAN_Setup), NULL);
-
-//  /***************************GPS/RF TEST*************************/
+///***************************GPS TEST***********************/
 #ifdef GPS_TEST
   osThreadDef(GPS_Request, Start_GPS_Request, osPriorityNormal, 0, 128);
   GPS_RequestHandle = osThreadCreate(osThread(GPS_Request), NULL);
 #endif
-///***************************MC TEST*************************/
-//#ifdef MC_TEST
-//  osThreadDef(MC_Request, Start_MC_Request, osPriorityNormal, 0, 128);
-//  MC_RequestHandle = osThreadCreate(osThread(MC_Request), NULL);
-//#endif
-///***************************CAN TEST*************************/
-//#ifdef CAN_TEST
-//  osThreadDef(CAN_Request, Start_CAN_Request, osPriorityNormal, 0, 128);
-//  CAN_RequestHandle = osThreadCreate(osThread(CAN_Request), NULL);
-//#endif
-///***************************CAN RF TEST*************************/
+///***************************CAN RF TEST********************/
 #ifdef CAN_RF_TEST
   osThreadDef(RF_Request, Start_RF_Request, osPriorityNormal, 0, 128);
   RF_RequestHandle = osThreadCreate(osThread(RF_Request), NULL);
 #endif
-//  /***************************IMU TEST*************************/
+///***************************IMU TEST***********************/
 #ifdef IMU_TEST
   osThreadDef(IMU_Request, Start_IMU_Request, osPriorityNormal, 0, 128);
   IMU_RequestHandle = osThreadCreate(osThread(IMU_Request), NULL);
-//
 #endif
-
+///***************************CAN TEST***********************/
 #ifdef CAN_TEST
   osThreadDef(CAN_Send, Start_CAN_Send, osPriorityNormal, 0, 128);
   CAN_SendHandle = osThreadCreate(osThread(CAN_Send), NULL);
 #endif
-
+///***************************CAN REQUEST********************/
 #ifdef CAN_REQUEST
   osThreadDef(CAN_Request, Start_CAN_Request, osPriorityNormal, 0, 128);
   CAN_RequestHandle = osThreadCreate(osThread(CAN_Request), NULL);
 #endif
-
-
 
   /* Start scheduler */
   osKernelStart();
@@ -218,119 +204,117 @@ int main(void)
 #ifdef GPS_TEST
   void Start_GPS_Request(void const * argument)
   {
-//	RF_PACKET msg0{huart2.Instance};
-	GPS_init(huart1.Instance);
-	GPS_startReception();
-    /* Infinite loop */
-    for(;;)
-    {
-  	  if(GPS_isDataAvailable())
-  	  {
-  		  GPS_Data_t data = GPS_getLatestData();
-  		  GPS_TO_RF::AddMessage(&msg0,333, &data); //TODO!! missing rf_id
-//  		  msg0.Send();
-  	  }
-      osDelay(1);
-    }
+	  GPS_init(huart1.Instance);
+	  GPS_startReception();
+	  /* Infinite loop */
+	  for(;;)
+	  {
+		  if(GPS_isDataAvailable())
+		  {
+			  GPS_Data_t data = GPS_getLatestData();
+			  GPS_TO_RF::AddMessage(&msg0,333, &data); //TODO!! missing rf_id
+		  }
+		  osDelay(1);
+	  }
   }
 #endif
 
 #ifdef CAN_RF_TEST
   void Start_RF_Request(void const * argument)
   {
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  for(;;)
-  {
-	/* USER CODE END WHILE */
-	// check to see if we have gotten any messages
-	if(!motorRx0.isFifoEmpty())
-	{
-		bool receivedSomething;
-		MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
-		if(receivedSomething)
-		{
-			//Nice
-			float l = motorPacket.motorRPM;
-			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::MITSUBA_FRAME0, subsystem_rf_ids::MITSUBARX0_RL, &motorPacket);
-
-		}
-	}
-	if(!motorRx2.isFifoEmpty())
-	{
-		bool receivedSomething;
-		MITSUBA_DRIVER_RX_FRAME_2_DATA_PACKET motorPacket = motorRx2.GetOldestDataPacket(&receivedSomething);
-		if(receivedSomething)
-		{
-			//Nice
-			float l = motorPacket.accelPosError;
-			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::MITSUBA_FRAME2, subsystem_rf_ids::MITSUBARX2_RL, &motorPacket);
-		}
-	}
-	if(!mppt0.isFifoEmpty())
-	{
-		bool receivedSomething;
-		PROTON1_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
-		if(receivedSomething)
-		{
-			//Nice
-			float vin = mpptPacket.arrayVoltage;
-			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::PROTON1, subsystem_rf_ids::MPPT0, &mpptPacket);
-		}
-	}
-	if(!bms0.isFifoEmpty())
-	{
-		bool receivedSomething;
-		ORION_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
-		if(receivedSomething)
-		{
-			//Nice
-			float voltH = bmsPacket.highCellVoltage;
-			CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, subsystem_rf_ids::ORION0, &bmsPacket);
-		}
-	}
-//	if(!msg0.isPacketEmpty())
-//		msg0.Send();
-    /* USER CODE BEGIN 3 */
-	osDelay(1);
-  }
+	  /* Infinite loop */
+	  for(;;)
+	  {
+		  // check to see if we have gotten any messages
+		  if(!motorRx0.isFifoEmpty())
+		  {
+			  bool receivedSomething;
+			  MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET motorPacket = motorRx0.GetOldestDataPacket(&receivedSomething);
+			  if(receivedSomething)
+			  {
+				  //Nice
+				  float l = motorPacket.motorRPM;
+				  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::MITSUBA_FRAME0, subsystem_rf_ids::MITSUBARX0_RL, &motorPacket);
+			  }
+		  }
+		  if(!motorRx2.isFifoEmpty())
+		  {
+			  bool receivedSomething;
+			  MITSUBA_DRIVER_RX_FRAME_2_DATA_PACKET motorPacket = motorRx2.GetOldestDataPacket(&receivedSomething);
+			  if(receivedSomething)
+			  {
+				  //Nice
+				  float l = motorPacket.accelPosError;
+				  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::MITSUBA_FRAME2, subsystem_rf_ids::MITSUBARX2_RL, &motorPacket);
+			  }
+		  }
+		  if(!mppt0.isFifoEmpty())
+		  {
+			  bool receivedSomething;
+			  PROTON1_MESSAGE_0_DATA_PACKET mpptPacket = mppt0.GetOldestDataPacket(&receivedSomething);
+			  if(receivedSomething)
+			  {
+				  //Nice
+				  float vin = mpptPacket.arrayVoltage;
+				  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::PROTON1, subsystem_rf_ids::MPPT0, &mpptPacket);
+			  }
+		  }
+		  if(!bms0.isFifoEmpty())
+		  {
+			  bool receivedSomething;
+			  ORION_MESSAGE_0_DATA_PACKET bmsPacket = bms0.GetOldestDataPacket(&receivedSomething);
+			  if(receivedSomething)
+			  {
+				  //Nice
+				  float voltH = bmsPacket.highCellVoltage;
+				  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, subsystem_rf_ids::ORION0, &bmsPacket);
+			  }
+		  }
+		  osDelay(1);
+	  }
   }
 #endif
 
 #ifdef IMU_TEST
   void Start_IMU_Request(void const * argument)
   {
-//	RF_PACKET msg0{huart2.Instance};
-	bno055Init();
-    /* Infinite loop */
-    for(;;)
-    {
-  	  IMU_DATA_t imuData = bno055GetPacket();
-  	  IMU_TO_RF::AddMessage(&msg0, 123, &imuData); //TODO!! RF_ID!!
-//  	  msg0.Send();
-      osDelay(1);
-    }
+	  bno055Init();
+	  /* Infinite loop */
+	  for(;;)
+	  {
+		  IMU_DATA_t imuData = bno055GetPacket();
+		  IMU_TO_RF::AddMessage(&msg0, 123, &imuData); //TODO!! RF_ID!!
+		  osDelay(1);
+	  }
   }
 #endif
 
-#ifdef CAN_TEST
-void Start_CAN_Request(void const * argument){
-	// request data from the motor controller
-	mcRequest.txData = { 1, 1, 1 }; // Do we request even if data not processed?
-	mcRequest.SendData();
-	mppt0.SendData();
-}
-#endif
-
 #ifdef CAN_REQUEST
-void Start_CAN_Send(void const * argument){
-	if(!msg0.isPacketEmpty()){
-		msg0.Send();
-	}
+void Start_CAN_Request(void const * argument){
+    /* Infinite loop */
+    for(;;)
+    {
+    	// request data from the motor controller
+    	mcRequest.txData = { 1, 1, 1 }; // Do we request even if data not processed?
+		mcRequest.SendData();
+		mppt0.SendData();
+	    osDelay(1);
+    }
 }
 #endif
 
+#ifdef CAN_TEST
+void Start_CAN_Send(void const * argument){
+    /* Infinite loop */
+    for(;;)
+    {
+    	if(!msg0.isPacketEmpty()){
+    		msg0.Send();
+    	}
+    	osDelay(1);
+    }
+}
+#endif
 
 /**
   * @brief System Clock Configuration
