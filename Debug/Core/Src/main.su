@@ -1,0 +1,19 @@
+main.cpp:96:5:int main()	168	static
+main.cpp:189:6:void SystemClock_Config()	112	static
+main.cpp:227:13:void MX_USART1_UART_Init()	8	static
+main.cpp:260:13:void MX_USART2_UART_Init()	8	static
+main.cpp:293:13:void MX_GPIO_Init()	48	static
+main.cpp:330:6:void Start_CAN_Send(const void*)	16	static
+main.cpp:349:6:void Start_CAN_Request(const void*)	16	static
+main.cpp:371:6:void Start_GPS_Request(const void*)	72	static
+main.cpp:393:6:void Start_IMU_Request(const void*)	48	static
+main.cpp:412:6:void Start_RF_Request(const void*)	120	static
+main.cpp:496:6:void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef*)	16	static
+main.cpp:512:6:void Error_Handler()	8	static
+subsystem-data-module.hpp:177:13:CHILD_DATA SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<CHILD_OBJ, CHILD_DATA>::GetOldestDataPacket(bool*) [with CHILD_OBJ = MITSUBA_DRIVER_RX_FRAME_0; CHILD_DATA = MITSUBA_DRIVER_RX_FRAME_0_DATA_PACKET]	56	static
+subsystem-data-module.hpp:177:13:CHILD_DATA SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<CHILD_OBJ, CHILD_DATA>::GetOldestDataPacket(bool*) [with CHILD_OBJ = MITSUBA_DRIVER_RX_FRAME_2; CHILD_DATA = MITSUBA_DRIVER_RX_FRAME_2_DATA_PACKET]	64	static
+subsystem-data-module.hpp:177:13:CHILD_DATA SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<CHILD_OBJ, CHILD_DATA>::GetOldestDataPacket(bool*) [with CHILD_OBJ = PROTON1_MESSAGE_0; CHILD_DATA = PROTON1_MESSAGE_0_DATA_PACKET]	56	static
+subsystem-data-module.hpp:177:13:CHILD_DATA SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<CHILD_OBJ, CHILD_DATA>::GetOldestDataPacket(bool*) [with CHILD_OBJ = ORION_MESSAGE_0; CHILD_DATA = ORION_MESSAGE_0_DATA_PACKET]	56	static
+helper-fifo.hpp:82:8:T* HELPER_FIFO<T, DEPTH, SIZE>::PopFront(bool*) [with T = unsigned char; short unsigned int DEPTH = 3; short unsigned int SIZE = 8]	24	static
+main.cpp:517:1:void __static_initialization_and_destruction_0(int, int)	16	static
+main.cpp:517:1:cpp)	8	static

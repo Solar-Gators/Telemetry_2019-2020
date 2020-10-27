@@ -1,0 +1,5 @@
+proton1-data-module.cpp:30:6:static void PROTON1_MESSAGE_0::dataPacketToArray(PROTON1_MESSAGE_0_DATA_PACKET, uint8_t*)	48	static
+proton1-data-module.cpp:49:31:static PROTON1_MESSAGE_0_DATA_PACKET PROTON1_MESSAGE_0::arrayToDataPacket(uint8_t*)	32	static
+proton1-data-module.cpp:67:1:PROTON1_MESSAGE_0::PROTON1_MESSAGE_0(uint16_t)	24	static
+subsystem-data-module.hpp:193:2:SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<CHILD_OBJ, CHILD_DATA>::SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE(uint32_t, uint8_t, bool, bool, bool) [with CHILD_OBJ = PROTON1_MESSAGE_0; CHILD_DATA = PROTON1_MESSAGE_0_DATA_PACKET]	40	static
+subsystem-data-module.hpp:197:15:void SUBSYSTEM_DATA_MODULE_TEMPLATE_INTERFACE<CHILD_OBJ, CHILD_DATA>::fillTransmitBuffer() [with CHILD_OBJ = PROTON1_MESSAGE_0; CHILD_DATA = PROTON1_MESSAGE_0_DATA_PACKET]	24	static
