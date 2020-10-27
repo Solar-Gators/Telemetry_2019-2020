@@ -1,8 +1,9 @@
 #MicroXplorer Configuration settings - do not modify
 CAN.CalculateTimeQuantum=333.3333333333333
 CAN.IPParameters=CalculateTimeQuantum
+FREERTOS.FootprintOK=true
 FREERTOS.INCLUDE_vTaskDelayUntil=1
-FREERTOS.IPParameters=Tasks01,configUSE_TIMERS,configTOTAL_HEAP_SIZE,Mutexes01,INCLUDE_vTaskDelayUntil
+FREERTOS.IPParameters=Tasks01,configUSE_TIMERS,configTOTAL_HEAP_SIZE,Mutexes01,INCLUDE_vTaskDelayUntil,FootprintOK
 FREERTOS.Mutexes01=RF_FIFO,Dynamic,NULL
 FREERTOS.Tasks01=CAN_Send,0,128,Start_CAN_Send,Default,NULL,Dynamic,NULL,NULL;CAN_Request,0,128,Start_CAN_Request,Default,NULL,Dynamic,NULL,NULL;GPS_Request,0,128,Start_GPS_Request,Default,NULL,Dynamic,NULL,NULL;IMU_Request,0,128,Start_IMU_Request,Default,NULL,Dynamic,NULL,NULL;RF_Request,0,128,Start_RF_Request,Default,NULL,Dynamic,NULL,NULL
 FREERTOS.configTOTAL_HEAP_SIZE=4096
