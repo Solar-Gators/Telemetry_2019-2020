@@ -329,12 +329,15 @@ static void MX_GPIO_Init(void) {
 /* USER CODE END Header_Start_CAN_Send */
 void Start_CAN_Send(void const *argument) {
 	/* USER CODE BEGIN 5 */
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 10;
+    xLastWakeTime = xTaskGetTickCount();
 	/* Infinite loop */
 	for (;;) {
 		if (!msg0.isPacketEmpty()) {
 			msg0.Send();
 		}
-		osDelay(1);
+        vTaskDelayUntil(&xLastWakeTime, xFrequency);
 	}
 	/* USER CODE END 5 */
 }
@@ -348,6 +351,8 @@ void Start_CAN_Send(void const *argument) {
 /* USER CODE END Header_Start_CAN_Request */
 void Start_CAN_Request(void const *argument) {
 	/* USER CODE BEGIN Start_CAN_Request */
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 10;
 	/* Infinite loop */
 	for (;;) {
 		// request data from the motor controller
@@ -356,7 +361,7 @@ void Start_CAN_Request(void const *argument) {
 		mppt0.SendData();
 //		mppt1.SendData();
 //		mppt2.SendData();
-		osDelay(1);
+        vTaskDelayUntil(&xLastWakeTime, xFrequency);
 	}
 	/* USER CODE END Start_CAN_Request */
 }
@@ -372,13 +377,16 @@ void Start_GPS_Request(void const *argument) {
 	/* USER CODE BEGIN Start_GPS_Request */
 	GPS_init(huart1.Instance);
 	GPS_startReception();
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 10;
+    xLastWakeTime = xTaskGetTickCount();
 	/* Infinite loop */
 	for (;;) {
 		if (GPS_isDataAvailable()) {
 			GPS_Data_t data = GPS_getLatestData();
 			GPS_TO_RF::AddMessage(&msg0, subsystem_rf_ids::GPS, &data);
 		}
-		osDelay(1);
+		vTaskDelayUntil(&xLastWakeTime, xFrequency);
 	}
 	/* USER CODE END Start_GPS_Request */
 }
@@ -393,11 +401,14 @@ void Start_GPS_Request(void const *argument) {
 void Start_IMU_Request(void const *argument) {
 	/* USER CODE BEGIN Start_IMU_Request */
 	bno055Init();
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 10;
+    xLastWakeTime = xTaskGetTickCount();
 	/* Infinite loop */
 	for (;;) {
 		IMU_DATA_t imuData = bno055GetPacket();
 		IMU_TO_RF::AddMessage(&msg0, subsystem_rf_ids::BNO5550, &imuData);
-		osDelay(1);
+		vTaskDelayUntil(&xLastWakeTime, xFrequency);
 	}
 	/* USER CODE END Start_IMU_Request */
 }
@@ -411,6 +422,9 @@ void Start_IMU_Request(void const *argument) {
 /* USER CODE END Header_Start_RF_Request */
 void Start_RF_Request(void const *argument) {
 	/* USER CODE BEGIN Start_RF_Request */
+	TickType_t xLastWakeTime;
+	const TickType_t xFrequency = 10;
+    xLastWakeTime = xTaskGetTickCount();
 	/* Infinite loop */
 	for (;;) {
 		// check to see if we have gotten any messages
@@ -480,7 +494,7 @@ void Start_RF_Request(void const *argument) {
 						subsystem_rf_ids::ORION0, &bmsPacket);
 			}
 		}
-		osDelay(1);
+        vTaskDelayUntil(&xLastWakeTime, xFrequency);
 	}
 	/* USER CODE END Start_RF_Request */
 }
