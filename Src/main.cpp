@@ -71,7 +71,8 @@ static void MX_USART2_UART_Init(void);
 //#define IMU_TEST
 //#define CAN_TEST
 //#define MC_TEST
-#define CAN_RF_TEST
+//#define CAN_RF_TEST
+#define RF_TEST
 #include <string.h>
 #include <stdio.h>
 /* USER CODE END 0 */
@@ -111,25 +112,25 @@ int main(void)
   /* USER CODE BEGIN 2 */
   /***************************GPS/RF TEST*************************/
 #ifdef GPS_TEST
-  RF_PACKET msg0{huart2.Instance};
-  GPS_init(huart1.Instance);
+  RF_PACKET msg0{huart1.Instance};
+  GPS_init(huart2.Instance);
   GPS_startReception();
   while(1)
   {
 	  if(GPS_isDataAvailable())
 	  {
 		  GPS_Data_t data = GPS_getLatestData();
-		  GPS_TO_RF::AddMessage(&msg0, &data);
+		  GPS_TO_RF::AddMessage(&msg0, 1, &data);
 		  msg0.Send();
 	  }
   }
-  ORION_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
-  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
-  test.packSummedVoltage = 52.32;
-  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
-  msg0.Send();
-  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
-  msg0.Send();
+//  ORION_MESSAGE_0_DATA_PACKET test{6.5343 , 6.5535, 1.6191, 43.29};
+//  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
+//  test.packSummedVoltage = 52.32;
+//  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
+//  msg0.Send();
+//  CAN_TO_RF::AddMessage(&msg0, RF_TYPES::ORION, &test);
+//  msg0.Send();
 #endif
 /***************************MC TEST*************************/
 #ifdef MC_TEST
@@ -326,7 +327,15 @@ int main(void)
 	  msg0.Send();
   }
 #endif
-
+#ifdef RF_TEST
+  RF_PACKET msg0{huart2.Instance};
+  while(1)
+  {
+	  IMU_DATA_t imuData;
+	  IMU_TO_RF::AddMessage(&msg0, 1, &imuData);
+	  msg0.Send();
+  }
+#endif
   //Infinite Loop
   while(1);
   /* USER CODE END 3 */
@@ -423,7 +432,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 57600;
+  huart2.Init.BaudRate = 9600;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
